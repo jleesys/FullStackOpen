@@ -1,0 +1,68 @@
+title 0.4 Loading app and Creating a new note (Single page app vers.)
+
+note over browser
+User accesses URL /exampleapp/spa
+end note
+browser->server: HTTP GET SC200 https://studies.cs.helsinki.fi/exampleapp/spa
+server-->browser: Payload: HTML Code | content-type: text/html
+
+note over browser
+Browser loads HTML; loads head element and sees js file
+end note 
+
+browser->server: HTTP GET SC200 ./exampleapp/spa.js
+server-->browser: spa.js
+
+note over browser
+Browser begins to execute the fetched js file and
+sees the linked stylesheet main.css in the HTML file.
+end note 
+
+browser->server: HTTP GET SC200 ./example/main.css
+server-->browser: main.css | content-type: text/css
+
+note over browser
+Browser begins to render webpage according to HTML/CSS.
+end note
+
+note over browser
+Continuing to execute js code, browser is
+instructed to request the data json
+end note 
+
+browser->server: HTTP GET SC200 ./exampleapp/data.json
+server-->browser: data.json
+
+note over browser
+spa.js code continues to run after receiving the json 
+and changing state. json data is parsed and loaded into
+an array
+end note
+
+note over browser
+js code utilizes DOM api to alter the client side HTML to
+show the list of notes
+end note
+
+note over browser
+USER EVENT
+User inputs a string into the text form
+and interacts with the 'Save' button
+end note 
+
+note over browser
+Browser detects the user submission event (form.onsubmit)
+and creates a new note, adds it to the existing array of notes (client side),
+redraws the list (client side), then sends the note to server.
+end note
+
+browser->server: HTTP POST SC201 https://studies.cs.helsinki.fi/exampleapp/new_note_spa | Payload in form of data (in json form) 
+note over server
+the user entered submitted data is added
+to the server-side json
+end note
+server-->browser: {"message":"note created"} | content-type: application/json
+
+
+
+
