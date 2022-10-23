@@ -1,21 +1,25 @@
-const Contents = (props) => {
-  const a = 100;
-  const b = 69;
+import logo from './logo.svg';
+import './App.css';
 
-  let user = 'Shrek';
-
+function App() {
   return (
-    <p>{user} has entered the {props.location}. You better 
-    be {props.ageLimit} years old!</p>
-  )
-
+    <div className="App">
+      <header className="App-header">
+        <img src={logo} className="App-logo" alt="logo" />
+        <p>
+          Edit <code>src/App.js</code> and save to reload.
+        </p>
+        <a
+          className="App-link"
+          href="https://reactjs.org"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Learn React
+        </a>
+      </header>
+    </div>
+  );
 }
 
-const App = () => (
-  <div>
-    <p>Hello world</p>
-    <Contents location="swamp" ageLimit="18" />
-  </div>
-)
-
-export default App
+export default App;
