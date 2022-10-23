@@ -5,17 +5,30 @@ const Header = (props) => {
   )
 }
 const Content = (props) => {
+  const arrayOfParts = props.contents;
+
+  return (
+    <div>
+      <Part partContents={arrayOfParts[0]} />
+      <Part partContents={arrayOfParts[1]} />
+      <Part partContents={arrayOfParts[2]} />
+    </div>
+  )
+}
+
+const Part = (props) => {
   return (
     <p>
-      {props.title} {props.exercisesNum}
+      {props.partContents.part} {props.partContents.exercises}
     </p>
   )
 }
+
 const Total = (props) => {
-  return(
-  <p>
-    Number of exercises {props.total}
-  </p>
+  return (
+    <p>
+      Number of exercises {props.total}
+    </p>
   )
 }
 
@@ -28,32 +41,29 @@ const App = () => {
   const part3 = 'State of a component'
   const exercises3 = 14
 
+  const thing1 = {
+    part: part1,
+    exercises: exercises1
+  }
+  const thing2 = {
+    part: part2,
+    exercises: exercises2
+  }
+  const thing3 = {
+    part: part3,
+    exercises: exercises3
+  }
+
+  const arrayThings = [thing1,thing2,thing3];
+  console.log(arrayThings);
+
   return (
     <>
-    <Header courseName={course} />
-    <Content title={part1} exercisesNum={exercises1}/>
-    <Content title={part2} exercisesNum={exercises2}/>
-    <Content title={part3} exercisesNum={exercises3}/>
-    <Total total={exercises1+exercises2+exercises3} />
+      <Header courseName={course} />
+      <Content contents={arrayThings} />
+      <Total total={exercises1+exercises2+exercises3} />
     </>
   )
-  /*
-  //commenting out the original return statement
-  return (
-    <div>
-      <h1>{course}</h1>
-      <p>
-      </p>
-      <p>
-        {part2} {exercises2}
-      </p>
-      <p>
-        {part3} {exercises3}
-      </p>
-      <p>Number of exercises {exercises1 + exercises2 + exercises3}</p>
-    </div>
-  )
-  */
 }
 
 export default App
