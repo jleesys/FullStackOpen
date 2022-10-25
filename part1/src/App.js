@@ -1,3 +1,4 @@
+import {useState} from 'react' 
 // added three components per exercise intstructions
 const Header = (props) => {
   return (
@@ -63,7 +64,21 @@ const App = () => {
       <Header courseName={course.name} />
       <Content contents={course.parts} />
       <Total total={course.parts} />
+      <Counter />
     </>
+  )
+}
+
+const Counter = (props) => {
+  const [counter, changeState] = useState(0);
+
+  setTimeout( function() {
+    changeState(counter + 1)
+  }, 1000);
+
+
+  return (
+  <div>dont mind me im a random counter. watch me go... {counter}</div>
   )
 }
 
