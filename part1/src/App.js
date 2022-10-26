@@ -48,10 +48,12 @@ const App = () => {
 
   const handleLeftClick = () => {
     setLeft(leftClick + 1);
+    setAll(allClicks.concat('L'))
   }
 
   const handleRightClick = () => {
     setRight(rightClick + 1);
+    setAll(allClicks.concat('R'))
   }
 
   const course = {
@@ -85,12 +87,12 @@ const App = () => {
       <Counter counter={counter} />
       <Button onClick={handleLeftClick} text={leftClick} />
       <Button onClick={handleRightClick} text={rightClick} />
+      <p>the score <br/>{allClicks}</p>
     </>
   )
 }
 
 const Button = (props) => {
-
   return (
     <button onClick={props.onClick}>{props.text}</button>
   )
