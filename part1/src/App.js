@@ -41,6 +41,19 @@ const Total = (props) => {
 
 const App = () => {
 
+  const [counter, setCounter] = useState(0);
+  const [leftClick, setLeft] = useState(0);
+  const [rightClick, setRight] = useState(0);
+  const [allClicks, setAll] = useState([]);
+
+  const handleLeftClick = () => {
+    setLeft(leftClick + 1);
+  }
+
+  const handleRightClick = () => {
+    setRight(rightClick + 1);
+  }
+
   const course = {
     name: 'Half Stack application development',
     parts: [
@@ -59,17 +72,36 @@ const App = () => {
     ]
   }
 
+
+  setTimeout(() => {
+    setCounter(counter + 1)
+  },1000);
+
   return (
     <>
       <Header courseName={course.name} />
       <Content contents={course.parts} />
       <Total total={course.parts} />
-      <Counter />
+      <Counter counter={counter} />
+      <Button onClick={handleLeftClick} text={leftClick} />
+      <Button onClick={handleRightClick} text={rightClick} />
     </>
   )
 }
 
+const Button = (props) => {
+
+  return (
+    <button onClick={props.onClick}>{props.text}</button>
+  )
+}
+
 const Counter = (props) => {
+
+  return (
+    <p>dont mind me. im just a random counter {props.counter}</p>
+  )
+  /*
   const [counter, changeState] = useState(0);
 
   setTimeout( function() {
@@ -80,6 +112,7 @@ const Counter = (props) => {
   return (
   <div>dont mind me im a random counter. watch me go... {counter}</div>
   )
+  */
 }
 
 export default App
