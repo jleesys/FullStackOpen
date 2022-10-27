@@ -1,4 +1,4 @@
-import {useState} from 'react' 
+import { useState } from 'react'
 // added three components per exercise intstructions
 const Header = (props) => {
   return (
@@ -40,12 +40,23 @@ const Total = (props) => {
 }
 
 const App = () => {
+  const [clickState, setClickState] = useState({leftClick: 0, rightClick: 0});
 
   const [counter, setCounter] = useState(0);
   const [leftClick, setLeft] = useState(0);
   const [rightClick, setRight] = useState(0);
   const [allClicks, setAll] = useState([]);
 
+  const handleLeftClick = () => {
+    setClickState({...clickState, leftClick: clickState.leftClick + 1})
+    setAll(allClicks.concat('L'))
+  }
+
+  const handleRightClick = () => {
+    setClickState({...clickState, rightClick: clickState.rightClick + 1})
+    setAll(allClicks.concat('R'))
+  }
+  /*
   const handleLeftClick = () => {
     setLeft(leftClick + 1);
     setAll(allClicks.concat('L'))
@@ -55,6 +66,7 @@ const App = () => {
     setRight(rightClick + 1);
     setAll(allClicks.concat('R'))
   }
+  */
 
   const course = {
     name: 'Half Stack application development',
@@ -77,7 +89,7 @@ const App = () => {
 
   setTimeout(() => {
     setCounter(counter + 1)
-  },1000);
+  }, 1000);
 
   return (
     <>
@@ -85,9 +97,9 @@ const App = () => {
       <Content contents={course.parts} />
       <Total total={course.parts} />
       <Counter counter={counter} />
-      <Button onClick={handleLeftClick} text={leftClick} />
-      <Button onClick={handleRightClick} text={rightClick} />
-      <p>the score <br/>{allClicks}</p>
+      <Button onClick={handleLeftClick} text={clickState.leftClick} />
+      <Button onClick={handleRightClick} text={clickState.rightClick} />
+      <p>the score <br />{allClicks}</p>
     </>
   )
 }
