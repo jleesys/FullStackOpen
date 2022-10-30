@@ -36,12 +36,18 @@ const App = () => {
     setBad(bad + 1);
   }
 
+  const incrementState = (state, functionToRun) => () => {
+    let newState = (state + 1);
+    functionToRun(newState); 
+    console.log(`incrementing by 1\nstate is now ${newState}`)
+  }
+
   return (
     <div>
       <Header text="give feedback" />
-      <Button text="good" handleClick={incrementGood()} />
-      <Button text="neutral" handleClick={incrementNeutral()} />
-      <Button text="bad" handleClick={incrementBad()} />
+      <Button text="good" handleClick={incrementState(good, setGood)} />
+      <Button text="neutral" handleClick={incrementState(neutral, setNeutral)} />
+      <Button text="bad" handleClick={incrementState(bad, setBad)} />
       <Header text="statistics" />
       <StatisticsView text="good" quantity={good} />
       <StatisticsView text="neutral" quantity={neutral} />
