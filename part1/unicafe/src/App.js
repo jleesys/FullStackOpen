@@ -24,6 +24,7 @@ const App = () => {
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
 
+  /*
   const incrementGood = () => () => {
     setGood(good + 1);
   }
@@ -35,6 +36,7 @@ const App = () => {
   const incrementBad = () => () => {
     setBad(bad + 1);
   }
+  */
 
   const incrementState = (state, functionToRun) => () => {
     let newState = (state + 1);
