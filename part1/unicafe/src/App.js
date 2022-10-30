@@ -12,6 +12,19 @@ const Button = (props) => {
   )
 }
 
+const StatisticsView = (props) => {
+  return (
+      <>
+      <StatsLine text="good" quantity={props.good} />
+      <StatsLine text="neutral" quantity={props.neutral} />
+      <StatsLine text="bad" quantity={props.bad} />
+      <StatsLine text="all" quantity={props.good + props.bad + props.neutral} />
+      <StatsLine text="average" quantity={(props.good * 1 + props.bad * (-1) + (props.neutral * 0)) / (props.good + props.bad + props.neutral) } />
+      <StatsLine text="positive" quantity={`${props.good / (props.good + props.bad + props.neutral)} %`} />
+      </>
+  )
+}
+
 const StatsLine = (props) => {
   return (
     <>{props.text} {props.quantity}<br /></>
@@ -51,12 +64,7 @@ const App = () => {
       <Button text="neutral" handleClick={incrementState(neutral, setNeutral)} />
       <Button text="bad" handleClick={incrementState(bad, setBad)} />
       <Header text="statistics" />
-      <StatsLine text="good" quantity={good} />
-      <StatsLine text="neutral" quantity={neutral} />
-      <StatsLine text="bad" quantity={bad} />
-      <StatsLine text="all" quantity={good + bad + neutral} />
-      <StatsLine text="average" quantity={(good * 1 + bad * (-1) + (neutral * 0)) / (good + bad + neutral) } />
-      <StatsLine text="positive" quantity={`${good / (good + bad + neutral)} %`} />
+      <StatisticsView good={good} neutral={neutral} bad={bad} />
     </div>
   )
 }
