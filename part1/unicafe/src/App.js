@@ -12,7 +12,7 @@ const Button = (props) => {
   )
 }
 
-const StatisticsView = (props) => {
+const StatsLine = (props) => {
   return (
     <>{props.text} {props.quantity}<br /></>
   )
@@ -38,7 +38,7 @@ const App = () => {
 
   const incrementState = (state, functionToRun) => () => {
     let newState = (state + 1);
-    functionToRun(newState); 
+    functionToRun(newState);
     console.log(`incrementing by 1\nstate is now ${newState}`)
   }
 
@@ -49,9 +49,12 @@ const App = () => {
       <Button text="neutral" handleClick={incrementState(neutral, setNeutral)} />
       <Button text="bad" handleClick={incrementState(bad, setBad)} />
       <Header text="statistics" />
-      <StatisticsView text="good" quantity={good} />
-      <StatisticsView text="neutral" quantity={neutral} />
-      <StatisticsView text="bad" quantity={bad} />
+      <StatsLine text="good" quantity={good} />
+      <StatsLine text="neutral" quantity={neutral} />
+      <StatsLine text="bad" quantity={bad} />
+      <StatsLine text="all" quantity={good + bad + neutral} />
+      <StatsLine text="average" quantity={(good * 1 + bad * (-1) + (neutral * 0)) / (good + bad + neutral) } />
+      <StatsLine text="positive" quantity={`${good / (good + bad + neutral)} %`} />
     </div>
   )
 }
