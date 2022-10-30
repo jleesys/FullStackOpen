@@ -13,6 +13,7 @@ const Button = (props) => {
 }
 
 const StatisticsView = (props) => {
+  if (props.good == 0 && props.bad == 0 && props.neutral == 0) return (<>no feedback given</>)
   return (
       <>
       <StatsLine text="good" quantity={props.good} />
