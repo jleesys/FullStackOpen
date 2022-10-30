@@ -14,7 +14,7 @@ const Button = (props) => {
 
 const StatisticsView = (props) => {
   return (
-    <p>{props.text} {props.quantity}</p>
+    <>{props.text} {props.quantity}<br /></>
   )
 }
 
