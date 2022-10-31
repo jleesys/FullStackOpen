@@ -43,12 +43,23 @@ const App = () => {
   const [points,setPoints] = useState(new Uint8Array(anecdotes.length));
   window.points = points;
 
+  const findHighestVoted = () => {
+    let highestVotedIndex = 0;
+    for (let i = 0 ; i < points.length ; i++) {
+      if (points[highestVotedIndex] < points[i]) highestVotedIndex = i;
+    }
+    return highestVotedIndex;
+  }
+
   return (
     <div>
       <p>{anecdotes[selected]}</p>
       <div>has {points[selected]} votes.</div>
       <Button text="vote" onClick={updateVote()}></Button>
       <Button text="next anecdote" onClick={setRandomState()}></Button>
+      <h1>Anecdote with the most votes</h1>
+      <p>{anecdotes[findHighestVoted()]}</p>
+      <div>has {points[findHighestVoted()]} votes.</div>
     </div>
   )
 }
