@@ -16,13 +16,16 @@ const StatisticsView = (props) => {
   const good = props.good;
   const neutral = props.neutral;
   const bad = props.bad;
+
+  const sum = (good, neutral, bad) => good + neutral + bad;
+
   if (good == 0 && bad == 0 && neutral == 0) return (<>no feedback given</>)
   return (
     <table>
       <StatsLine text="good" quantity={good} />
       <StatsLine text="neutral" quantity={neutral} />
       <StatsLine text="bad" quantity={bad} />
-      <StatsLine text="all" quantity={good + bad + neutral} />
+      <StatsLine text="all" quantity={sum(good,neutral,bad)} />
       <StatsLine text="average" quantity={(good * 1 + bad * (-1) + (neutral * 0)) / (good + bad + neutral)} />
       <StatsLine text="positive" quantity={`${100*(good / (good + bad + neutral))} %`} />
     </table>
