@@ -2,11 +2,14 @@ import { useState } from 'react'
 
 const Course = ({course}) => {
   const {parts,id,name} = course;
-  console.log('loggly', parts);
+  let sum = 0;
+  for (let i = 0; i < parts.length; i++) sum += parts[i].exercises
+  console.log('loggly', parts, sum);
   return (
     <>
       <h1>{name}</h1>
       {parts.map(part => <p key={part.id}>{part.name} {part.exercises}</p>)}
+      <p><strong>total of {sum} exercises</strong></p>
     </>
   )
 }
