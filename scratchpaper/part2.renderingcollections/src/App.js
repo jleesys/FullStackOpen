@@ -1,9 +1,13 @@
+/*
 const Note = ({content}) => {
   // const {content} = props;
   return (
     <li>{content}</li>
   )
 }
+*/
+
+import Note from './components/Note';
 
 const App = ({notes}) => {
   // const { notes } = props
