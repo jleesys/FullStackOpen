@@ -1,70 +1,40 @@
 import { useState } from 'react'
 
-const Header = (props) => {
+const Course = ({course}) => {
+  const {parts,id,name} = course;
+  console.log('loggly', parts);
   return (
-    <h1>Course name: {props.courseName}</h1>
-  )
-}
-const Content = (props) => {
-  console.log(props.contents);
-  const arrayOfParts = props.contents;
-
-  return (
-    <div>
-      <Part partContents={arrayOfParts[0]} />
-      <Part partContents={arrayOfParts[1]} />
-      <Part partContents={arrayOfParts[2]} />
-    </div>
-  )
-}
-
-const Part = (props) => {
-  return (
-    <p>
-      {props.partContents.name} {props.partContents.exercises}
-    </p>
-  )
-}
-
-const Total = (props) => {
-  let sum = 0;
-  const arrayOfParts = props.total;
-  arrayOfParts.forEach(value => sum += value.exercises);
-
-  return (
-    <p>
-      Number of exercises {sum}
-    </p>
+    <>
+      <h1>{name}</h1>
+      {parts.map(part => <p key={part.id}>{part.name} {part.exercises}</p>)}
+    </>
   )
 }
 
 const App = () => {
   const course = {
+    id: 1,
     name: 'Half Stack application development',
     parts: [
       {
         name: 'Fundamentals of React',
-        exercises: 10
+        exercises: 10,
+        id: 1
       },
       {
         name: 'Using props to pass data',
-        exercises: 7
+        exercises: 7,
+        id: 2
       },
       {
         name: 'State of a component',
-        exercises: 14
+        exercises: 14,
+        id: 3
       }
     ]
   }
 
-
-  return (
-    <>
-      <Header courseName={course.name} />
-      <Content contents={course.parts} />
-      <Total total={course.parts} />
-    </>
-  )
+  return <Course course={course} />
 }
 
 export default App
