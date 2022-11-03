@@ -3,13 +3,22 @@ import { useState } from 'react'
 const Course = ({ course }) => {
   const { parts, id, name } = course;
 
-  const total = (array) => {
-    let sum = 0;
-    for (let i = 0; i < array.length; i++) {
-      sum += array[i].exercises;
-    }
-    return sum;
+  const total = (parts) => {
+    let sumOfParts = parts.reduce((s, p) => {
+      console.log(s, p);
+      return s + p.exercises}, 0);
+
+    return sumOfParts;
   }
+
+  /*
+  let sum = 0;
+  for (let i = 0; i < array.length; i++) {
+    sum += array[i].exercises;
+  }
+  return sum;
+  */
+
   return (
     <>
       <h1>{name}</h1>
