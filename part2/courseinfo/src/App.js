@@ -5,7 +5,7 @@ const Courses = ({courses}) => {
   return (
     <>
       {courses.map((courseObj) => 
-        <Course course={courseObj} />)} 
+        <Course key={courseObj.id} course={courseObj} />)} 
     </>
   )
 }
