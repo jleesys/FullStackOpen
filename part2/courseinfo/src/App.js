@@ -1,17 +1,7 @@
 import { useState } from 'react'
-import Course from './components/Course'
-
-const Courses = ({courses}) => {
-  return (
-    <>
-      {courses.map((courseObj) => 
-        <Course key={courseObj.id} course={courseObj} />)} 
-    </>
-  )
-}
+import Courses from './components/Courses'
 
 const App = () => {
-
 
   const courses = [
     {
