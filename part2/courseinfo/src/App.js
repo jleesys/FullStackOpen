@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Course from './components/Course'
 
 const Courses = ({courses}) => {
   return (
@@ -9,6 +10,7 @@ const Courses = ({courses}) => {
   )
 }
 
+/*
 const Course = ({ course }) => {
   const { parts, id, name } = course;
 
@@ -29,6 +31,7 @@ const Course = ({ course }) => {
     </>
   )
 }
+*/
 
 const App = () => {
 
