@@ -4,14 +4,10 @@ const App = () => {
 
   const [persons, setPersons] = useState([]);
   // State vars for NAME entry
-  const [names, setNames] = useState([]);
   const [newName, setNewName] = useState('Enter new name here');
   // State vars for NUMBER entry
-  const [numbers, setNumbers] = useState([]);
   const [newNumber, setNewNumber] = useState('Enter new number here');
 
-  window.names = names;
-  window.numbers = numbers;
   window.persons = persons;
 
   // ---------------- NAME CHANGES ----------------
@@ -36,15 +32,6 @@ const App = () => {
     }
     console.log('adding person to list: ', newPersonToAdd)
     setPersons(persons.concat(newPersonToAdd));
-    /*
-    if (names.includes(newName)) {
-      alert(`${newName} is already present in phonebook.`);
-      return;
-    }
-    console.log('adding name to list: ', newName)
-    setNames(names.concat(newName));
-    setNumbers(numbers.concat(newNumber));
-    */
   }
 
   return (
