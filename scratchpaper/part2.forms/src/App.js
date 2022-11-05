@@ -5,10 +5,13 @@ const App = (props) => {
 
   const [notes,setNotes] = useState(props.notes);
   const [newNote,setNewNote] = useState('this is my new note.');
+  const [showAll,setShowAll] = useState(true);
 
   // creates global obj var for notes. debug purposes
   window.notes = notes;
-  
+
+  const notesToShow = showAll ? notes : notes.filter(note => note.important);
+
   const addNote = (event) => {
     event.preventDefault();
     console.log('button clicked', event.target);
@@ -32,8 +35,9 @@ const App = (props) => {
   return (
     <div>
       <h1>Notes</h1>
+      <button onClick={() => setShowAll(!showAll)}>Show important</button>
       <ul>
-        {notes.map((notes) => <Note content={notes.content} key={notes.id}/> )}
+        {notesToShow.map((notes) => <Note content={notes.content} key={notes.id}/> )}
       </ul>
       <form onSubmit={addNote}>
         <input value={newNote} onChange={handleNoteChange}/>
