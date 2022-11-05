@@ -6,6 +6,8 @@ const App = () => {
   const [newName, setNewName] = useState('Enter new name here');
 
   window.names = names;
+
+  // ---------------- NAME CHANGES ----------------
   // whenever a change in the name form is detected
   // set the new name up to be added to list 'numbers'
   const handleFormChange = (event) => {
