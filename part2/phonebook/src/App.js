@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 const App = () => {
 
-  const [numbers, setNumbers] = useState([]);
+  const [names, setNames] = useState([]);
   const [newName, setNewName] = useState('Enter new name here');
 
   // whenever a change in the name form is detected
@@ -10,6 +10,11 @@ const App = () => {
   const handleFormChange = (event) => {
     setNewName(event.target.value);
     console.log('logging new name:', event.target.value);
+  }
+
+  const handleNameSubmission = (event) => {
+    const newNameToSubmit = 'hifewh';
+    setNames(names.concat(newNameToSubmit));
   }
 
   return (
