@@ -10,7 +10,7 @@ const App = () => {
   // ---------------- NAME CHANGES ----------------
   // whenever a change in the name form is detected
   // set the new name up to be added to list 'numbers'
-  const handleFormChange = (event) => {
+  const handleNameFormChange = (event) => {
     setNewName(event.target.value);
     console.log('logging new name:', event.target.value);
   }
@@ -25,12 +25,19 @@ const App = () => {
     setNames(names.concat(newName));
   }
 
+  // ---------------- NUMBER CHANGES ----------------
+  const handleNumberFormChange = (event) => {
+  }
+
+  const handleNumberSubmission = (event) => {
+  }
+
   return (
     <div>
       <h1>Phonebook</h1>
       <form onSubmit={handleNameSubmission}>
         <div>
-          Name: <input value={newName} onChange={handleFormChange} />
+          Name: <input value={newName} onChange={handleNameFormChange} />
         </div>
         <button type="submit">add</button>
       </form>
