@@ -1,10 +1,13 @@
 import Note from './components/Note';
+import {useState} from 'react';
 
-const App = ({notes}) => {
+const App = (props) => {
+
+  const [notes,setNotes] = useState(props.notes);
 
   const addNote = (event) => {
     event.preventDefault();
-    console.log(notes, event.target);
+    console.log('button clicked', event.target);
   }
   return (
     <div>
