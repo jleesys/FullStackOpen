@@ -8,8 +8,9 @@ const App = () => {
     <div>
       <h1>Phonebook</h1>
       <form>
-        <>name: </>
-        <input />
+        <div>
+        Name: <input />
+        </div>
         <div>
           <button>add</button>
         </div>
