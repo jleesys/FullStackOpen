@@ -20,29 +20,13 @@ const App = () => {
     console.log('logging new name:', event.target.value);
   }
 
-  // const handleNameSubmission = (event) => {
-  //   event.preventDefault();
-  //   if (names.includes(newName)) {
-  //     alert(`${newName} is already present in phonebook.`);
-  //     return;
-  //   }
-  //   console.log('adding name to list: ', newName)
-  //   setNames(names.concat(newName));
-  // }
-
   // ---------------- NUMBER CHANGES ----------------
   const handleNumberFormChange = (event) => {
     setNewNumber(event.target.value);
   }
 
-  /*
-  const handleNumberSubmission = (event) => {
-    event.preventDefault();
-    setNumbers(numbers.concat(newNumber));
-  }
-  */
-
-  const handleNameSubmission = (event) => {
+  // FUNCTION TO HANDLE SUBMISSION OF NUMBERS AND NAMES
+  const handleSubmission = (event) => {
     event.preventDefault();
     if (names.includes(newName)) {
       alert(`${newName} is already present in phonebook.`);
@@ -56,7 +40,7 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
-      <form onSubmit={handleNameSubmission}>
+      <form onSubmit={handleSubmission}>
         <div>
           Name: <input value={newName} onChange={handleNameFormChange} />
         </div>
