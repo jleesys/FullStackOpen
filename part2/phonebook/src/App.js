@@ -38,6 +38,9 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
+      <form>
+        filter shown with <input></input>
+      </form>
       <h1>Add new entry</h1>
       <form onSubmit={handleSubmission}>
         <div>
