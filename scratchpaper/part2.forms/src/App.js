@@ -1,8 +1,6 @@
 import Note from './components/Note';
 
 const App = ({notes}) => {
-  // const { notes } = props
-  // window.notes = notes;
 
   return (
     <div>
