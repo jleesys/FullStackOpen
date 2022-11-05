@@ -15,6 +15,10 @@ const App = () => {
 
   const handleNameSubmission = (event) => {
     event.preventDefault();
+    if (names.includes(newName)) {
+      alert(`${newName} is already present in phonebook.`);
+      return;
+    }
     console.log('adding name to list: ', newName)
     setNames(names.concat(newName));
   }
@@ -24,7 +28,7 @@ const App = () => {
       <h1>Phonebook</h1>
       <form onSubmit={handleNameSubmission}>
         <div>
-          Name: <input value={newName} onChange={handleFormChange}/>
+          Name: <input value={newName} onChange={handleFormChange} />
         </div>
         <button type="submit">add</button>
       </form>
