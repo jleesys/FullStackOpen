@@ -2,7 +2,18 @@ import { useState } from 'react';
 
 const App = () => {
 
-  const [persons, setPersons] = useState([]);
+  const [persons, setPersons] = useState([
+    {
+      name: 'Anna Sass',
+      phoneNumber: '949-193-1993',
+      id: 1
+    },
+    {
+      name: 'Ronald Roger',
+      phoneNumber: '724-333-9924',
+      id: 2
+    }
+  ]);
   // State vars for NAME entry
   const [newName, setNewName] = useState('Enter new name here');
   // State vars for NUMBER entry
@@ -11,6 +22,21 @@ const App = () => {
   const [searchTerm, setSearchTerm] = useState('Name to search');
 
   window.persons = persons;
+
+  // ---------------- SEARCH TERM CHANGES ----------------
+  const handleSearchFormChange = (event) => {
+    setSearchTerm(event.target.value);
+  }
+  const handleSearch = (event) => {
+    event.preventDefault();
+    const sanitSearchTerm = searchTerm.toLowerCase();
+    console.log('searching persons...',sanitSearchTerm);
+    for (let i = 0; i < persons.length; i++) {
+      if (persons[i].name.toLowerCase() === sanitSearchTerm) {
+        console.log(`${searchTerm} found`);
+      }
+    }
+  }
 
   // ---------------- NAME CHANGES ----------------
   // whenever a change in the name form is detected
@@ -44,11 +70,11 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
-      <form /*onSubmit={}*/>
+      <form onSubmit={handleSearch}>
         <div>
-          filter shown with <input value={searchTerm}></input>
+          filter shown with <input value={searchTerm} onChange={handleSearchFormChange}></input>
         </div>
-        <button>Search</button>
+        <button type="submit">Search</button>
       </form>
       <h1>Add new entry</h1>
       <form onSubmit={handleSubmission}>
