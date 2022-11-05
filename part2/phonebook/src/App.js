@@ -28,7 +28,8 @@ const App = () => {
     event.preventDefault();
     const newPersonToAdd = {
       name: newName,
-      phoneNumber: newNumber
+      phoneNumber: newNumber,
+      id: persons.length + 1
     }
     console.log('adding person to list: ', newPersonToAdd)
     setPersons(persons.concat(newPersonToAdd));
@@ -47,7 +48,7 @@ const App = () => {
         <button type="submit">add</button>
       </form>
       <h1>Numbers</h1>
-      {persons.map(person => <div key={person.name}>{person.name} {person.phoneNumber}</div>)}
+      {persons.map(person => <div key={person.id}>{person.name} {person.phoneNumber}</div>)}
     </div>
   );
 }
