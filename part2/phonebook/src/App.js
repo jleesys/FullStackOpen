@@ -7,6 +7,8 @@ const App = () => {
   const [newName, setNewName] = useState('Enter new name here');
   // State vars for NUMBER entry
   const [newNumber, setNewNumber] = useState('Enter new number here');
+  // state vars for search term
+  const [searchTerm, setSearchTerm] = useState('Name to search');
 
   window.persons = persons;
 
@@ -26,6 +28,10 @@ const App = () => {
   // FUNCTION TO HANDLE SUBMISSION OF NUMBERS AND NAMES
   const handleSubmission = (event) => {
     event.preventDefault();
+    for (let i = 0; i < persons.length; i++) {
+      if (persons[i].name === newName)
+      alert(`${newName} is already present in phonebook.`);
+    }
     const newPersonToAdd = {
       name: newName,
       phoneNumber: newNumber,
@@ -38,8 +44,11 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
-      <form>
-        filter shown with <input></input>
+      <form /*onSubmit={}*/>
+        <div>
+          filter shown with <input value={searchTerm}></input>
+        </div>
+        <button>Search</button>
       </form>
       <h1>Add new entry</h1>
       <form onSubmit={handleSubmission}>
