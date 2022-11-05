@@ -10,6 +10,11 @@ const App = ({notes}) => {
       <ul>
         {notes.map((notes) => <Note content={notes.content} key={notes.id}/> )}
       </ul>
+      <form>
+        <input>
+        </input>
+        <button type="submit">save</button>
+      </form>
     </div>
   )
 }
