@@ -6,13 +6,16 @@ const App = (props) => {
   const [notes,setNotes] = useState(props.notes);
   const [newNote,setNewNote] = useState('this is my new note.');
 
+  // creates global obj var for notes. debug purposes
+  window.notes = notes;
+  
   const addNote = (event) => {
     event.preventDefault();
     console.log('button clicked', event.target);
     const newObject = {
       id: notes.length + 1,
       content: newNote,
-      date: new Date(),
+      date: new Date().toISOString(),
       important: Math.random() < .5
     }
     console.log(newObject)
