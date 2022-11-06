@@ -76,17 +76,17 @@ const App = () => {
       <h1>Phonebook</h1>
       <form onSubmit={handleSearch} >
         <div>
-          filter shown with <input value={searchTerm} onChange={handleSearchFormChange}></input>
+          filter shown with <input placeholder={searchTerm} onChange={handleSearchFormChange}></input>
         </div>
         <button type="submit" onClick={() => setShowAll(!showAll)}>{showAll ? 'Search' : 'Show All'}</button>
       </form>
       <h1>Add new entry</h1>
       <form onSubmit={handleSubmission}>
         <div>
-          Name: <input value={newName} onChange={handleNameFormChange} />
+          Name: <input placeholder={newName} onChange={handleNameFormChange} />
         </div>
         <div>
-          Number: <input value={newNumber} onChange={handleNumberFormChange} />
+          Number: <input placeholder={newNumber} onChange={handleNumberFormChange} />
         </div>
         <button type="submit">add</button>
       </form>
