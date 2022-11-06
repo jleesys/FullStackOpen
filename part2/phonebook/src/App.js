@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import Persons from './components/Persons';
+import Filter from './components/Filter';
+import PersonForm from './components/PersonForm';
 
 const App = () => {
 
@@ -75,25 +77,13 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
-      <form onSubmit={handleSearch} >
-        <div>
-          filter shown with <input placeholder={searchTerm} onChange={handleSearchFormChange}></input>
-        </div>
-        <button type="submit" onClick={() => setShowAll(!showAll)}>{showAll ? 'Search' : 'Show All'}</button>
-      </form>
+      <Filter handleSearch={handleSearch} searchTerm={searchTerm} 
+      handleSearchFormChange={handleSearchFormChange}
+      setShowAll={setShowAll} showAll={showAll}/>
       <h1>Add new entry</h1>
-      <form onSubmit={handleSubmission}>
-        <div>
-          Name: <input placeholder={newName} onChange={handleNameFormChange} />
-        </div>
-        <div>
-          Number: <input placeholder={newNumber} onChange={handleNumberFormChange} />
-        </div>
-        <button type="submit">add</button>
-      </form>
+      <PersonForm handleSubmission={handleSubmission} newName={newName} handleNameFormChange={handleNameFormChange} newNumber={newNumber} handleNumberFormChange={handleNumberFormChange} />
       <h1>Numbers</h1>
-      {/* {personsToShow.map(person => <div key={person.id}>{person.name} {person.phoneNumber}</div>)} */}
-      <Persons personsToShow={personsToShow}/>
+      <Persons personsToShow={personsToShow} />
     </div>
   );
 }
