@@ -81,7 +81,10 @@ const App = () => {
       handleSearchFormChange={handleSearchFormChange}
       setShowAll={setShowAll} showAll={showAll}/>
       <h1>Add new entry</h1>
-      <PersonForm handleSubmission={handleSubmission} newName={newName} handleNameFormChange={handleNameFormChange} newNumber={newNumber} handleNumberFormChange={handleNumberFormChange} />
+      <PersonForm handleSubmission={handleSubmission} 
+      newName={newName} handleNameFormChange={handleNameFormChange} 
+      newNumber={newNumber} 
+      handleNumberFormChange={handleNumberFormChange} />
       <h1>Numbers</h1>
       <Persons personsToShow={personsToShow} />
     </div>
