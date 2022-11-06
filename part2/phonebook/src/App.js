@@ -20,6 +20,10 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('Enter new number here');
   // state vars for search term
   const [searchTerm, setSearchTerm] = useState('Name to search');
+  //state vars for search filter
+  const [showAll, setShowAll] = useState(true);
+
+  const personsToShow = showAll ? persons : persons.filter(person => person.name.toLowerCase().includes(searchTerm.toLowerCase()));
 
   window.persons = persons;
 
@@ -70,11 +74,11 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
-      <form onSubmit={handleSearch}>
+      <form onSubmit={handleSearch} >
         <div>
           filter shown with <input value={searchTerm} onChange={handleSearchFormChange}></input>
         </div>
-        <button type="submit">Search</button>
+        <button type="submit" onClick={() => setShowAll(!showAll)}>{showAll ? 'Search' : 'Show All'}</button>
       </form>
       <h1>Add new entry</h1>
       <form onSubmit={handleSubmission}>
@@ -87,7 +91,7 @@ const App = () => {
         <button type="submit">add</button>
       </form>
       <h1>Numbers</h1>
-      {persons.map(person => <div key={person.id}>{person.name} {person.phoneNumber}</div>)}
+      {personsToShow.map(person => <div key={person.id}>{person.name} {person.phoneNumber}</div>)}
     </div>
   );
 }
