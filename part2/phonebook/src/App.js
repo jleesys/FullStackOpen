@@ -32,7 +32,7 @@ const App = () => {
     const sanitSearchTerm = searchTerm.toLowerCase();
     console.log('searching persons...',sanitSearchTerm);
     for (let i = 0; i < persons.length; i++) {
-      if (persons[i].name.toLowerCase() === sanitSearchTerm) {
+      if (persons[i].name.toLowerCase().includes(sanitSearchTerm)) {
         console.log(`${searchTerm} found`);
       }
     }
