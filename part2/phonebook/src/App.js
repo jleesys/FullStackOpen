@@ -5,6 +5,7 @@ import PersonForm from './components/PersonForm';
 
 const App = () => {
 
+  // dummy data for ease of testing
   const [persons, setPersons] = useState([
     {
       name: 'Anna Sass',
