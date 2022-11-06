@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Persons from './components/Persons';
 
 const App = () => {
 
@@ -34,7 +35,7 @@ const App = () => {
   const handleSearch = (event) => {
     event.preventDefault();
     const sanitSearchTerm = searchTerm.toLowerCase();
-    console.log('searching persons...',sanitSearchTerm);
+    console.log('searching persons...', sanitSearchTerm);
     for (let i = 0; i < persons.length; i++) {
       if (persons[i].name.toLowerCase().includes(sanitSearchTerm)) {
         console.log(`${searchTerm} found`);
@@ -60,7 +61,7 @@ const App = () => {
     event.preventDefault();
     for (let i = 0; i < persons.length; i++) {
       if (persons[i].name === newName)
-      alert(`${newName} is already present in phonebook.`);
+        alert(`${newName} is already present in phonebook.`);
     }
     const newPersonToAdd = {
       name: newName,
@@ -91,7 +92,8 @@ const App = () => {
         <button type="submit">add</button>
       </form>
       <h1>Numbers</h1>
-      {personsToShow.map(person => <div key={person.id}>{person.name} {person.phoneNumber}</div>)}
+      {/* {personsToShow.map(person => <div key={person.id}>{person.name} {person.phoneNumber}</div>)} */}
+      <Persons personsToShow={personsToShow}/>
     </div>
   );
 }
