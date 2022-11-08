@@ -33,6 +33,26 @@ function App() {
     return arrayOfResults;
   }
 
+  const ResultsDisplay = (props) => {
+    const arrayOfResults = props.results;
+    if (arrayOfResults.length <= 10 && arrayOfResults.length > 1) {
+      return (
+        arrayOfResults.map(country => <div>{country.name.official}</div>)
+      )
+    } else if (arrayOfResults.length == 1) {
+      return (
+        arrayOfResults.map(country => <div>{country.name.official} is the final result</div>)
+      )
+    } else if (arrayOfResults.length == 0) {
+      return (
+        <div></div>
+      )
+    }
+    return (
+      <div>Too many matches. Please narrow search terms</div>
+    )
+  }
+
   useEffect(() => {
     // console.log('promise created');
     axios
@@ -49,8 +69,8 @@ function App() {
       <form>
         <input placeholder="country" autoFocus onChange={handleSearchChange}></input>
       </form>
-      <div> { (countriesToShow.length <= 10) ? countriesToShow.map(country => <div>{country.name.official}</div>) : 'too many results.'}
-      </div>
+      {/* {(countriesToShow.length <= 10) ? countriesToShow.map(country => <div>{country.name.official}</div>) : 'Too many matches. Please narrow search terms'} */}
+      <ResultsDisplay results={countriesToShow} />
     </div>
   );
 }
