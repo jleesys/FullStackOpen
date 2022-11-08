@@ -1,23 +1,25 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 import Persons from './components/Persons';
 import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
 
 const App = () => {
 
+  const [persons, setPersons] = useState([]);
   // dummy data for ease of testing
-  const [persons, setPersons] = useState([
-    {
-      name: 'Anna Sass',
-      phoneNumber: '949-193-1993',
-      id: 1
-    },
-    {
-      name: 'Ronald Roger',
-      phoneNumber: '724-333-9924',
-      id: 2
-    }
-  ]);
+  /*
+  {
+    name: 'Anna Sass',
+    phoneNumber: '949-193-1993',
+    id: 1
+  },
+  {
+    name: 'Ronald Roger',
+    phoneNumber: '724-333-9924',
+    id: 2
+  }
+  */
   // State vars for NAME entry
   const [newName, setNewName] = useState('Enter new name here');
   // State vars for NUMBER entry
@@ -30,6 +32,16 @@ const App = () => {
   const personsToShow = showAll ? persons : persons.filter(person => person.name.toLowerCase().includes(searchTerm.toLowerCase()));
 
   window.persons = persons;
+
+  // SETTING UP EFFECT
+  useEffect(() => {
+    console.log('Promise made, effect soon to follow');
+    axios.get('http://localhost:3001/persons')
+      .then(response => {
+        console.log('Promise fulfilled.', response.data);
+        setPersons(response.data);
+      })
+  },[])
 
   // ---------------- SEARCH TERM CHANGES ----------------
   const handleSearchFormChange = (event) => {
@@ -78,14 +90,14 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
-      <Filter handleSearch={handleSearch} searchTerm={searchTerm} 
-      handleSearchFormChange={handleSearchFormChange}
-      setShowAll={setShowAll} showAll={showAll}/>
+      <Filter handleSearch={handleSearch} searchTerm={searchTerm}
+        handleSearchFormChange={handleSearchFormChange}
+        setShowAll={setShowAll} showAll={showAll} />
       <h1>Add new entry</h1>
-      <PersonForm handleSubmission={handleSubmission} 
-      newName={newName} handleNameFormChange={handleNameFormChange} 
-      newNumber={newNumber} 
-      handleNumberFormChange={handleNumberFormChange} />
+      <PersonForm handleSubmission={handleSubmission}
+        newName={newName} handleNameFormChange={handleNameFormChange}
+        newNumber={newNumber}
+        handleNumberFormChange={handleNumberFormChange} />
       <h1>Numbers</h1>
       <Persons personsToShow={personsToShow} />
     </div>
