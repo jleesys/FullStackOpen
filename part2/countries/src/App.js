@@ -16,6 +16,7 @@ function App() {
     setSearchField(event.target.value);
     const arrayResults = findCountry(searchField);
     console.log(arrayResults);
+    setCountriesToShow(arrayResults);
   }
 
   const findCountry = (searchTerm) => {
@@ -47,7 +48,7 @@ function App() {
       <form>
         <input placeholder="country" autoFocus onChange={handleSearchChange}></input>
       </form>
-
+      {countriesToShow.map(country => <div>{country.name.official}</div>)}
     </div>
   );
 }
