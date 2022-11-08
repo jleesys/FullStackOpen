@@ -42,7 +42,7 @@ function App() {
     } else if (arrayOfResults.length == 1) {
       const country = arrayOfResults[0];
       console.log(country);
-      console.log(country.languages);
+      // console.log(country.languages);
       return (
         // arrayOfResults.map(country => <div>{country.name.official} is the final result</div>)
         <>
@@ -58,6 +58,7 @@ function App() {
               {Object.keys(country.languages).map(lang => <li>{country.languages[lang]}</li>)}
             </ul>
           </div>
+          <img src={country.flags.png}></img>
         </>
       )
     } else if (arrayOfResults.length == 0) {
