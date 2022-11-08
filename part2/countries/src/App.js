@@ -48,8 +48,9 @@ function App() {
         <>
           <h3>{country.name.official}</h3>
           <div>
-            capital {country.capital} <br />
-            area {country.area}
+            capital {country.capital} <br/>
+            area {country.area} <br/>
+            population {country.population} <br/>
           </div>
           <div>
             <h4>languages:</h4>
