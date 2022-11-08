@@ -16,17 +16,17 @@ function App() {
   const handleSearchChange = (event) => {
     setSearchField(event.target.value);
     const arrayResults = findCountry(searchField);
-    console.log(arrayResults);
+    // console.log(arrayResults);
     setCountriesToShow(arrayResults);
   }
 
   const findCountry = (searchTerm) => {
     const search = searchTerm.toLowerCase();
     const arrayOfResults = [];
-    console.log('executing search for', search);
+    // console.log('executing search for', search);
     for (let i = 0; i < countries.length; i++) {
       if (countries[i].name.common.toLowerCase().includes(search.toLowerCase()) || countries[i].name.official.toLowerCase().includes(search.toLowerCase())) {
-        console.log(`found country ${countries[i].name.official}`);
+        // console.log(`found country ${countries[i].name.official}`);
         arrayOfResults.push(countries[i]);
       }
     }
@@ -40,8 +40,25 @@ function App() {
         arrayOfResults.map(country => <div>{country.name.official}</div>)
       )
     } else if (arrayOfResults.length == 1) {
+      const country = arrayOfResults[0];
+      console.log(country);
+      console.log(country.languages);
       return (
-        arrayOfResults.map(country => <div>{country.name.official} is the final result</div>)
+        // arrayOfResults.map(country => <div>{country.name.official} is the final result</div>)
+        <>
+          <h3>{country.name.official}</h3>
+          <div>
+            capital {country.capital} <br />
+            area {country.area}
+          </div>
+          <div>
+            <h4>languages:</h4>
+            <ul>
+              {/* {country.languages.map(lang => <li>lang</li>)} */}
+              {Object.keys(country.languages).map(lang => <li>{country.languages[lang]}</li>)}
+            </ul>
+          </div>
+        </>
       )
     } else if (arrayOfResults.length == 0) {
       return (
