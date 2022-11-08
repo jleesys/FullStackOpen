@@ -11,6 +11,7 @@ function App() {
   const [countriesToShow, setCountriesToShow] = useState([]);
 
   window.countries = countries;
+  window.countriesToShow = countriesToShow;
 
   const handleSearchChange = (event) => {
     setSearchField(event.target.value);
@@ -48,7 +49,8 @@ function App() {
       <form>
         <input placeholder="country" autoFocus onChange={handleSearchChange}></input>
       </form>
-      {countriesToShow.map(country => <div>{country.name.official}</div>)}
+      <div> { (countriesToShow.length <= 10) ? countriesToShow.map(country => <div>{country.name.official}</div>) : 'too many results.'}
+      </div>
     </div>
   );
 }
