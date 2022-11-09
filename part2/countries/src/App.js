@@ -9,7 +9,7 @@ function App() {
   const [countries, setCountries] = useState([]);
   const [searchField, setSearchField] = useState('');
   const [countriesToShow, setCountriesToShow] = useState([]);
-  // const [resultReady, setResultReady] = useState([]);
+  const [capitalWeather, setCapitalWeather] = useState();
 
   window.countries = countries;
   window.countriesToShow = countriesToShow;
@@ -36,11 +36,20 @@ function App() {
 
   const CountryDetail = (props) => {
     let country = props.country;
+    useEffect(() => {
+      console.log(`https://api.openweathermap.org/data/2.5/weather?lat=${country.capitalInfo.latlng[0]}&lon=${country.capitalInfo.latlng[1]}&appid=${process.env.REACT_APP_API_KEY}`)
+      axios
+        .get(`https://api.openweathermap.org/data/2.5/weather?lat=${country.capitalInfo.latlng[0]}&lon=${country.capitalInfo.latlng[1]}&appid=${process.env.REACT_APP_API_KEY}`)
+        // .get(`https://api.openweathermap.org/data/2.5/weather?lat=44.34&lon=10.99&appid=${process.env.REACT_APP_API_KEY}`)
+        .then(console.log('promise for weather at capital is fulfilled'))
+    }, countriesToShow)
+
     return (
       // arrayOfResults.map(country => <div>{country.name.official} is the final result</div>)
       <>
         <h3>{country.name.official}</h3>
         <div>
+          common name: {country.name.common} <br />
           capital {country.capital} <br />
           area {country.area} <br />
           population {country.population} <br />
@@ -52,6 +61,8 @@ function App() {
           </ul>
         </div>
         <img src={country.flags.png}></img>
+        <h3>Weather in {country.capital}</h3>
+        temperature { }
       </>
     )
   }
@@ -88,6 +99,7 @@ function App() {
       <div>Too many matches. Please narrow search terms</div>
     )
   }
+
 
   useEffect(() => {
     // console.log('promise created');
