@@ -9,6 +9,7 @@ function App() {
   const [countries, setCountries] = useState([]);
   const [searchField, setSearchField] = useState('');
   const [countriesToShow, setCountriesToShow] = useState([]);
+  // const [resultReady, setResultReady] = useState([]);
 
   window.countries = countries;
   window.countriesToShow = countriesToShow;
@@ -33,32 +34,49 @@ function App() {
     return arrayOfResults;
   }
 
+  const CountryDetail = (props) => {
+    let country = props.country;
+    return (
+      // arrayOfResults.map(country => <div>{country.name.official} is the final result</div>)
+      <>
+        <h3>{country.name.official}</h3>
+        <div>
+          capital {country.capital} <br />
+          area {country.area} <br />
+          population {country.population} <br />
+        </div>
+        <div>
+          <h4>languages:</h4>
+          <ul>
+            {Object.keys(country.languages).map(lang => <li key={country.name.official}>{country.languages[lang]}</li>)}
+          </ul>
+        </div>
+        <img src={country.flags.png}></img>
+      </>
+    )
+  }
+
   const ResultsDisplay = (props) => {
-    const arrayOfResults = props.results;
+    let arrayOfResults = props.results;
+
+    /*
+    const setResult = (country) => {
+      console.log();
+      arrayOfResults = [country];
+    }
+    */
+
     if (arrayOfResults.length <= 10 && arrayOfResults.length > 1) {
       return (
-        arrayOfResults.map(country => <div>{country.name.official} <button>show</button></div>)
+        arrayOfResults.map(country => <div>{country.name.official} <button onClick={() => setCountriesToShow([country])}>show</button></div>)
       )
     } else if (arrayOfResults.length == 1) {
       const country = arrayOfResults[0];
       console.log(country);
       // console.log(country.languages);
       return (
-        // arrayOfResults.map(country => <div>{country.name.official} is the final result</div>)
         <>
-          <h3>{country.name.official}</h3>
-          <div>
-            capital {country.capital} <br/>
-            area {country.area} <br/>
-            population {country.population} <br/>
-          </div>
-          <div>
-            <h4>languages:</h4>
-            <ul>
-              {Object.keys(country.languages).map(lang => <li key={country.name.official}>{country.languages[lang]}</li>)}
-            </ul>
-          </div>
-          <img src={country.flags.png}></img>
+          <CountryDetail country={country} />
         </>
       )
     } else if (arrayOfResults.length == 0) {
