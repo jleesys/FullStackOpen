@@ -37,7 +37,7 @@ function App() {
     const arrayOfResults = props.results;
     if (arrayOfResults.length <= 10 && arrayOfResults.length > 1) {
       return (
-        arrayOfResults.map(country => <div>{country.name.official}</div>)
+        arrayOfResults.map(country => <div>{country.name.official} <button>show</button></div>)
       )
     } else if (arrayOfResults.length == 1) {
       const country = arrayOfResults[0];
@@ -55,8 +55,7 @@ function App() {
           <div>
             <h4>languages:</h4>
             <ul>
-              {/* {country.languages.map(lang => <li>lang</li>)} */}
-              {Object.keys(country.languages).map(lang => <li>{country.languages[lang]}</li>)}
+              {Object.keys(country.languages).map(lang => <li key={country.name.official}>{country.languages[lang]}</li>)}
             </ul>
           </div>
           <img src={country.flags.png}></img>
