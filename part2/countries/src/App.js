@@ -11,6 +11,7 @@ function App() {
   const [countriesToShow, setCountriesToShow] = useState([]);
   const [capitalWeather, setCapitalWeather] = useState([]);
   const [searchResult, setSearchResult] = useState(['']);
+  const [weatherIcon, setWeatherIcon] = useState('');
 
   window.countries = countries;
   window.countriesToShow = countriesToShow;
@@ -47,13 +48,14 @@ function App() {
       // console.log(`https://api.openweathermap.org/data/2.5/weather?lat=${country.capitalInfo.latlng[0]}&lon=${country.capitalInfo.latlng[1]}&units=metric&appid=${process.env.REACT_APP_API_KEY}`)
       console.log('loggly');
       axios
-        .get(`https://api.openweathermap.org/data/2.5/weather?lat=${country.capitalInfo.latlng[0]}&lon=${country.capitalInfo.latlng[1]}&units=metric&appid=${process.env.REACT_APP_API_KEY}`)
+        .get(`https://api.openweathermap.org/data/2.5/weather?lat=${country.capitalInfo.latlng[0]}&lon=${country.capitalInfo.latlng[1]}&units=imperial&appid=${process.env.REACT_APP_API_KEY}`)
         // .get('https://restcountries.com/v3.1/all')
-        .then(response => { setCapitalWeather(response.data) })
+        .then(response => { setCapitalWeather(response.data); setWeatherIcon(response.data.weather[0].icon)})
       // .then(console.log('lol'))
     }
   }
     , [searchResult])
+
 
   const CountryDetail = (props) => {
     let country = props.country;
@@ -89,6 +91,7 @@ function App() {
         <img src={country.flags.png}></img>
         <h3>Weather in {country.capital}</h3>
         temperature {capitalWeather.main?.temp} <br/>
+        <img src={`http://openweathermap.org/img/wn/${weatherIcon}@2x.png`} /> <br/>
         wind {capitalWeather.wind?.speed} m/s
       </>
     )
