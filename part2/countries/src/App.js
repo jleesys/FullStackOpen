@@ -9,10 +9,13 @@ function App() {
   const [countries, setCountries] = useState([]);
   const [searchField, setSearchField] = useState('');
   const [countriesToShow, setCountriesToShow] = useState([]);
-  const [capitalWeather, setCapitalWeather] = useState();
+  const [capitalWeather, setCapitalWeather] = useState([]);
+  const [searchResult, setSearchResult] = useState(['']);
 
   window.countries = countries;
   window.countriesToShow = countriesToShow;
+  window.capitalWeather = capitalWeather;
+  window.searchResult = searchResult;
 
   const handleSearchChange = (event) => {
     setSearchField(event.target.value);
@@ -34,15 +37,38 @@ function App() {
     return arrayOfResults;
   }
 
+  useEffect(() => {
+    const country = searchResult;
+    // console.log(`https://api.openweathermap.org/data/2.5/weather?lat=${country.capitalInfo.latlng[0]}&lon=${country.capitalInfo.latlng[1]}&appid=${process.env.REACT_APP_API_KEY}`)
+    console.log('creating promise')
+    console.log('searchResult',searchResult)
+    console.log('country',country)
+    if (searchResult != '') {
+      // console.log(`https://api.openweathermap.org/data/2.5/weather?lat=${country.capitalInfo.latlng[0]}&lon=${country.capitalInfo.latlng[1]}&units=metric&appid=${process.env.REACT_APP_API_KEY}`)
+      console.log('loggly');
+      axios
+        .get(`https://api.openweathermap.org/data/2.5/weather?lat=${country.capitalInfo.latlng[0]}&lon=${country.capitalInfo.latlng[1]}&units=metric&appid=${process.env.REACT_APP_API_KEY}`)
+        // .get('https://restcountries.com/v3.1/all')
+        .then(response => { setCapitalWeather(response.data) })
+      // .then(console.log('lol'))
+    }
+  }
+    , [searchResult])
+
   const CountryDetail = (props) => {
     let country = props.country;
+    /*
     useEffect(() => {
-      console.log(`https://api.openweathermap.org/data/2.5/weather?lat=${country.capitalInfo.latlng[0]}&lon=${country.capitalInfo.latlng[1]}&appid=${process.env.REACT_APP_API_KEY}`)
+      // console.log(`https://api.openweathermap.org/data/2.5/weather?lat=${country.capitalInfo.latlng[0]}&lon=${country.capitalInfo.latlng[1]}&appid=${process.env.REACT_APP_API_KEY}`)
+      console.log('creating promise')
       axios
-        .get(`https://api.openweathermap.org/data/2.5/weather?lat=${country.capitalInfo.latlng[0]}&lon=${country.capitalInfo.latlng[1]}&appid=${process.env.REACT_APP_API_KEY}`)
-        // .get(`https://api.openweathermap.org/data/2.5/weather?lat=44.34&lon=10.99&appid=${process.env.REACT_APP_API_KEY}`)
-        .then(console.log('promise for weather at capital is fulfilled'))
-    }, countriesToShow)
+        // .get(`https://api.openweathermap.org/data/2.5/weather?lat=${country.capitalInfo.latlng[0]}&lon=${country.capitalInfo.latlng[1]}&units=metric&appid=${process.env.REACT_APP_API_KEY}`)
+        .get('https://restcountries.com/v3.1/all')
+        .then(response => { console.log('lol')})
+      // .then(console.log('lol'))
+    }
+      , [])
+      */
 
     return (
       // arrayOfResults.map(country => <div>{country.name.official} is the final result</div>)
@@ -62,7 +88,8 @@ function App() {
         </div>
         <img src={country.flags.png}></img>
         <h3>Weather in {country.capital}</h3>
-        temperature { }
+        temperature {capitalWeather.main?.temp} <br/>
+        wind {capitalWeather.wind?.speed} m/s
       </>
     )
   }
@@ -70,21 +97,13 @@ function App() {
   const ResultsDisplay = (props) => {
     let arrayOfResults = props.results;
 
-    /*
-    const setResult = (country) => {
-      console.log();
-      arrayOfResults = [country];
-    }
-    */
-
     if (arrayOfResults.length <= 10 && arrayOfResults.length > 1) {
       return (
         arrayOfResults.map(country => <div>{country.name.official} <button onClick={() => setCountriesToShow([country])}>show</button></div>)
       )
     } else if (arrayOfResults.length == 1) {
       const country = arrayOfResults[0];
-      console.log(country);
-      // console.log(country.languages);
+      setSearchResult(arrayOfResults[0]);
       return (
         <>
           <CountryDetail country={country} />
