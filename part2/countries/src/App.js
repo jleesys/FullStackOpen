@@ -85,7 +85,7 @@ function App() {
         <div>
           <h4>languages:</h4>
           <ul>
-            {Object.keys(country.languages).map(lang => <li key={country.name.official}>{country.languages[lang]}</li>)}
+            {Object.keys(country.languages).map(lang => <li key={lang}>{country.languages[lang]}</li>)}
           </ul>
         </div>
         <img src={country.flags.png}></img>
@@ -102,7 +102,7 @@ function App() {
 
     if (arrayOfResults.length <= 10 && arrayOfResults.length > 1) {
       return (
-        arrayOfResults.map(country => <div>{country.name.official} <button onClick={() => setCountriesToShow([country])}>show</button></div>)
+        arrayOfResults.map(country => <div key={country.name.official}>{country.name.official} <button onClick={() => setCountriesToShow([country])}>show</button></div>)
       )
     } else if (arrayOfResults.length == 1) {
       const country = arrayOfResults[0];
