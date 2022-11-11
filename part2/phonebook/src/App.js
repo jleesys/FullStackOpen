@@ -32,6 +32,7 @@ const App = () => {
   const personsToShow = showAll ? persons : persons.filter(person => person.name.toLowerCase().includes(searchTerm.toLowerCase()));
 
   window.persons = persons;
+  window.personsToShow = personsToShow;
 
   // SETTING UP EFFECT
   useEffect(() => {
