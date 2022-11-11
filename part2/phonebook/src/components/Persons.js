@@ -1,7 +1,11 @@
 const Persons = ({ personsToShow }) => {
     return (
         <>
-            {personsToShow.map(person => <div key={person.id}>{person.name} {person.number}</div>)}
+            {personsToShow.map(person => {
+                console.log('remapping persons');
+                return <div key={person.id}>{person.name} {person.number}</div>
+            }
+            )}
         </>
     )
 }

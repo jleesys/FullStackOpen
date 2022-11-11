@@ -42,7 +42,8 @@ const App = () => {
         console.log('Promise fulfilled.', response.data);
         setPersons(response.data);
       })
-  },[])
+  }, [])
+
 
   // ---------------- SEARCH TERM CHANGES ----------------
   const handleSearchFormChange = (event) => {
@@ -75,6 +76,8 @@ const App = () => {
   // FUNCTION TO HANDLE SUBMISSION OF NUMBERS AND NAMES
   const handleSubmission = (event) => {
     event.preventDefault();
+
+
     for (let i = 0; i < persons.length; i++) {
       if (persons[i].name === newName)
         alert(`${newName} is already present in phonebook.`);
@@ -85,7 +88,12 @@ const App = () => {
       id: persons.length + 1
     }
     console.log('adding person to list: ', newPersonToAdd)
-    setPersons(persons.concat(newPersonToAdd));
+
+    // EFFECT FOR PUSHING NEW PERSON
+      
+      axios.post('http://localhost:3001/persons', newPersonToAdd)
+      .then(response => {console.log('setting persons',response); 
+      setPersons(persons.concat(response.data))})
   }
 
   return (
