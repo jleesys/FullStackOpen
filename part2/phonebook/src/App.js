@@ -11,12 +11,12 @@ const App = () => {
   /*
   {
     name: 'Anna Sass',
-    phoneNumber: '949-193-1993',
+    number: '949-193-1993',
     id: 1
   },
   {
     name: 'Ronald Roger',
-    phoneNumber: '724-333-9924',
+    number: '724-333-9924',
     id: 2
   }
   */
@@ -81,7 +81,7 @@ const App = () => {
     }
     const newPersonToAdd = {
       name: newName,
-      phoneNumber: newNumber,
+      number: newNumber,
       id: persons.length + 1
     }
     console.log('adding person to list: ', newPersonToAdd)
