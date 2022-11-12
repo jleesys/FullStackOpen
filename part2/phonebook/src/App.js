@@ -77,10 +77,14 @@ const App = () => {
   const handleSubmission = (event) => {
     event.preventDefault();
 
+    console.log('HANDLING SUBMISSION')
 
     for (let i = 0; i < persons.length; i++) {
-      if (persons[i].name === newName)
+      if (persons[i].name === newName) {
+        console.log('found dUPE')
         alert(`${newName} is already present in phonebook.`);
+        return;
+      }
     }
     const newPersonToAdd = {
       name: newName,
@@ -90,10 +94,12 @@ const App = () => {
     console.log('adding person to list: ', newPersonToAdd)
 
     // EFFECT FOR PUSHING NEW PERSON
-      
-      axios.post('http://localhost:3001/persons', newPersonToAdd)
-      .then(response => {console.log('setting persons',response); 
-      setPersons(persons.concat(response.data))})
+
+    axios.post('http://localhost:3001/persons', newPersonToAdd)
+      .then(response => {
+        console.log('setting persons', response);
+        setPersons(persons.concat(response.data))
+      })
   }
 
   return (
