@@ -1,0 +1,15 @@
+{
+  "name": "creationpractice",
+  "version": "1.0.0",
+  "description": "Practice proj creation",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test",
+    "start": "node index.js"
+  },
+  "keywords": [
+    "practice"
+  ],
+  "author": "Joe",
+  "license": "ISC"
+}
