@@ -2,10 +2,10 @@ const PersonForm = ({handleSubmission, newName, handleNameFormChange, newNumber,
     return (
     <form onSubmit={handleSubmission}>
         <div>
-            Name: <input placeholder={newName} onChange={handleNameFormChange} />
+            Name: <input placeholder={'name'} onChange={handleNameFormChange} value={newName} />
         </div>
         <div>
-            Number: <input placeholder={newNumber} onChange={handleNumberFormChange} />
+            Number: <input placeholder={'number'} onChange={handleNumberFormChange} value={newNumber}/>
         </div>
         <button type="submit">add</button>
     </form>

@@ -21,9 +21,9 @@ const App = () => {
   }
   */
   // State vars for NAME entry
-  const [newName, setNewName] = useState('Enter new name here');
+  const [newName, setNewName] = useState('');
   // State vars for NUMBER entry
-  const [newNumber, setNewNumber] = useState('Enter new number here');
+  const [newNumber, setNewNumber] = useState('');
   // state vars for search term
   const [searchTerm, setSearchTerm] = useState('Name to search');
   //state vars for search filter
@@ -94,6 +94,8 @@ const App = () => {
     console.log('adding person to list: ', newPersonToAdd)
 
     // EFFECT FOR PUSHING NEW PERSON
+    setNewNumber('');
+    setNewName('');
 
     axios.post('http://localhost:3001/persons', newPersonToAdd)
       .then(response => {
