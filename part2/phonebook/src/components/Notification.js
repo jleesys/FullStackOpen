@@ -1,3 +1,5 @@
+import { getQueriesForElement } from "@testing-library/react";
+
 const Notification = ({ message }) => {
     if (message?.includes('Error')) {
         var style = {
@@ -5,7 +7,9 @@ const Notification = ({ message }) => {
             fontStyle: 'italic',
             fontSize: 16,
             padding: 25,
-            outline: 5,
+            borderWidth: 5,
+            borderStyle: 'solid',
+            borderColor: 'red',
             backgroundColor: 'grey',
             height: 20 
         }
@@ -16,7 +20,9 @@ const Notification = ({ message }) => {
             fontStyle: 'italic',
             fontSize: 16,
             padding: 25,
-            outline: 5,
+            borderWidth: 5,
+            borderStyle: 'solid',
+            borderColor: 'green',
             backgroundColor: 'grey',
             height: 20 
         }
