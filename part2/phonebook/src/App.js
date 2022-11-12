@@ -131,6 +131,7 @@ const App = () => {
       .then(response => {
         setPersons(persons.concat(response))
         setMessage(`${newPersonToAdd.name} has been added to book.`);
+        setTimeout(() => setMessage(null), 5000);
       }
       );
 
