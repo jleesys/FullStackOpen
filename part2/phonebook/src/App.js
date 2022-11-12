@@ -3,6 +3,7 @@ import axios from 'axios';
 import Persons from './components/Persons';
 import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
+import numberServices from './services/numbers';
 
 const App = () => {
 
@@ -37,11 +38,16 @@ const App = () => {
   // SETTING UP EFFECT
   useEffect(() => {
     console.log('Promise made, effect soon to follow');
+
+    // console.log(numberServices.getAll());
+    numberServices.getAll().then(response => setPersons(response));
+    /*
     axios.get('http://localhost:3001/persons')
       .then(response => {
         console.log('Promise fulfilled.', response.data);
         setPersons(response.data);
       })
+      */
   }, [])
 
 
@@ -97,11 +103,21 @@ const App = () => {
     setNewNumber('');
     setNewName('');
 
+    numberServices.create(newPersonToAdd)
+      .then(response => setPersons(persons.concat(response)));
+
+    /*
     axios.post('http://localhost:3001/persons', newPersonToAdd)
       .then(response => {
         console.log('setting persons', response);
         setPersons(persons.concat(response.data))
       })
+      */
+  }
+
+  const removePerson = (personID) => {
+    numberServices.remove(personID);
+    setPersons(persons.filter(person => person.id !== personID));
   }
 
   return (
@@ -116,7 +132,7 @@ const App = () => {
         newNumber={newNumber}
         handleNumberFormChange={handleNumberFormChange} />
       <h1>Numbers</h1>
-      <Persons personsToShow={personsToShow} />
+      <Persons personsToShow={personsToShow} removePerson={removePerson}/>
     </div>
   );
 }
