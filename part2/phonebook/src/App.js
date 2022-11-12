@@ -115,9 +115,11 @@ const App = () => {
       */
   }
 
-  const removePerson = (personID) => {
-    numberServices.remove(personID);
-    setPersons(persons.filter(person => person.id !== personID));
+  const removePerson = (personID, personName) => {
+    if (window.confirm(`are you sure you want to delete ${personName}?`)) {
+      numberServices.remove(personID);
+      setPersons(persons.filter(person => person.id !== personID));
+    }
   }
 
   return (
@@ -132,7 +134,7 @@ const App = () => {
         newNumber={newNumber}
         handleNumberFormChange={handleNumberFormChange} />
       <h1>Numbers</h1>
-      <Persons personsToShow={personsToShow} removePerson={removePerson}/>
+      <Persons personsToShow={personsToShow} removePerson={removePerson} />
     </div>
   );
 }

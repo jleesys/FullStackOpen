@@ -6,7 +6,7 @@ const Persons = ({ personsToShow, removePerson }) => {
             {personsToShow.map(person => {
                 console.log('remapping persons');
                 return <div key={person.id}>{person.name} {person.number}
-                <button onClick={() => removePerson(person.id)}>delete</button></div>
+                <button onClick={() => removePerson(person.id,person.name)}>delete</button></div>
             }
             )}
         </>
