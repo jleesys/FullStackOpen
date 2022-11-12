@@ -3,6 +3,7 @@ import axios from 'axios';
 import Persons from './components/Persons';
 import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
+import Notification from './components/Notification';
 import numberServices from './services/numbers';
 
 const App = () => {
@@ -29,6 +30,9 @@ const App = () => {
   const [searchTerm, setSearchTerm] = useState('Name to search');
   //state vars for search filter
   const [showAll, setShowAll] = useState(true);
+  // state vars for error message when applicable
+  const [message, setMessage] = useState(null);
+  window.message = message;
 
   const personsToShow = showAll ? persons : persons.filter(person => person.name.toLowerCase().includes(searchTerm.toLowerCase()));
 
@@ -88,16 +92,24 @@ const App = () => {
     for (let i = 0; i < persons.length; i++) {
       if (persons[i].name === newName) {
         console.log('found dUPE')
-        if(window.confirm(`${newName} is already present in phonebook.
+        if (window.confirm(`${newName} is already present in phonebook.
         Would you like to update with a new phone number?`)) {
           // do the updating stuff here 
           const updatedPerson = {
             ...persons[i],
             number: newNumber
           }
-          console.log(numberServices.update(i+1, updatedPerson));
+          numberServices
+            .update(i + 1, updatedPerson)
+            .then(newPersonData => setPersons(persons.map(person => person.id !== i + 1 ? person : newPersonData)))
+            .catch(error => {
+              console.log('error caught, person already removed');
+              setMessage('error: person no longer exists');
+              setPersons(persons.filter(person => person.id !== i + 1 ? person : null));
+              setTimeout(() => setMessage(null), 5000)
+            });
           // persons.find(person => person.id == i+1).number = numberServices.update(i+1, updatedPerson).number;
-          setPersons(persons.map(person => person.id !== i+1 ? person : updatedPerson));
+          // setPersons(persons.map(person => person.id !== i + 1 ? person : updatedPerson));
           setNewName('');
           setNewNumber('');
         }
@@ -116,7 +128,11 @@ const App = () => {
     setNewName('');
 
     numberServices.create(newPersonToAdd)
-      .then(response => setPersons(persons.concat(response)));
+      .then(response => {
+        setPersons(persons.concat(response))
+        setMessage(`${newPersonToAdd.name} has been added to book.`);
+      }
+      );
 
     /*
     axios.post('http://localhost:3001/persons', newPersonToAdd)
@@ -137,6 +153,7 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
+      <Notification message={message} />
       <Filter handleSearch={handleSearch} searchTerm={searchTerm}
         handleSearchFormChange={handleSearchFormChange}
         setShowAll={setShowAll} showAll={showAll} />
