@@ -88,7 +88,19 @@ const App = () => {
     for (let i = 0; i < persons.length; i++) {
       if (persons[i].name === newName) {
         console.log('found dUPE')
-        alert(`${newName} is already present in phonebook.`);
+        if(window.confirm(`${newName} is already present in phonebook.
+        Would you like to update with a new phone number?`)) {
+          // do the updating stuff here 
+          const updatedPerson = {
+            ...persons[i],
+            number: newNumber
+          }
+          console.log(numberServices.update(i+1, updatedPerson));
+          // persons.find(person => person.id == i+1).number = numberServices.update(i+1, updatedPerson).number;
+          setPersons(persons.map(person => person.id !== i+1 ? person : updatedPerson));
+          setNewName('');
+          setNewNumber('');
+        }
         return;
       }
     }

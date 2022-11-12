@@ -2,7 +2,7 @@
   "persons": [
     {
       "name": "Arto Hellas",
-      "number": "040-123456",
+      "number": "60696969696",
       "id": 1
     },
     {
@@ -21,9 +21,14 @@
       "id": 4
     },
     {
-      "name": "Waba",
-      "number": "91919191",
+      "name": "Lex Fridman",
+      "number": "83-8198731",
       "id": 5
+    },
+    {
+      "name": "When",
+      "number": "69696969",
+      "id": 6
     }
   ]
 }
