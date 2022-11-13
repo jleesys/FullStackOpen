@@ -1,3 +1,5 @@
+const repl = require('repl');
+
 const express = require('express')
 const app = express()
 
@@ -33,11 +35,17 @@ app.get('/api/notes', (request, response) => {
 app.get('/api/notes/:id', (request, response) => {
     const id = Number(request.params.id);
     const note = notes.find(note => note.id === id);
-    response.json(note)
+    if (note) {
+        response.json(note)
+    } else {
+        console.log('note not found')
+        response.status(404).end();
+    }
 })
 
 app.delete('/api/notes/:id', (request, response) => {
     const id = Number(request.params.id);
+    console.log(`searching for id ${id} to delete`);
     notes = notes.filter(note => note.id !== id);
 
     response.status(204).end();
