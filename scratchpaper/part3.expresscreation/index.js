@@ -52,13 +52,18 @@ app.delete('/api/notes/:id', (request, response) => {
     response.status(204).end();
 })
 
+const generateID = () => {
+    const max = notes.length > 0 ? Math
+        .max(...notes.map(note => note.id)) : 0;
+    return max + 1 ;
+
+}
+
 // add note
 app.post('/api/notes', (request, response) => {
-    const currentID = notes.length > 0 ? Math
-        .max(...notes.map(note => note.id)) + 1 : 0;
     const noteToAdd = request.body;
     console.log(noteToAdd, request.get('Content-Type'));
-    noteToAdd.id = currentID;
+    noteToAdd.id = generateID();
 
     notes = notes.concat(noteToAdd);
 
