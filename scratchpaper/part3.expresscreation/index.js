@@ -61,9 +61,18 @@ const generateID = () => {
 
 // add note
 app.post('/api/notes', (request, response) => {
-    const noteToAdd = request.body;
-    console.log(noteToAdd, request.get('Content-Type'));
-    noteToAdd.id = generateID();
+    // console.log(noteToAdd, request.get('Content-Type'));
+
+    if (!request.body.content) {
+        response.status(400).end().json({error: "content missing"});
+    }
+
+    const noteToAdd = {
+       id: generateID(),
+       content: request.body.content,
+       date: new Date(),
+       important: request.body.important  || false
+    }
 
     notes = notes.concat(noteToAdd);
 
