@@ -1,5 +1,8 @@
 import axios from 'axios'
-const baseURL = 'http://localhost:3001/persons';
+// LOCALHOST URL FOR TESTING 
+// const baseURL = 'http://localhost:3001/persons';
+// DEPLOYED APP VIA FLYIO
+const baseURL = 'https://silent-meadow-1209.fly.dev/api/persons';
 
 const getAll = () => {
     const request =

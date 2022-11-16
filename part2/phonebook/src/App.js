@@ -103,8 +103,8 @@ const App = () => {
             .update(i + 1, updatedPerson)
             .then(newPersonData => setPersons(persons.map(person => person.id !== i + 1 ? person : newPersonData)))
             .catch(error => {
-              console.log('error caught, person already removed');
-              setMessage('error: person no longer exists');
+              console.log('Error caught, person already removed');
+              setMessage('Error: person no longer exists');
               setPersons(persons.filter(person => person.id !== i + 1 ? person : null));
               setTimeout(() => setMessage(null), 5000)
             });
