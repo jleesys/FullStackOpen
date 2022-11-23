@@ -87,39 +87,31 @@ const App = () => {
   const handleSubmission = (event) => {
     event.preventDefault();
 
-    console.log('HANDLING SUBMISSION')
-
-    for (let i = 0; i < persons.length; i++) {
-      if (persons[i].name === newName) {
-        console.log('found dUPE')
-        if (window.confirm(`${newName} is already present in phonebook.
-        Would you like to update with a new phone number?`)) {
-          // do the updating stuff here 
-          const updatedPerson = {
-            ...persons[i],
-            number: newNumber
-          }
-          numberServices
-            .update(i + 1, updatedPerson)
-            .then(newPersonData => setPersons(persons.map(person => person.id !== i + 1 ? person : newPersonData)))
-            .catch(error => {
-              console.log('Error caught, person already removed');
-              setMessage('Error: person no longer exists');
-              setPersons(persons.filter(person => person.id !== i + 1 ? person : null));
-              setTimeout(() => setMessage(null), 5000)
-            });
-          // persons.find(person => person.id == i+1).number = numberServices.update(i+1, updatedPerson).number;
-          // setPersons(persons.map(person => person.id !== i + 1 ? person : updatedPerson));
-          setNewName('');
-          setNewNumber('');
+    // console.log('HANDLING SUBMISSION')
+    const foundPerson = persons.find(person => person.name === newName);
+    if (foundPerson) {
+      if (window.confirm(`${newName} is already present in the phonebook. \nWould you like to update with a new phone number?`)) {
+        console.log('proceeding to make updated person record')
+        const updatedPerson = {
+          ...foundPerson,
+          number: newNumber
         }
+        numberServices.update(updatedPerson.id, updatedPerson);
+        console.log('Person updated and sent to server')
+        setPersons(persons.map(person => person.id !== updatedPerson.id ? person : updatedPerson));
+        setMessage(`${updatedPerson.name}'s number has been updated!`);
+        setTimeout(() => setMessage(null), 5000);
+        return;
+      } else {
+        console.log('Canceling person creation/update')
         return;
       }
     }
+
     const newPersonToAdd = {
       name: newName,
       number: newNumber,
-      id: persons.length + 1
+      // id: persons.length + 1
     }
     console.log('adding person to list: ', newPersonToAdd)
 
@@ -133,7 +125,11 @@ const App = () => {
         setMessage(`${newPersonToAdd.name} has been added to book.`);
         setTimeout(() => setMessage(null), 5000);
       }
-      );
+      )
+      .catch(err => {
+        console.log('Error adding person.')
+        setMessage(`Error adding person to phonebook.`)
+      });
 
     /*
     axios.post('http://localhost:3001/persons', newPersonToAdd)
@@ -153,7 +149,7 @@ const App = () => {
 
   return (
     <div>
-      <h1>Phonebook</h1>
+      <h1>Phonebook PRODUCTION BUILD 1.0</h1>
       <Notification message={message} />
       <Filter handleSearch={handleSearch} searchTerm={searchTerm}
         handleSearchFormChange={handleSearchFormChange}

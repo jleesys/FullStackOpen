@@ -1,31 +1,48 @@
 import { getQueriesForElement } from "@testing-library/react";
 
 const Notification = ({ message }) => {
+    var style = {
+        // color: 'red',
+        fontStyle: 'italic',
+        fontSize: 16,
+        padding: 25,
+        borderWidth: 5,
+        borderStyle: 'solid',
+        // borderColor: 'red',
+        height: 20
+    }
     if (message?.includes('Error')) {
-        var style = {
+        style = {
+            ...style,
             color: 'red',
-            fontStyle: 'italic',
-            fontSize: 16,
-            padding: 25,
-            borderWidth: 5,
-            borderStyle: 'solid',
-            borderColor: 'red',
-            backgroundColor: 'grey',
-            height: 20 
+            borderColor: 'red'
         }
+        // var style = {
+        //     color: 'red'st,
+        //     fontStyle: 'italic',
+        //     fontSize: 16,
+        //     padding: 25,
+        //     borderWidth: 5,
+        //     borderStyle: 'solid',
+        //     borderColor: 'red',
+        //     height: 20
+        // }
     } else {
-
-        var style = {
+        style = {
+            ...style,
             color: 'green',
-            fontStyle: 'italic',
-            fontSize: 16,
-            padding: 25,
-            borderWidth: 5,
-            borderStyle: 'solid',
-            borderColor: 'green',
-            backgroundColor: 'grey',
-            height: 20 
+            bordercolor: 'green'
         }
+        // var style = {
+        //     color: 'green',
+        //     fontStyle: 'italic',
+        //     fontSize: 16,
+        //     padding: 25,
+        //     borderWidth: 5,
+        //     borderStyle: 'solid',
+        //     borderColor: 'green',
+        //     height: 20
+        // }
     }
 
     return (
