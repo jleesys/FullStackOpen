@@ -4,7 +4,7 @@ const Persons = ({ personsToShow, removePerson }) => {
     return (
         <>
             {personsToShow.map(person => {
-                console.log('remapping persons');
+                // console.log('remapping persons');
                 return <div key={person.id}>{person.name} {person.number}
                 <button onClick={() => removePerson(person.id,person.name)}>delete</button></div>
             }

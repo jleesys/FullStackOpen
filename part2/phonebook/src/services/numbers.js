@@ -29,6 +29,7 @@ const remove = (id) => {
 
 const update = (id, updatedObject) => {
     const request = 
+        // console.log('Updating.')
         axios 
             .put(`${baseURL}/${id}`, updatedObject)
             .then(response => response.data);

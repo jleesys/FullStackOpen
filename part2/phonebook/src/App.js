@@ -75,7 +75,7 @@ const App = () => {
   // set the new name up to be added to list 'numbers'
   const handleNameFormChange = (event) => {
     setNewName(event.target.value);
-    console.log('logging new name:', event.target.value);
+    // console.log('logging new name:', event.target.value);
   }
 
   // ---------------- NUMBER CHANGES ----------------
@@ -87,7 +87,6 @@ const App = () => {
   const handleSubmission = (event) => {
     event.preventDefault();
 
-    // console.log('HANDLING SUBMISSION')
     const foundPerson = persons.find(person => person.name === newName);
     if (foundPerson) {
       if (window.confirm(`${newName} is already present in the phonebook. \nWould you like to update with a new phone number?`)) {
@@ -96,11 +95,18 @@ const App = () => {
           ...foundPerson,
           number: newNumber
         }
-        numberServices.update(updatedPerson.id, updatedPerson);
-        console.log('Person updated and sent to server')
-        setPersons(persons.map(person => person.id !== updatedPerson.id ? person : updatedPerson));
-        setMessage(`${updatedPerson.name}'s number has been updated!`);
-        setTimeout(() => setMessage(null), 5000);
+        numberServices.update(updatedPerson.id, updatedPerson)
+          .then(response => {
+            console.log('Person updated and sent to server');
+            setPersons(persons.map(person => person.id !== updatedPerson.id ? person : updatedPerson));
+            setMessage(`${updatedPerson.name}'s number has been updated!`);
+            setTimeout(() => setMessage(null), 5000);
+            return;
+          })
+          .catch(error => {
+            setMessage(`Error: ${error}`);
+            setTimeout(() => setMessage(null), 5000);
+          })
         return;
       } else {
         console.log('Canceling person creation/update')
@@ -121,14 +127,16 @@ const App = () => {
 
     numberServices.create(newPersonToAdd)
       .then(response => {
-        setPersons(persons.concat(response))
+        console.log('Post action');
+        setPersons(persons.concat(response));
         setMessage(`${newPersonToAdd.name} has been added to book.`);
         setTimeout(() => setMessage(null), 5000);
       }
       )
       .catch(err => {
-        console.log('Error adding person.')
+        console.log('Error adding person. Create service message.')
         setMessage(`Error adding person to phonebook.`)
+        setTimeout(() => setMessage(null), 5000);
       });
 
     /*
