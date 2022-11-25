@@ -5,8 +5,10 @@ const blogsRouter = require('express').Router();
 const logger = require('../utils/logger');
 
 blogsRouter.get('/', (request, response) => {
-    response
-        .send(`<h1>Waldo!</h1>`)
+    Blog.find({})
+        .then(result => {
+            response.json(result);
+        })
 })
 
 blogsRouter.post('/', (request, response, next) => {
