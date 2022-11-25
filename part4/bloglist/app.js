@@ -11,7 +11,7 @@ const middleware = require('./utils/middleware');
 
 mongoose
     .connect(config.MONGODB_URI)
-    .then(response => {
+    .then(() => {
         logger.info('Connected to DB Successfully!');
     })
     .catch(error => {

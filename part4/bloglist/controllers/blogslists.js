@@ -9,11 +9,12 @@ blogsRouter.get('/', (request, response) => {
         .then(result => {
             response.json(result);
         })
+        .catch(error => {
+            next(error);
+        })
 })
 
 blogsRouter.post('/', (request, response, next) => {
-    console.log('are you seeing this');
-    // const requestedBlog = request.body;
     const bloggy = request.body;
     const blogToAdd = new Blog({
         name: bloggy.name,
@@ -22,9 +23,8 @@ blogsRouter.post('/', (request, response, next) => {
         likes: bloggy.likes
     })
     logger.info(blogToAdd);
-    blogToAdd.save().then(result => response.json(result))
+    blogToAdd.save().then(result => response.status(201).json(result))
         .catch(error => {
-            logger.error('Error');
             next(error);
         })
 })
