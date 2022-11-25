@@ -14,16 +14,15 @@ blogsRouter.get('/', (request, response) => {
 blogsRouter.post('/', (request, response, next) => {
     console.log('are you seeing this');
     // const requestedBlog = request.body;
-    const blogToAdd = new Blog(request.body);
+    const bloggy = request.body;
+    const blogToAdd = new Blog({
+        name: bloggy.name,
+        author: bloggy.author,
+        url: bloggy.url,
+        likes: bloggy.likes
+    })
     logger.info(blogToAdd);
     blogToAdd.save().then(result => response.json(result))
-    // logger.info(requestedBlog);
-    // const newBlog = new Blog({
-    //     name: requestedBlog.name,
-    //     author: requestedBlog.author,
-    //     url: requestedBlog.url,
-    //     likes: requestedBlog.likes
-    // })
 })
 
 module.exports = blogsRouter;
