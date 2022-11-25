@@ -23,6 +23,10 @@ blogsRouter.post('/', (request, response, next) => {
     })
     logger.info(blogToAdd);
     blogToAdd.save().then(result => response.json(result))
+        .catch(error => {
+            logger.error('Error');
+            next(error);
+        })
 })
 
 module.exports = blogsRouter;
