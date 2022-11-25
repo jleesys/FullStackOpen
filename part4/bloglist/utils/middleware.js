@@ -19,7 +19,12 @@ const errorLogger = (error, request, response, next) => {
     next(error);
 }
 
+const unknownEndpoint = (request, response, next) => {
+    response.status(404).send({error: "I don't know what you were trying to get to, but it ain't here."});
+}
+
 module.exports = {
     requestLogger,
-    errorLogger
+    errorLogger,
+    unknownEndpoint
 }

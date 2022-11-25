@@ -21,5 +21,6 @@ app.use(middleware.requestLogger);
 app.use('/', blogsRouter);
 
 app.use(middleware.errorLogger);
+app.use(middleware.unknownEndpoint);
 
 module.exports = app;

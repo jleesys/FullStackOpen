@@ -1,11 +1,11 @@
 const blogsRouter = require('express').Router();
 const logger = require('../utils/logger');
 
-blogsRouter.get('/', (request, response) => {
+blogsRouter.get('/', (request, response, next) => {
     response
         .send(`<h1>Waldo!</h1>`)
         .catch(error => {
-            logger.error(error);
+            next(error);
         })
 })
 
