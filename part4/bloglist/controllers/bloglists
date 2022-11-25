@@ -1,0 +1,16 @@
+const blogsRouter = require('express').Router();
+const logger = require('../utils/logger');
+
+blogsRouter.get('/', (request, response) => {
+    response
+        .send(`<h1>Waldo!</h1>`)
+        .catch(error => {
+            logger.error(error);
+        })
+})
+
+blogsRouter.get('/api/posts', (request, response) => {
+    response.send(`<h1>Here's where the posts go.</h1>`);
+})
+
+module.exports = blogsRouter;
