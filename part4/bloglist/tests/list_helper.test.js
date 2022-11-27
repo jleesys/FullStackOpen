@@ -38,10 +38,17 @@ describe('favorite blog', () => {
     )
 })
 
-describe('most liked blogger', () => {
+describe('most prolific blogger', () => {
     test('is correctly chosen', () => {
         const mostLikedAuthor = listHelper.mostBlogs(listBlogs);
         const correctAuthor = 'Robert C. Martin';
         expect(mostLikedAuthor).toBe(correctAuthor);
+    })
+})
+
+describe('most liked blogger', () => {
+    test('is correctly chosen', () => {
+        const mostLikedBlogger = listHelper.mostLikes(listBlogs);
+        expect(mostLikedBlogger).toBe('Edsger W. Dijkstra');
     })
 })
