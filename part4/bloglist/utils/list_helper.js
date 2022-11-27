@@ -29,7 +29,7 @@ const favoriteBlog = (blogs) => {
 }
 
 const mostLikes = (blogs) => {
-    const organizedByAuthor = lodash.groupBy(blogs, 'author'); 
+    const organizedByAuthor = lodash.groupBy(blogs, 'author');
     // console.log(organizedByAuthor);
     for (let auth in organizedByAuthor) {
         // console.log('Auth : ', organizedByAuthor[auth]);
@@ -37,9 +37,9 @@ const mostLikes = (blogs) => {
             return totalLikes += blog.likes;
         }, 0)
     }
-    console.log(organizedByAuthor)
+    // console.log(organizedByAuthor)
     const keys = Object.keys(organizedByAuthor);
-    const mostLikedAuthor = 
+    const mostLikedAuthor =
         keys.reduce(
             (mostLiked, blogger) => {
                 return organizedByAuthor[blogger] > organizedByAuthor[mostLiked] ? blogger : mostLiked;
@@ -54,7 +54,13 @@ const mostLikes = (blogs) => {
     //     }
     // )
 
-    return mostLikedAuthor;
+    const objToReturn = 
+    {
+        author: mostLikedAuthor,
+        likes: organizedByAuthor[mostLikedAuthor]
+    };
+    console.log(objToReturn)
+    return objToReturn;
 }
 
 // find the most prolific blogger (blogger with greatest # blogs)

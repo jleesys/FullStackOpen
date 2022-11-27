@@ -49,6 +49,10 @@ describe('most prolific blogger', () => {
 describe('most liked blogger', () => {
     test('is correctly chosen', () => {
         const mostLikedBlogger = listHelper.mostLikes(listBlogs);
-        expect(mostLikedBlogger).toBe('Edsger W. Dijkstra');
+        expect(mostLikedBlogger).toEqual(
+            {
+                author: "Edsger W. Dijkstra",
+                likes: 17
+            });
     })
 })
