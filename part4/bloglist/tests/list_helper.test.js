@@ -36,5 +36,12 @@ describe('favorite blog', () => {
         expect(favoriteBlog).toEqual(correctBlog);
     }
     )
-}
-)
+})
+
+describe('most liked blogger', () => {
+    test('is correctly chosen', () => {
+        const mostLikedAuthor = listHelper.mostBlogs(listBlogs);
+        const correctAuthor = 'Robert C. Martin';
+        expect(mostLikedAuthor).toBe(correctAuthor);
+    })
+})

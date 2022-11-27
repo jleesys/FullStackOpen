@@ -1,3 +1,4 @@
+const lodash = require('lodash');
 // test func for testing purpose
 const dummy = (blogs) => {
     return 1;
@@ -26,4 +27,17 @@ const favoriteBlog = (blogs) => {
     return faveBlog;
 }
 
-module.exports = { dummy, totalLikes, favoriteBlog };
+// find the most prolific blogger (blogger with greatest # blogs)
+// using countBy method from lodash lib
+const mostBlogs = (blogs) => {
+    const countBy = lodash.countBy;
+    const authorResults = countBy(blogs, 'author');
+    console.log(authorResults)
+    let finalAuthor = Object.keys(authorResults)[0];
+    for (let author in authorResults) {
+        if (authorResults[author] > authorResults[finalAuthor]) finalAuthor = author;
+    }
+    return finalAuthor;
+}
+
+module.exports = { dummy, totalLikes, favoriteBlog, mostBlogs };
