@@ -14,13 +14,6 @@ const totalLikes = (blogs) => {
 }
 
 const favoriteBlog = (blogs) => {
-    // let faveBlog = blogs[0];
-    // for (let i = 0; i < blogs.length; i++) {
-    //     if (blogs[i].likes > faveBlog.likes) {
-    //         faveBlog = blogs[i];
-    //     }
-    // }
-
     const faveBlog = blogs.reduce((faveBlog, currBlog) => {
         if (currBlog.likes > faveBlog.likes) return currBlog;
         else return faveBlog;
@@ -45,14 +38,6 @@ const mostLikes = (blogs) => {
                 return organizedByAuthor[blogger] > organizedByAuthor[mostLiked] ? blogger : mostLiked;
             }
         )
-
-    // console.log(mostLikedAuthor);
-
-    // organizedByAuthor.reduce(
-    //     (mostLiked, author) => {
-    //         return organizedByAuthor[author] > organizedByAuthor[mostLiked] ? author : mostLiked;
-    //     }
-    // )
 
     const objToReturn = 
     {
@@ -79,13 +64,6 @@ const mostBlogs = (blogs) => {
         }
     );
     return mostProlificBlogger;
-
-    // intiial method looping thru all results for greatest value
-    // let finalAuthor = Object.keys(authorResults)[0];
-    // for (let author in authorResults) {
-    //     if (authorResults[author] > authorResults[finalAuthor]) finalAuthor = author;
-    // }
-    // return finalAuthor;
 }
 
 module.exports = { dummy, totalLikes, favoriteBlog, mostBlogs, mostLikes };

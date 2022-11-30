@@ -104,7 +104,7 @@ const App = () => {
             return;
           })
           .catch(error => {
-            setMessage(`Error: ${error}`);
+            setMessage(`Error: ${error.response.data.error}`);
             setTimeout(() => setMessage(null), 5000);
           })
         return;
@@ -135,7 +135,8 @@ const App = () => {
       )
       .catch(err => {
         console.log('Error adding person. Create service message.')
-        setMessage(`Error adding person to phonebook.`)
+        // setMessage(`Error adding person to phonebook.`)
+        setMessage(`Error: ${err.response.data.error}`)
         setTimeout(() => setMessage(null), 5000);
       });
 
