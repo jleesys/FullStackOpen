@@ -44,7 +44,7 @@ const mostLikes = (blogs) => {
         author: mostLikedAuthor,
         likes: organizedByAuthor[mostLikedAuthor]
     };
-    console.log(objToReturn)
+    // console.log(objToReturn)
     return objToReturn;
 }
 
