@@ -5,6 +5,21 @@ const dummy = (blogs) => {
     return 1;
 }
 
+const initialBlogs = [
+    {
+        name: "React patterns",
+        author: "Michael Chan",
+        url: "https://reactpatterns.com/",
+        likes: 7,
+    },
+    {
+        name: "Go To Statement Considered Harmful",
+        author: "Edsger W. Dijkstra",
+        url: "http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html",
+        likes: 5,
+    }
+]
+
 // gleans the total num likes from an array of blogs
 const totalLikes = (blogs) => {
     const total = blogs.reduce((runningTotal, blog) => {
@@ -66,4 +81,4 @@ const mostBlogs = (blogs) => {
     return mostProlificBlogger;
 }
 
-module.exports = { dummy, totalLikes, favoriteBlog, mostBlogs, mostLikes };
+module.exports = { dummy, totalLikes, favoriteBlog, mostBlogs, mostLikes, initialBlogs };
