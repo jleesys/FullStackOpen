@@ -88,9 +88,29 @@ describe('Checking blogs db api', () => {
             .send(blogToAdd)
             .expect(201)
             .expect('Content-Type', /application\/json/);
-        
+
         console.log(returnedBlog.body);
-        expect(returnedBlog.body.likes).toBe(0); 
+        expect(returnedBlog.body.likes).toBe(0);
+    })
+
+    test('api returns 400 if request is missing title or url', async () => {
+        const blogToAdd1 = {
+            author: 'authorhere',
+            url: 'https://bloggly.com/',
+        }
+        const blogToAdd2 = {
+            name: 'addblogshow0likes',
+            author: 'authorhere',
+        }
+
+        await api
+            .post('/api/blogs')
+            .send(blogToAdd1)
+            .expect(400)
+        await api
+            .post('/api/blogs')
+            .send(blogToAdd2)
+            .expect(400)
     })
 });
 
