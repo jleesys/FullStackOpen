@@ -21,6 +21,18 @@ blogsRouter.get('/', async (request, response, next) => {
     //     })
 })
 
+blogsRouter.get('/:id', async (request, response, next) => {
+    try {
+        const idToGet = request.params.id;
+
+        const gotBlog = await Blog.findById(idToGet);
+        logger.info(gotBlog)
+        response.json(gotBlog);
+    } catch (exception) {
+        next(exception);
+    }
+})
+
 blogsRouter.post('/', async (request, response, next) => {
     try {
         const bloggy = request.body;
