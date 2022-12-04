@@ -22,59 +22,75 @@ beforeEach(async () => {
 })
 
 describe('Checking blogs db api', () => {
-test('Blogs are returned as json', async () => {
-    await api
-        .get('/api/blogs')
-        .expect(200)
-        .expect('Content-Type', /application\/json/)
-}, 100000)
+    test('Blogs are returned as json', async () => {
+        await api
+            .get('/api/blogs')
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+    }, 100000)
 
-test('all blogs are fetched', async () => {
-    const response = await api.get('/api/blogs');
+    test('all blogs are fetched', async () => {
+        const response = await api.get('/api/blogs');
 
-    expect(response.body).toHaveLength(helper.initialBlogs.length);
-})
+        expect(response.body).toHaveLength(helper.initialBlogs.length);
+    })
 
-test('the first blog is by Michael Chan', async () => {
-    const response = await api.get('/api/blogs');
+    test('the first blog is by Michael Chan', async () => {
+        const response = await api.get('/api/blogs');
 
-    expect(response.body[0].author).toBe('Michael Chan');
-})
+        expect(response.body[0].author).toBe('Michael Chan');
+    })
 
-test('a specific blog is within the returned blogs', async () => {
-    const response = await api.get('/api/blogs');
+    test('a specific blog is within the returned blogs', async () => {
+        const response = await api.get('/api/blogs');
 
-    const blogNames = response.body.map(r => r.name);
-    expect(blogNames).toContain('React patterns');
-})
+        const blogNames = response.body.map(r => r.name);
+        expect(blogNames).toContain('React patterns');
+    })
 
-test('able to add a blog', async () => {
-    const blogToAdd = {
-        name: 'addblog',
-        author: 'authorhere',
-        url: 'https://bloggly.com/',
-        likes: 9
-    }
+    test('able to add a blog', async () => {
+        const blogToAdd = {
+            name: 'addblog',
+            author: 'authorhere',
+            url: 'https://bloggly.com/',
+            likes: 9
+        }
 
-    await api
-        .post('/api/blogs')
-        .send(blogToAdd)
-        .expect(201)
-        .expect('Content-Type', /application\/json/);
+        await api
+            .post('/api/blogs')
+            .send(blogToAdd)
+            .expect(201)
+            .expect('Content-Type', /application\/json/);
 
-    const response = await api.get('/api/blogs');
-    const titles = response.body.map(blog => blog.name);
-    expect(response.body).toHaveLength(helper.initialBlogs.length + 1);
-    expect(titles).toContain('addblog');
+        const response = await api.get('/api/blogs');
+        const titles = response.body.map(blog => blog.name);
+        expect(response.body).toHaveLength(helper.initialBlogs.length + 1);
+        expect(titles).toContain('addblog');
 
-})
+    })
 
     test('identifier `id` exists', async () => {
         const currentBlogs = await api.get('/api/blogs');
         const testBlog = currentBlogs.body[0];
 
-        console.log(testBlog);
+        // console.log(testBlog);
         expect(testBlog.id).toBeDefined();
+    })
+    test('a blog submitted without likes defaults to 0 likes', async () => {
+        const blogToAdd = {
+            name: 'addblogshow0likes',
+            author: 'authorhere',
+            url: 'https://bloggly.com/',
+        }
+
+        const returnedBlog = await api
+            .post('/api/blogs')
+            .send(blogToAdd)
+            .expect(201)
+            .expect('Content-Type', /application\/json/);
+        
+        console.log(returnedBlog.body);
+        expect(returnedBlog.body.likes).toBe(0); 
     })
 });
 
@@ -91,11 +107,11 @@ test('able to add a blog', async () => {
 //         .send(blogToAdd)
 //         .expect(201)
 //         .expect('Content-Type', /application\/json/);
-    
+
 //     await api
 //         .delete(`/api/blogs/${objAdded.id}`)
 //         .expect(204)
-    
+
 //     const finalListBlogs = await Blog.find({});
 //     expect(finalListBlogs.length).toBe(helper.initialBlogs.length - 1);
 
