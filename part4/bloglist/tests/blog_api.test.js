@@ -19,7 +19,7 @@ beforeEach(async () => {
     // this gives us access to the id prop
     const fetchedBlogs = await api.get('/api/blogs');
     returnedInitialBlogs = fetchedBlogs.body;
-    // console.log(returnedInitialBlogs);
+    console.log('initial blogs: \n', returnedInitialBlogs);
 
     // await Blog.deleteMany({});
     // let blogObject = new Blog(helper.initialBlogs[0]);
@@ -31,22 +31,39 @@ beforeEach(async () => {
 describe('deleting blogs', () => {
     test('delete a single specified blog', async () => {
         const idToDelete = returnedInitialBlogs[0].id;
-        // console.log('deleting id ', idToDelete, '\nName ', returnedInitialBlogs[0].name);
 
-        console.log('initial blogs: \n:', returnedInitialBlogs);
+        // console.log('initial blogs: \n:', returnedInitialBlogs);
         await api
             .delete(`/api/blogs/${idToDelete}`)
             .expect(204)
-        
+
         // const endBlogs = await api.get('/api/blogs').body;
         const response = await api.get('/api/blogs');
         const endBlogs = response.body;
-        console.log('final blogs: \n', endBlogs);
+        // console.log('final blogs: \n', endBlogs);
         const endBlogsByName = endBlogs.map(blog => blog.name);
 
         expect(endBlogsByName).not.toContain('React patterns');
         expect(endBlogs).toHaveLength(1);
     })
+
+    test('deleting blog with nonexistent id returns 400', async () => {
+        // an id from an object in a prev initialization (these are randomized each time)
+        const nonexistentID = '638d2f09dd2e0c152e274eb6';
+
+        // for testing purposes
+        // const existingID = returnedInitialBlogs[0].id;
+        
+        await api
+            .delete(`/api/blogs/${nonexistentID}`)
+            // .delete(`/api/blogs/${existingID}`)
+            .expect(400);
+            // .expect(204);
+        const blogsAfter = await api.get('/api/blogs');
+
+        expect(blogsAfter.body).toHaveLength(helper.initialBlogs.length);
+        // console.log('after \n', blogsAfter.body);
+})
 })
 
 describe('Checking blogs db api', () => {
@@ -117,7 +134,7 @@ describe('Checking blogs db api', () => {
             .expect(201)
             .expect('Content-Type', /application\/json/);
 
-        console.log(returnedBlog.body);
+        // console.log(returnedBlog.body);
         expect(returnedBlog.body.likes).toBe(0);
     })
 
@@ -142,29 +159,25 @@ describe('Checking blogs db api', () => {
     })
 });
 
-// test('able to add and delete a blog', async () => {
-//     const blogToAdd = {
-//         name: 'thisisgoingtobegone',
-//         author: 'nothing',
-//         url: 'https://blank.com/',
-//         likes: 0
-//     }
-
-//     const objAdded = await api
-//         .post('/api/blogs')
-//         .send(blogToAdd)
-//         .expect(201)
-//         .expect('Content-Type', /application\/json/);
-
-//     await api
-//         .delete(`/api/blogs/${objAdded.id}`)
-//         .expect(204)
-
-//     const finalListBlogs = await Blog.find({});
-//     expect(finalListBlogs.length).toBe(helper.initialBlogs.length - 1);
-
-// })
 
 afterAll(() => {
     mongoose.connection.close();
 });
+
+// initial fetched blogs
+// [
+//     {
+//       name: 'React patterns',
+//       author: 'Michael Chan',
+//       url: 'https://reactpatterns.com/',
+//       likes: 7,
+//       id: '638d2c78a5d601fbe626a32f'
+//     },
+//     {
+//       name: 'Go To Statement Considered Harmful',
+//       author: 'Edsger W. Dijkstra',
+//       url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
+//       likes: 5,
+//       id: '638d2c78a5d601fbe626a331'
+//     }
+//   ]

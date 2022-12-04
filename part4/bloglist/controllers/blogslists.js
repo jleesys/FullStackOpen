@@ -56,7 +56,8 @@ blogsRouter.delete('/:id', async (request, response, next) => {
         const deletedBlog = await Blog.findByIdAndDelete(idToDel);
         logger.info('info passed ', deletedBlog);
         // deletedBlog ? response.status(200).json(deletedBlog) : response.status(400).end();
-        response.status(204).end();
+        deletedBlog ? response.status(204).end() : response.status(400).end();
+        // response.status(204).end();
     } catch (exception) {
         next(exception);
     }
