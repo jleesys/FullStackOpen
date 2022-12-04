@@ -68,6 +68,14 @@ test('able to add a blog', async () => {
     expect(titles).toContain('addblog');
 
 })
+
+    test('identifier `id` exists', async () => {
+        const currentBlogs = await api.get('/api/blogs');
+        const testBlog = currentBlogs.body[0];
+
+        console.log(testBlog);
+        expect(testBlog.id).toBeDefined();
+    })
 });
 
 // test('able to add and delete a blog', async () => {
