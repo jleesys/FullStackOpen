@@ -47,18 +47,19 @@ blogsRouter.post('/', async (request, response, next) => {
     } catch (exception) {
         next(exception);
     }
-    // const bloggy = request.body;
-    // const blogToAdd = new Blog({
-    //     name: bloggy.name,
-    //     author: bloggy.author,
-    //     url: bloggy.url,
-    //     likes: bloggy.likes
-    // })
-    // logger.info(blogToAdd);
-    // blogToAdd.save().then(result => response.status(201).json(result))
-    //     .catch(error => {
-    //         next(error);
-    //     })
+})
+
+blogsRouter.delete('/:id', async (request, response, next) => {
+    try {
+        const idToDel = request.params.id;
+
+        const deletedBlog = await Blog.findByIdAndDelete(idToDel);
+        logger.info('info passed ', deletedBlog);
+        // deletedBlog ? response.status(200).json(deletedBlog) : response.status(400).end();
+        response.status(204).end();
+    } catch (exception) {
+        next(exception);
+    }
 })
 
 module.exports = blogsRouter;

@@ -5,6 +5,7 @@ const helper = require('../utils/list_helper');
 const app = require('../app');
 const api = supertest(app);
 
+let returnedInitialBlogs = [];
 
 beforeEach(async () => {
     await Blog.deleteMany({});
@@ -14,11 +15,38 @@ beforeEach(async () => {
         await blogLoad.save();
     }
 
+    // fetches blogs again after intially posting 'initialBlogs'
+    // this gives us access to the id prop
+    const fetchedBlogs = await api.get('/api/blogs');
+    returnedInitialBlogs = fetchedBlogs.body;
+    // console.log(returnedInitialBlogs);
+
     // await Blog.deleteMany({});
     // let blogObject = new Blog(helper.initialBlogs[0]);
     // await blogObject.save();
     // blogObject = new Blog(helper.initialBlogs[1]);
     // await blogObject.save();
+})
+
+describe('deleting blogs', () => {
+    test('delete a single specified blog', async () => {
+        const idToDelete = returnedInitialBlogs[0].id;
+        // console.log('deleting id ', idToDelete, '\nName ', returnedInitialBlogs[0].name);
+
+        console.log('initial blogs: \n:', returnedInitialBlogs);
+        await api
+            .delete(`/api/blogs/${idToDelete}`)
+            .expect(204)
+        
+        // const endBlogs = await api.get('/api/blogs').body;
+        const response = await api.get('/api/blogs');
+        const endBlogs = response.body;
+        console.log('final blogs: \n', endBlogs);
+        const endBlogsByName = endBlogs.map(blog => blog.name);
+
+        expect(endBlogsByName).not.toContain('React patterns');
+        expect(endBlogs).toHaveLength(1);
+    })
 })
 
 describe('Checking blogs db api', () => {
