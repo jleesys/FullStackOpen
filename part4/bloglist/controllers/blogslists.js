@@ -63,4 +63,29 @@ blogsRouter.delete('/:id', async (request, response, next) => {
     }
 })
 
+// updates blog doc -- specifically likes
+blogsRouter.put('/:id', async (request, response, next) => {
+    const updatedBlog = {
+        ...request.body, likes: request.body.likes
+    }
+
+    console.log('logging ', updatedBlog)
+
+    try {
+        const blogToPut = new Blog(updatedBlog);
+        // const queryResponse = await Blog.findByIdAndUpdate(updatedBlog.id, updatedBlog, { new: true });
+        const queryResponse = await Blog.findByIdAndUpdate(updatedBlog.id, { likes: updatedBlog.likes }, { new: true });
+
+        console.log(queryResponse);
+
+        if (queryResponse) {
+            response.status(200).json(queryResponse);
+        } else {
+            response.status(400).end();
+        }
+    } catch (exception) {
+        next(exception);
+    }
+})
+
 module.exports = blogsRouter;

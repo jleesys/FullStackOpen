@@ -66,6 +66,33 @@ describe('deleting blogs', () => {
 })
 })
 
+describe('updating blogs', () => {
+    test('updating likes on a blog changes num likes', async () => {
+        const idToUpdate = returnedInitialBlogs[0].id;
+        const blogUpdater = {
+            id: idToUpdate,
+            likes: 69
+        }
+
+        await api
+            .put(`/api/blogs/${idToUpdate}`)
+            .send(blogUpdater)
+            .expect(200)
+            .expect('Content-Type', /application\/json/);
+
+        const response = await api.get('/api/blogs');
+        const endBlogs = response.body;
+
+        expect(endBlogs[0].likes).toBe(69);
+
+        // for (let blog of endBlogs) {
+        //     if (blog.id === idToUpdate) {
+
+        //     }
+        // }
+    })
+})
+
 describe('Checking blogs db api', () => {
     test('Blogs are returned as json', async () => {
         await api
