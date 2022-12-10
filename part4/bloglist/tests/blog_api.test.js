@@ -19,7 +19,9 @@ beforeEach(async () => {
     // this gives us access to the id prop
     const fetchedBlogs = await api.get('/api/blogs');
     returnedInitialBlogs = fetchedBlogs.body;
-    console.log('initial blogs: \n', returnedInitialBlogs);
+    
+    // SHOWS INITIAL BLOGS FOR DEBUG PURPOSES
+    // console.log('initial blogs: \n', returnedInitialBlogs);
 
     // await Blog.deleteMany({});
     // let blogObject = new Blog(helper.initialBlogs[0]);
@@ -67,11 +69,11 @@ describe('deleting blogs', () => {
 })
 
 describe('updating blogs', () => {
-    test('updating likes on a blog changes num likes', async () => {
+    test('updating likes on a blog changes num likes, does not change list length', async () => {
         const idToUpdate = returnedInitialBlogs[0].id;
         const blogUpdater = {
             id: idToUpdate,
-            likes: 69
+            likes: 99
         }
 
         await api
@@ -83,7 +85,8 @@ describe('updating blogs', () => {
         const response = await api.get('/api/blogs');
         const endBlogs = response.body;
 
-        expect(endBlogs[0].likes).toBe(69);
+        expect(endBlogs[0].likes).toBe(99);
+        expect(endBlogs.length).toBe(returnedInitialBlogs.length);
 
         // for (let blog of endBlogs) {
         //     if (blog.id === idToUpdate) {
@@ -91,6 +94,7 @@ describe('updating blogs', () => {
         //     }
         // }
     })
+
 })
 
 describe('Checking blogs db api', () => {

@@ -69,14 +69,14 @@ blogsRouter.put('/:id', async (request, response, next) => {
         ...request.body, likes: request.body.likes
     }
 
-    console.log('logging ', updatedBlog)
+    // console.log('logging ', updatedBlog)
 
     try {
         const blogToPut = new Blog(updatedBlog);
         // const queryResponse = await Blog.findByIdAndUpdate(updatedBlog.id, updatedBlog, { new: true });
         const queryResponse = await Blog.findByIdAndUpdate(updatedBlog.id, { likes: updatedBlog.likes }, { new: true });
 
-        console.log(queryResponse);
+        // console.log(queryResponse);
 
         if (queryResponse) {
             response.status(200).json(queryResponse);
