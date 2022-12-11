@@ -48,6 +48,42 @@ describe('adding users api', () => {
         expect(dbEndUsers.length).toBe(dbInitialUsers.length + 1);
         expect(usernames).toContain('utoadd');
     })
+
+    test('cannot add username or password under 3 chars long', async () => {
+        const dbInitialUsers = await User.find({});
+
+        const userToAddUname = {
+            name: 'should not show up',
+            username: 'us',
+            password: 'lollers'
+        };
+        const userToAddPass = {
+            name: 'should not show up',
+            username: 'username',
+            password: 'p'
+        };
+
+        // const response1 = await new User(userToAddUname).save();
+        // const response2 = await new User(userToAddPass).save();
+
+        const responseUname = api
+            .post('/')
+            .send(userToAddUname)
+            .expect(400)
+            .expect('Content-Type', /application\/json/);
+        const responsePass = api
+            .post('/')
+            .send(userToAddUname)
+            .expect(400)
+            .expect('Content-Type', /application\/json/);
+
+        const dbEndUsers = await User.find({});
+        const usernames = dbEndUsers.map(u => u.username);
+
+        expect(dbEndUsers.length).toBe(dbInitialUsers.length);
+        expect(usernames).not.toContain('should not show up');
+        // console.log(dbEndUsers, '\n', usernames);
+    })
 })
 
 afterAll(() => {
