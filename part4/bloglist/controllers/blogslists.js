@@ -12,13 +12,6 @@ blogsRouter.get('/', async (request, response, next) => {
     } catch (exception) {
         next(exception);
     }
-    // Blog.find({})
-    //     .then(result => {
-    //         response.json(result);
-    //     })
-    //     .catch(error => {
-    //         next(error);
-    //     })
 })
 
 blogsRouter.get('/:id', async (request, response, next) => {

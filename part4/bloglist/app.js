@@ -5,6 +5,7 @@ const logger = require('./utils/logger');
 const express = require('express');
 const app = express();
 const blogsRouter = require('./controllers/blogslists');
+const usersRouter = require('./controllers/users');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const middleware = require('./utils/middleware');
@@ -22,6 +23,7 @@ app.use(cors());
 app.use(express.json());
 app.use(middleware.requestLogger);
 app.use('/api/blogs', blogsRouter);
+app.use('/api/users', usersRouter);
 // app.use('/', (request, response, next) => {
 //     response
 //     .send(`<h1>Hello</h1><div>Temporary page.</div>`)
