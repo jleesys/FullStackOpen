@@ -66,22 +66,25 @@ describe('adding users api', () => {
         // const response1 = await new User(userToAddUname).save();
         // const response2 = await new User(userToAddPass).save();
 
-        const responseUname = api
-            .post('/')
+        const responseUname = await api
+            .post('/api/users')
             .send(userToAddUname)
             .expect(400)
             .expect('Content-Type', /application\/json/);
-        const responsePass = api
-            .post('/')
-            .send(userToAddUname)
+        const responsePass = await api
+            .post('/api/users')
+            .send(userToAddPass)
             .expect(400)
             .expect('Content-Type', /application\/json/);
+        console.log(responseUname, '\n', responsePass);
 
         const dbEndUsers = await User.find({});
         const usernames = dbEndUsers.map(u => u.username);
 
         expect(dbEndUsers.length).toBe(dbInitialUsers.length);
         expect(usernames).not.toContain('should not show up');
+        expect(responseUname.body.error).toBe('username and password must be greater than 3 chars');
+        expect(responsePass.body.error).toBe('username and password must be greater than 3 chars');
         // console.log(dbEndUsers, '\n', usernames);
     })
 })
