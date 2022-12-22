@@ -14,8 +14,6 @@ usersRouter.get('/', async (request, response, next) => {
 
 usersRouter.post('/', async (request, response, next) => {
     const { username, name, password } = request.body;
-    console.log('Entering post route')
-    console.log(username, name, password);
 
     if (username.length < 3 || password.length < 3) {
         console.log('failing validation');
