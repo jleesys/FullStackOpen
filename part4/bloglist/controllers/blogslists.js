@@ -1,8 +1,10 @@
 // const mongoose = require('mongoose');
 // const { request } = require('../app');
 const Blog = require('../models/blogmodel');
+const User = require('../models/user');
 const blogsRouter = require('express').Router();
 const logger = require('../utils/logger');
+const bcrypt = require('bcrypt');
 
 blogsRouter.get('/', async (request, response, next) => {
     try {
@@ -32,11 +34,32 @@ blogsRouter.get('/:id', async (request, response, next) => {
 
 blogsRouter.post('/', async (request, response, next) => {
     try {
-        const bloggy = request.body;
-        const blogToAdd = new Blog(bloggy);
-        const addedBlog = await blogToAdd.save();
+        // const bloggy = request.body;
+        // const blogToAdd = new Blog(bloggy);
+        // const addedBlog = await blogToAdd.save();
 
-        response.status(201).json(addedBlog);
+        const { username, password } = request.body;
+        // const user = await User.find({ username: username });
+        const user = await User.findOne({ username });
+        const passwordMatch = user === null ? false : await bcrypt.compare(password, user.passwordHash);
+
+        if (!(passwordMatch && user)) {
+            return response.status(401).json({ error: 'invalid username/password' });
+        }
+
+        const blogToAdd = new Blog({
+            name: request.body.name,
+            author: request.body.author,
+            url: request.body.url,
+            likes: request.body.likes,
+            user: user._id
+        });
+
+        const savedBlog = await blogToAdd.save();
+        user.blogs = user.blogs.concat(savedBlog._id);
+        await user.save();
+
+        response.status(201).json(savedBlog);
     } catch (exception) {
         next(exception);
     }
