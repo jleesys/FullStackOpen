@@ -133,6 +133,7 @@ describe('updating blogs', () => {
 })
 
 let authHeader;
+let usernamePosting;
 describe('Checking blogs db api', () => {
 
     beforeEach(async () => {
@@ -156,7 +157,27 @@ describe('Checking blogs db api', () => {
             .expect(200);
         // console.log(userTokenObj);
         authHeader = 'Bearer ' + userTokenObj.body.token;
+        usernamePosting = userTokenObj.body.username;
+
         // console.log(authHeader);
+    })
+
+    test('Cannot post a blog without webtoken', async () => {
+        const blogToAdd = {
+            name: 'addblog',
+            author: 'authorhere',
+            url: 'https://bloggly.com/',
+            likes: 9
+        }
+
+        const response = await api
+            .post('/api/blogs')
+            // .set('Authorization', authHeader)
+            .send(blogToAdd)
+            .expect(401)
+        
+       expect(response.body.error).toBe('invalid or expired token');
+
     })
 
     test('Blogs are returned as json', async () => {
@@ -185,7 +206,7 @@ describe('Checking blogs db api', () => {
         expect(blogNames).toContain('React patterns');
     })
 
-    test('able to add a blog', async () => {
+    test('able to add a blog and correct user assigned', async () => {
         const blogToAdd = {
             name: 'addblog',
             author: 'authorhere',
@@ -193,17 +214,20 @@ describe('Checking blogs db api', () => {
             likes: 9
         }
 
-        await api
+        const addedBlog = await api
             .post('/api/blogs')
             .set('Authorization', authHeader)
             .send(blogToAdd)
             .expect(201)
             .expect('Content-Type', /application\/json/);
+        
+        const userAdder = await User.findById(addedBlog.body.user);
 
         const response = await api.get('/api/blogs');
         const titles = response.body.map(blog => blog.name);
         expect(response.body).toHaveLength(helper.initialBlogs.length + 1);
         expect(titles).toContain('addblog');
+        expect(userAdder.username).toBe(usernamePosting);
 
     })
 

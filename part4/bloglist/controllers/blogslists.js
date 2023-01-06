@@ -10,7 +10,7 @@ require('dotenv').config();
 
 blogsRouter.get('/', async (request, response, next) => {
     try {
-        const blogsList = await Blog.find({});
+        const blogsList = await Blog.find({}).populate('user', { username: 1, name: 1, id: 1 });
 
         response.json(blogsList);
     } catch (exception) {
@@ -55,8 +55,7 @@ blogsRouter.post('/', async (request, response, next) => {
         //     return response.status(401).json({ error: 'invalid username/password' });
         // }
         const token = getTokenFrom(request);
-        const decodedToken = jwt.verify(token, process.env.SECRET);
-        // console.log(decodedToken);
+        const decodedToken = token === null ? false : jwt.verify(token, process.env.SECRET);
         if (!(token && decodedToken.id)) {
             return response.status(401).json({ error: 'invalid or expired token' });
         }
