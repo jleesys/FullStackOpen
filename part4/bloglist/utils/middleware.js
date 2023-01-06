@@ -20,11 +20,26 @@ const errorLogger = (error, request, response, next) => {
 }
 
 const unknownEndpoint = (request, response, next) => {
-    response.status(404).send({error: "I don't know what you were trying to get to, but it ain't here."});
+    response.status(404).send({ error: "I don't know what you were trying to get to, but it ain't here." });
+}
+
+const tokenExtractor = (request, response, next) => {
+    // console.log('entered tokenExtractor middleware...')
+    const authorization = request.get('authorization');
+    // if (!authorization) next();
+    // if (!(authorization && authorization.toLowerCase().startsWith('Bearer '))) {
+    //     next();
+    // }
+    if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+        request.token = authorization.substring(7);
+    }
+    // console.log(request.token);
+    next();
 }
 
 module.exports = {
     requestLogger,
     errorLogger,
-    unknownEndpoint
+    unknownEndpoint,
+    tokenExtractor
 }

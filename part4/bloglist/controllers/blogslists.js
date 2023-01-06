@@ -47,14 +47,13 @@ const getTokenFrom = (request) => {
 
 blogsRouter.post('/', async (request, response, next) => {
     try {
-        // const { username, password } = request.body;
-        // const user = await User.findOne({ username });
-        // const passwordMatch = user === null ? false : await bcrypt.compare(password, user.passwordHash);
 
-        // if (!(passwordMatch && user)) {
-        //     return response.status(401).json({ error: 'invalid username/password' });
-        // }
-        const token = getTokenFrom(request);
+        // method using getTokenFrom() method, NO MIDDLEWARE
+        // const token = getTokenFrom(request);
+
+        //method using MIDDLEWARE to create request.token header
+        const token = request.token !== undefined ? request.token : null;
+
         const decodedToken = token === null ? false : jwt.verify(token, process.env.SECRET);
         if (!(token && decodedToken.id)) {
             return response.status(401).json({ error: 'invalid or expired token' });
