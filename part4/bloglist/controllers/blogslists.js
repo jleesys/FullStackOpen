@@ -5,6 +5,8 @@ const User = require('../models/user');
 const blogsRouter = require('express').Router();
 const logger = require('../utils/logger');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 blogsRouter.get('/', async (request, response, next) => {
     try {
@@ -32,27 +34,40 @@ blogsRouter.get('/:id', async (request, response, next) => {
     }
 })
 
+const getTokenFrom = (request) => {
+    const authorization = request.get('authorization');
+    // console.log('hitting auth token valid\n', authorization);
+    if (!authorization) return null;
+    if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+        // console.log('found token and returning substring ', authorization.substring(7))
+        return authorization.substring(7);
+    }
+    return null;
+}
+
 blogsRouter.post('/', async (request, response, next) => {
     try {
-        // const bloggy = request.body;
-        // const blogToAdd = new Blog(bloggy);
-        // const addedBlog = await blogToAdd.save();
+        // const { username, password } = request.body;
+        // const user = await User.findOne({ username });
+        // const passwordMatch = user === null ? false : await bcrypt.compare(password, user.passwordHash);
 
-        const { username, password } = request.body;
-        // const user = await User.find({ username: username });
-        const user = await User.findOne({ username });
-        const passwordMatch = user === null ? false : await bcrypt.compare(password, user.passwordHash);
-
-        if (!(passwordMatch && user)) {
-            return response.status(401).json({ error: 'invalid username/password' });
+        // if (!(passwordMatch && user)) {
+        //     return response.status(401).json({ error: 'invalid username/password' });
+        // }
+        const token = getTokenFrom(request);
+        const decodedToken = jwt.verify(token, process.env.SECRET);
+        // console.log(decodedToken);
+        if (!(token && decodedToken.id)) {
+            return response.status(401).json({ error: 'invalid or expired token' });
         }
+        const user = await User.findById(decodedToken.id);
 
         const blogToAdd = new Blog({
             name: request.body.name,
             author: request.body.author,
             url: request.body.url,
             likes: request.body.likes,
-            user: user._id
+            user: user.id
         });
 
         const savedBlog = await blogToAdd.save();

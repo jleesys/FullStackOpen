@@ -1,14 +1,25 @@
 const mongoose = require('mongoose');
 const supertest = require('supertest');
 const Blog = require('../models/blogmodel');
+const User = require('../models/user');
 const helper = require('../utils/list_helper');
 const app = require('../app');
 const api = supertest(app);
+const jwt = require('jsonwebtoken');
 
 let returnedInitialBlogs = [];
 
+// beforeAll(async () => {
+//     const tokenObj = await api.post('/api/login')
+//         .send({
+//             username: 'tester949',
+//             password: 'password'
+//         });
+// })
+
 beforeEach(async () => {
     await Blog.deleteMany({});
+    await User.deleteMany({});
 
     for (let blog of helper.initialBlogs) {
         const blogLoad = new Blog(blog);
@@ -17,9 +28,33 @@ beforeEach(async () => {
 
     // fetches blogs again after intially posting 'initialBlogs'
     // this gives us access to the id prop
+
     const fetchedBlogs = await api.get('/api/blogs');
     returnedInitialBlogs = fetchedBlogs.body;
-    
+
+
+    const createUserResponse = await api
+        .post('/api/users')
+        .send({
+            username: 'tester949',
+            password: 'password',
+            name: 'Tester User'
+        })
+        .expect(201)
+
+
+    const userTokenObj = await api.post('/api/login')
+        .send({
+            username: 'tester949',
+            password: 'password'
+        })
+        .expect(200);
+    // console.log(userTokenObj);
+    const authHeader = 'Bearer ' + userTokenObj.body.token;
+    // console.log(authHeader);
+
+
+
     // SHOWS INITIAL BLOGS FOR DEBUG PURPOSES
     // console.log('initial blogs: \n', returnedInitialBlogs);
 
@@ -55,17 +90,17 @@ describe('deleting blogs', () => {
 
         // for testing purposes
         // const existingID = returnedInitialBlogs[0].id;
-        
+
         await api
             .delete(`/api/blogs/${nonexistentID}`)
             // .delete(`/api/blogs/${existingID}`)
             .expect(400);
-            // .expect(204);
+        // .expect(204);
         const blogsAfter = await api.get('/api/blogs');
 
         expect(blogsAfter.body).toHaveLength(helper.initialBlogs.length);
         // console.log('after \n', blogsAfter.body);
-})
+    })
 })
 
 describe('updating blogs', () => {
@@ -97,7 +132,33 @@ describe('updating blogs', () => {
 
 })
 
+let authHeader;
 describe('Checking blogs db api', () => {
+
+    beforeEach(async () => {
+        await User.deleteMany({});
+        const createUserResponse = await api
+            .post('/api/users')
+            .send({
+                username: 'tester949',
+                password: 'password',
+                name: 'Tester User'
+            })
+            .expect(201)
+        // console.log(createUserResponse.body);
+
+
+        const userTokenObj = await api.post('/api/login')
+            .send({
+                username: 'tester949',
+                password: 'password'
+            })
+            .expect(200);
+        // console.log(userTokenObj);
+        authHeader = 'Bearer ' + userTokenObj.body.token;
+        // console.log(authHeader);
+    })
+
     test('Blogs are returned as json', async () => {
         await api
             .get('/api/blogs')
@@ -134,6 +195,7 @@ describe('Checking blogs db api', () => {
 
         await api
             .post('/api/blogs')
+            .set('Authorization', authHeader)
             .send(blogToAdd)
             .expect(201)
             .expect('Content-Type', /application\/json/);
@@ -161,6 +223,7 @@ describe('Checking blogs db api', () => {
 
         const returnedBlog = await api
             .post('/api/blogs')
+            .set('Authorization', authHeader)
             .send(blogToAdd)
             .expect(201)
             .expect('Content-Type', /application\/json/);
@@ -181,10 +244,12 @@ describe('Checking blogs db api', () => {
 
         await api
             .post('/api/blogs')
+            .set('Authorization', authHeader)
             .send(blogToAdd1)
             .expect(400)
         await api
             .post('/api/blogs')
+            .set('Authorization', authHeader)
             .send(blogToAdd2)
             .expect(400)
     })

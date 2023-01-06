@@ -76,7 +76,7 @@ describe('adding users api', () => {
             .send(userToAddPass)
             .expect(400)
             .expect('Content-Type', /application\/json/);
-        console.log(responseUname, '\n', responsePass);
+        // console.log(responseUname, '\n', responsePass);
 
         const dbEndUsers = await User.find({});
         const usernames = dbEndUsers.map(u => u.username);
