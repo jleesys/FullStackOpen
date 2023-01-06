@@ -33,24 +33,24 @@ beforeEach(async () => {
     returnedInitialBlogs = fetchedBlogs.body;
 
 
-    const createUserResponse = await api
-        .post('/api/users')
-        .send({
-            username: 'tester949',
-            password: 'password',
-            name: 'Tester User'
-        })
-        .expect(201)
+    // const createUserResponse = await api
+    //     .post('/api/users')
+    //     .send({
+    //         username: 'tester949',
+    //         password: 'password',
+    //         name: 'Tester User'
+    //     })
+    //     .expect(201)
 
 
-    const userTokenObj = await api.post('/api/login')
-        .send({
-            username: 'tester949',
-            password: 'password'
-        })
-        .expect(200);
-    // console.log(userTokenObj);
-    const authHeader = 'Bearer ' + userTokenObj.body.token;
+    // const userTokenObj = await api.post('/api/login')
+    //     .send({
+    //         username: 'tester949',
+    //         password: 'password'
+    //     })
+    //     .expect(200);
+    // // console.log(userTokenObj);
+    // const authHeader = 'Bearer ' + userTokenObj.body.token;
     // console.log(authHeader);
 
 

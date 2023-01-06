@@ -17,7 +17,7 @@ usersRouter.post('/', async (request, response, next) => {
     const { username, name, password } = request.body;
 
     if (username.length < 3 || password.length < 3) {
-        console.log('failing validation');
+        // console.log('failing validation');
         return response.status(400).json( { error: 'username and password must be greater than 3 chars' } );
     }
 
