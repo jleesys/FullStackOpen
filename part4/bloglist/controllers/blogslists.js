@@ -34,16 +34,16 @@ blogsRouter.get('/:id', async (request, response, next) => {
     }
 })
 
-const getTokenFrom = (request) => {
-    const authorization = request.get('authorization');
-    // console.log('hitting auth token valid\n', authorization);
-    if (!authorization) return null;
-    if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
-        // console.log('found token and returning substring ', authorization.substring(7))
-        return authorization.substring(7);
-    }
-    return null;
-}
+// const getTokenFrom = (request) => {
+//     const authorization = request.get('authorization');
+//     // console.log('hitting auth token valid\n', authorization);
+//     if (!authorization) return null;
+//     if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+//         // console.log('found token and returning substring ', authorization.substring(7))
+//         return authorization.substring(7);
+//     }
+//     return null;
+// }
 
 blogsRouter.post('/', async (request, response, next) => {
     try {
@@ -81,15 +81,37 @@ blogsRouter.post('/', async (request, response, next) => {
 blogsRouter.delete('/:id', async (request, response, next) => {
     try {
         const idToDel = request.params.id;
+        const token = request.token;
+        const decodedToken = token === null || token === undefined ? false : jwt.verify(token, process.env.SECRET);
+        if (!(decodedToken)) return response.status(401).json({error: 'invalid or missing webtoken'});
+        const userIdFromToken = decodedToken.id;
+        const userFetch = await User.findById(userIdFromToken);
+        const blogFetch = await Blog.findById(idToDel);
+        if (!blogFetch) return response.status(400).json({error: 'invalid request'});
+        if (blogFetch ? userFetch.id.toString() === blogFetch.user.toString() : false) {
+            const deletedBlog = await Blog.findByIdAndDelete(idToDel);
+            deletedBlog ? response.status(204).end() : response.status(400).json({error: 'failed to perform delete'});
+        } else {
+            return response.status(401).json({error: 'bad request. insufficient credentials for specified action'});
+        }
 
-        const deletedBlog = await Blog.findByIdAndDelete(idToDel);
-        logger.info('info passed ', deletedBlog);
-        // deletedBlog ? response.status(200).json(deletedBlog) : response.status(400).end();
-        deletedBlog ? response.status(204).end() : response.status(400).end();
-        // response.status(204).end();
-    } catch (exception) {
+        response.status(400).end();
+    } catch(exception) {
         next(exception);
     }
+
+    // OLD METHOD W/O WEBTOKEN AUTH
+    // try {
+    //     const idToDel = request.params.id;
+
+    //     const deletedBlog = await Blog.findByIdAndDelete(idToDel);
+    //     logger.info('info passed ', deletedBlog);
+    //     // deletedBlog ? response.status(200).json(deletedBlog) : response.status(400).end();
+    //     deletedBlog ? response.status(204).end() : response.status(400).end();
+    //     // response.status(204).end();
+    // } catch (exception) {
+    //     next(exception);
+    // }
 })
 
 // updates blog doc -- specifically likes

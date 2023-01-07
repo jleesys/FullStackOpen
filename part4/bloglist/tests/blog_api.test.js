@@ -17,6 +17,10 @@ let returnedInitialBlogs = [];
 //         });
 // })
 
+let authHeader;
+let usernamePosting;
+let testUserAdder;
+let addedTestBlog;
 beforeEach(async () => {
     await Blog.deleteMany({});
     await User.deleteMany({});
@@ -66,12 +70,54 @@ beforeEach(async () => {
 })
 
 describe('deleting blogs', () => {
-    test('delete a single specified blog', async () => {
-        const idToDelete = returnedInitialBlogs[0].id;
 
-        // console.log('initial blogs: \n:', returnedInitialBlogs);
+    beforeEach(async () => {
+        await User.deleteMany({});
+        const createUserResponse = await api
+            .post('/api/users')
+            .send({
+                username: 'tester949',
+                password: 'password',
+                name: 'Tester User'
+            })
+            .expect(201)
+        // console.log(createUserResponse.body);
+
+        const userTokenObj = await api.post('/api/login')
+            .send({
+                username: 'tester949',
+                password: 'password'
+            })
+            .expect(200);
+        // console.log(userTokenObj);
+        authHeader = 'Bearer ' + userTokenObj.body.token;
+        usernamePosting = userTokenObj.body.username;
+
+
+        const blogToAdd = {
+            name: 'test blog 1',
+            author: 'test author',
+            url: 'https://testy.com/',
+            likes: 1
+        }
+
+        addedTestBlog = await api
+            .post('/api/blogs')
+            .set('Authorization', authHeader)
+            .send(blogToAdd)
+            .expect(201)
+            .expect('Content-Type', /application\/json/);
+
+        testUserAdder = await User.findById(addedTestBlog.body.user);
+        // console.log(authHeader);
+    })
+
+    test('delete a single specified blog', async () => {
+        const idToDelete = addedTestBlog.body.id;
+
         await api
             .delete(`/api/blogs/${idToDelete}`)
+            .set('Authorization', authHeader)
             .expect(204)
 
         // const endBlogs = await api.get('/api/blogs').body;
@@ -80,8 +126,23 @@ describe('deleting blogs', () => {
         // console.log('final blogs: \n', endBlogs);
         const endBlogsByName = endBlogs.map(blog => blog.name);
 
-        expect(endBlogsByName).not.toContain('React patterns');
-        expect(endBlogs).toHaveLength(1);
+        expect(endBlogsByName).not.toContain('test blog 1');
+        expect(endBlogs).toHaveLength(2);
+
+        // // console.log('initial blogs: \n:', returnedInitialBlogs);
+        // await api
+        //     .delete(`/api/blogs/${idToDelete}`)
+        //     .set('Authorization', authHeader)
+        //     .expect(204)
+
+        // // const endBlogs = await api.get('/api/blogs').body;
+        // const response = await api.get('/api/blogs');
+        // const endBlogs = response.body;
+        // // console.log('final blogs: \n', endBlogs);
+        // const endBlogsByName = endBlogs.map(blog => blog.name);
+
+        // expect(endBlogsByName).not.toContain('React patterns');
+        // expect(endBlogs).toHaveLength(1);
     })
 
     test('deleting blog with nonexistent id returns 400', async () => {
@@ -91,15 +152,44 @@ describe('deleting blogs', () => {
         // for testing purposes
         // const existingID = returnedInitialBlogs[0].id;
 
-        await api
+        const deleteResponse = await api
             .delete(`/api/blogs/${nonexistentID}`)
+            .set('Authorization', authHeader)
             // .delete(`/api/blogs/${existingID}`)
             .expect(400);
         // .expect(204);
         const blogsAfter = await api.get('/api/blogs');
 
-        expect(blogsAfter.body).toHaveLength(helper.initialBlogs.length);
+        // expect(blogsAfter.body).toHaveLength(helper.initialBlogs.length);
+        expect(blogsAfter.body).toHaveLength(3);
+        expect(deleteResponse.body.error).toBe('invalid request');
+        // expect(deleteResponse.body.error).toBe('bad request, invalid user or blog request');
         // console.log('after \n', blogsAfter.body);
+    })
+
+    test('deleting blog with a wrong userID fails', async () => {
+        const userCreate = {
+            username: 'tester2',
+            password: 'test2',
+            name: 'tester2'
+        }
+        const userCreationResponse = await api
+            .post('/api/users')
+            .send(userCreate)
+            .expect(201);
+            // console.log(userCreationResponse.body);
+        const userLoginResponse = await api
+            .post('/api/login')
+            .send({username: 'tester2', password: 'test2'})
+            .expect(200);
+            // console.log(userLoginResponse.body);
+
+        const blogToDelete = addedTestBlog.body;
+        const deleteResponse = await api
+            .delete(`/api/blogs/${blogToDelete.id}`)
+            .set('Authorization', 'Bearer ' + userLoginResponse.body.token)
+            .expect(401);
+        expect(deleteResponse.body.error).toBe('bad request. insufficient credentials for specified action')
     })
 })
 
@@ -132,8 +222,6 @@ describe('updating blogs', () => {
 
 })
 
-let authHeader;
-let usernamePosting;
 describe('Checking blogs db api', () => {
 
     beforeEach(async () => {
@@ -175,8 +263,8 @@ describe('Checking blogs db api', () => {
             // .set('Authorization', authHeader)
             .send(blogToAdd)
             .expect(401)
-        
-       expect(response.body.error).toBe('invalid or expired token');
+
+        expect(response.body.error).toBe('invalid or expired token');
 
     })
 
@@ -220,7 +308,7 @@ describe('Checking blogs db api', () => {
             .send(blogToAdd)
             .expect(201)
             .expect('Content-Type', /application\/json/);
-        
+
         const userAdder = await User.findById(addedBlog.body.user);
 
         const response = await api.get('/api/blogs');
