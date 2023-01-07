@@ -1,4 +1,6 @@
 const logger = require('../utils/logger');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 const requestLogger = (request, response, next) => {
     logger.info('Method: ', request.method);
@@ -37,9 +39,20 @@ const tokenExtractor = (request, response, next) => {
     next();
 }
 
+const userExtractor = (request, response, next) => {
+    const token = request.token;
+    if (token) {
+        const decodedToken = jwt.verify(token, process.env.SECRET);
+        request.user = decodedToken;
+    }
+    // contains username and user (object) id
+    next();
+}
+
 module.exports = {
     requestLogger,
     errorLogger,
     unknownEndpoint,
-    tokenExtractor
+    tokenExtractor,
+    userExtractor
 }

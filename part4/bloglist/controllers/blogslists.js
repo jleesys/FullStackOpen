@@ -54,11 +54,12 @@ blogsRouter.post('/', async (request, response, next) => {
         //method using MIDDLEWARE to create request.token header
         const token = request.token !== undefined ? request.token : null;
 
-        const decodedToken = token === null ? false : jwt.verify(token, process.env.SECRET);
-        if (!(token && decodedToken.id)) {
+        // const decodedToken = token === null ? false : jwt.verify(token, process.env.SECRET);
+        const user = request.user;
+        if (!(token && user.id)) {
             return response.status(401).json({ error: 'invalid or expired token' });
         }
-        const user = await User.findById(decodedToken.id);
+        const userFetch = await User.findById(user.id);
 
         const blogToAdd = new Blog({
             name: request.body.name,
@@ -69,8 +70,8 @@ blogsRouter.post('/', async (request, response, next) => {
         });
 
         const savedBlog = await blogToAdd.save();
-        user.blogs = user.blogs.concat(savedBlog._id);
-        await user.save();
+        userFetch.blogs = userFetch.blogs.concat(savedBlog._id);
+        await userFetch.save();
 
         response.status(201).json(savedBlog);
     } catch (exception) {
@@ -82,10 +83,12 @@ blogsRouter.delete('/:id', async (request, response, next) => {
     try {
         const idToDel = request.params.id;
         const token = request.token;
-        const decodedToken = token === null || token === undefined ? false : jwt.verify(token, process.env.SECRET);
-        if (!(decodedToken)) return response.status(401).json({error: 'invalid or missing webtoken'});
-        const userIdFromToken = decodedToken.id;
-        const userFetch = await User.findById(userIdFromToken);
+        // const decodedToken = token === null || token === undefined ? false : jwt.verify(token, process.env.SECRET);
+        // if (!(decodedToken)) return response.status(401).json({error: 'invalid or missing webtoken'});
+        // const userIdFromToken = decodedToken.id;
+
+        const user = request.user;
+        const userFetch = await User.findById(user.id);
         const blogFetch = await Blog.findById(idToDel);
         if (!blogFetch) return response.status(400).json({error: 'invalid request'});
         if (blogFetch ? userFetch.id.toString() === blogFetch.user.toString() : false) {
