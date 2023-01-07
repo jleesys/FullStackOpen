@@ -167,7 +167,7 @@ describe('deleting blogs', () => {
         // console.log('after \n', blogsAfter.body);
     })
 
-    test('deleting blog with a wrong userID fails', async () => {
+    test('deleting blog with a wrong userID/token fails', async () => {
         const userCreate = {
             username: 'tester2',
             password: 'test2',
