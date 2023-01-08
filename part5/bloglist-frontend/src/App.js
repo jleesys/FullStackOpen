@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
+import Message from './components/Message'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -8,6 +9,7 @@ const App = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null)
+  const [message, setMessage] = useState(null);
 
   const [blogTitle, setBlogTitle] = useState('');
   const [blogAuthor, setBlogAuthor] = useState('');
@@ -42,10 +44,16 @@ const App = () => {
       setUser(userResponse);
       setUsername('');
       setPassword('');
+      setMessage(`Successfully logged in as ${userResponse.name}.`);
+      setTimeout(() => {
+        setMessage('');
+      }, 5000);
       console.log('successful login ', userResponse);
     } catch (exception) {
-      // CHANGE ERROR MESSAGE BANNER
-      console.log('error login');
+      setMessage(`Login failed.\n`);
+      setTimeout(() => {
+        setMessage('');
+      }, 5000);
     }
   }
 
@@ -64,15 +72,36 @@ const App = () => {
       setBlogUrl('');
       const newBlogs = blogs.concat(response);
       setBlogs(newBlogs);
+      setMessage('Added new blog.');
+      setTimeout(() => {
+        setMessage('');
+      }, 5000);
     } catch (exception) {
       // CHANGE ERROR MESSAGE BANNER
-      console.log('submission error', exception)
+      setMessage('Error submitting blog.');
+      setTimeout(() => {
+        setMessage('');
+      }, 5000);
+    }
+  }
+
+  const logOut = (event) => {
+    event.preventDefault();
+    try {
+      window.localStorage.removeItem('currentUser');
+      setMessage('Successfully logged out.');
+      setTimeout(() => {
+        setMessage('');
+      }, 5000)
+    } catch (exception) {
+
     }
   }
 
   if (user === null) {
     return (
       <>
+        <Message text={message} />
         <h2>log in to application</h2>
         <form onSubmit={handleLogin}>
           <div>
@@ -98,8 +127,10 @@ const App = () => {
 
   return (
     <div>
+      <Message text={message} />
       <h2>blogs</h2>
-      <p>{user.name} is logged in.</p>
+      <p>{user.name} is logged in.  <button onClick={ logOut }>log out</button>
+      </p>
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
