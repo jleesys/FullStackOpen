@@ -59,9 +59,11 @@ const App = () => {
       }
       blogService.setToken(JSON.parse(window.localStorage.getItem('currentUser')));
       const response = await blogService.submitBlog(blog);
-      setBlogTitle('');
       setBlogAuthor('');
+      setBlogTitle('');
       setBlogUrl('');
+      const newBlogs = blogs.concat(response);
+      setBlogs(newBlogs);
     } catch (exception) {
       // CHANGE ERROR MESSAGE BANNER
       console.log('submission error', exception)
@@ -111,12 +113,14 @@ const App = () => {
         <div>
           author
           <input name='blogAuthor'
+            value={blogAuthor}
             onChange={({ target }) => { setBlogAuthor(target.value) }}
           />
         </div>
         <div>
           url
           <input name='blogUrl'
+            value={blogUrl}
             onChange={({ target }) => { setBlogUrl(target.value) }}
           />
         </div>
