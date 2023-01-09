@@ -61,6 +61,7 @@ blogsRouter.post('/', async (request, response, next) => {
         }
         const userFetch = await User.findById(user.id);
 
+        if (request.body.author === '') request.body.author = undefined;
         const blogToAdd = new Blog({
             name: request.body.name,
             author: request.body.author,
