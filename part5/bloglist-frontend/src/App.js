@@ -67,21 +67,21 @@ const App = () => {
       }
       blogService.setToken(JSON.parse(window.localStorage.getItem('currentUser')));
       const response = await blogService.submitBlog(blog);
+      setMessage(`Successfully added new blog "${blog.name}" by ${blog.author}.`);
+      setTimeout(() => {
+        setMessage('');
+      }, 7000);
       setBlogAuthor('');
       setBlogTitle('');
       setBlogUrl('');
       const newBlogs = blogs.concat(response);
       setBlogs(newBlogs);
-      setMessage('Added new blog.');
-      setTimeout(() => {
-        setMessage('');
-      }, 5000);
     } catch (exception) {
       // CHANGE ERROR MESSAGE BANNER
       setMessage('Error submitting blog.');
       setTimeout(() => {
         setMessage('');
-      }, 5000);
+      }, 7000);
     }
   }
 
@@ -89,10 +89,11 @@ const App = () => {
     event.preventDefault();
     try {
       window.localStorage.removeItem('currentUser');
+      setUser(null);
       setMessage('Successfully logged out.');
       setTimeout(() => {
         setMessage('');
-      }, 5000)
+      }, 7000)
     } catch (exception) {
 
     }
