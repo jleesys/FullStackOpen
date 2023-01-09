@@ -12,6 +12,7 @@ const App = () => {
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null)
   const [message, setMessage] = useState(null);
+  const [formVisible, setFormVisible] = useState(false);
 
   const [blogTitle, setBlogTitle] = useState('');
   const [blogAuthor, setBlogAuthor] = useState('');
@@ -133,24 +134,59 @@ const App = () => {
     )
   }
 
+  const loginForm = () => {
+    const showWhenFormVis = { display: formVisible ? '' : 'none' };
+    const showWhenFormInvis = { display: formVisible ? 'none' : '' };
+    return (
+      <div>
+        <div style={showWhenFormInvis}>
+          <button onClick={() => { setFormVisible(true) }}>add blog</button>
+        </div>
+        <div style={showWhenFormVis}>
+          <BlogForm
+            // style={}
+            handleBlogSubmission={handleBlogSubmission}
+            blogTitle={blogTitle}
+            setBlogTitle={setBlogTitle}
+            blogAuthor={blogAuthor}
+            setBlogAuthor={setBlogAuthor}
+            blogUrl={blogUrl}
+            setBlogUrl={setBlogUrl}
+          />
+          <button onClick={() => setFormVisible(false)}>cancel</button>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div>
       <Message text={message} />
       <h2>blogs</h2>
-      <p>{user.name} is logged in.  <button onClick={logOut}>log out</button>
+      <p style={{color: 'green', fontWeight: 'bold'}}>{user.name} is logged in.  <button onClick={logOut}>log out</button>
       </p>
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
-      <BlogForm
-      handleBlogSubmission={handleBlogSubmission}
-      blogTitle={blogTitle}
-      setBlogTitle={setBlogTitle}
-      blogAuthor={blogAuthor}
-      setBlogAuthor={setBlogAuthor}
-      blogUrl={blogUrl}
-      setBlogUrl={setBlogUrl}
-      />
+      {loginForm()}      
+
+      {/* <div>
+        <button onClick={() => { setFormVisible(true) }}>add blog</button>
+      </div>
+      <div>
+        <BlogForm
+          // style={}
+          handleBlogSubmission={handleBlogSubmission}
+          blogTitle={blogTitle}
+          setBlogTitle={setBlogTitle}
+          blogAuthor={blogAuthor}
+          setBlogAuthor={setBlogAuthor}
+          blogUrl={blogUrl}
+          setBlogUrl={setBlogUrl}
+        />
+      </div> */}
+
+
       {/* <form onSubmit={handleBlogSubmission}>
         <div>
           title <input name='blogTitle'
