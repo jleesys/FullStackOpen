@@ -3,6 +3,7 @@ import Blog from './components/Blog'
 import Message from './components/Message'
 import LoginForm from './components/loginform';
 import BlogForm from './components/blogform';
+import Togglable from './components/Togglable';
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -12,7 +13,7 @@ const App = () => {
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null)
   const [message, setMessage] = useState(null);
-  const [formVisible, setFormVisible] = useState(false);
+  // const [formVisible, setFormVisible] = useState(false);
 
   const [blogTitle, setBlogTitle] = useState('');
   const [blogAuthor, setBlogAuthor] = useState('');
@@ -134,28 +135,40 @@ const App = () => {
     )
   }
 
-  const loginForm = () => {
-    const showWhenFormVis = { display: formVisible ? '' : 'none' };
-    const showWhenFormInvis = { display: formVisible ? 'none' : '' };
+  const blogForm = () => {
+    // const showWhenFormVis = { display: formVisible ? '' : 'none' };
+    // const showWhenFormInvis = { display: formVisible ? 'none' : '' };
     return (
       <div>
-        <div style={showWhenFormInvis}>
-          <button onClick={() => { setFormVisible(true) }}>add blog</button>
-        </div>
-        <div style={showWhenFormVis}>
-          <BlogForm
-            // style={}
-            handleBlogSubmission={handleBlogSubmission}
-            blogTitle={blogTitle}
-            setBlogTitle={setBlogTitle}
-            blogAuthor={blogAuthor}
-            setBlogAuthor={setBlogAuthor}
-            blogUrl={blogUrl}
-            setBlogUrl={setBlogUrl}
-          />
-          <button onClick={() => setFormVisible(false)}>cancel</button>
-        </div>
+        <BlogForm
+          handleBlogSubmission={handleBlogSubmission}
+          blogTitle={blogTitle}
+          setBlogTitle={setBlogTitle}
+          blogAuthor={blogAuthor}
+          setBlogAuthor={setBlogAuthor}
+          blogUrl={blogUrl}
+          setBlogUrl={setBlogUrl}
+        />
       </div>
+
+      // <div>
+      //   {/* <div style={showWhenFormInvis}>
+      //     <button onClick={() => { setFormVisible(true) }}>add blog</button>
+      //   </div> */}
+      //   <div style={showWhenFormVis}>
+      //     <BlogForm
+      //       // style={}
+      //       handleBlogSubmission={handleBlogSubmission}
+      //       blogTitle={blogTitle}
+      //       setBlogTitle={setBlogTitle}
+      //       blogAuthor={blogAuthor}
+      //       setBlogAuthor={setBlogAuthor}
+      //       blogUrl={blogUrl}
+      //       setBlogUrl={setBlogUrl}
+      //     />
+      //     <button onClick={() => setFormVisible(false)}>cancel</button>
+      //   </div>
+      // </div>
     )
   }
 
@@ -163,13 +176,14 @@ const App = () => {
     <div>
       <Message text={message} />
       <h2>blogs</h2>
-      <p style={{color: 'green', fontWeight: 'bold'}}>{user.name} is logged in.  <button onClick={logOut}>log out</button>
+      <p style={{ color: 'green', fontWeight: 'bold' }}>{user.name} is logged in.  <button onClick={logOut}>log out</button>
       </p>
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
-      {loginForm()}      
-
+      <Togglable buttonLabel='add blog'>
+        {blogForm()}
+      </Togglable>
       {/* <div>
         <button onClick={() => { setFormVisible(true) }}>add blog</button>
       </div>
