@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import Message from './components/Message'
+import LoginForm from './components/loginform';
+import BlogForm from './components/blogform';
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -48,9 +50,9 @@ const App = () => {
       setTimeout(() => {
         setMessage('');
       }, 5000);
-      console.log('successful login ', userResponse);
+      // console.log('successful login ', userResponse);
     } catch (exception) {
-      setMessage(`Login failed.\n`);
+      setMessage(`Login failed.\nIncorrect username or password.`);
       setTimeout(() => {
         setMessage('');
       }, 5000);
@@ -90,7 +92,7 @@ const App = () => {
     try {
       window.localStorage.removeItem('currentUser');
       setUser(null);
-      setMessage('Successfully logged out.');
+      setMessage('Logged out successfully.');
       setTimeout(() => {
         setMessage('');
       }, 7000)
@@ -103,7 +105,12 @@ const App = () => {
     return (
       <>
         <Message text={message} />
-        <h2>log in to application</h2>
+        <LoginForm username={username}
+          password={password}
+          handleLogin={handleLogin}
+          setUsername={setUsername}
+          setPassword={setPassword} />
+        {/* <h2>log in to application</h2>
         <form onSubmit={handleLogin}>
           <div>
             username
@@ -121,7 +128,7 @@ const App = () => {
               onChange={({ target }) => { setPassword(target.value) }}></input>
           </div>
           <button name='sendLogin' type='submit'>log in</button>
-        </form>
+        </form> */}
       </>
     )
   }
@@ -130,13 +137,21 @@ const App = () => {
     <div>
       <Message text={message} />
       <h2>blogs</h2>
-      <p>{user.name} is logged in.  <button onClick={ logOut }>log out</button>
+      <p>{user.name} is logged in.  <button onClick={logOut}>log out</button>
       </p>
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
-      <h2>add blog</h2>
-      <form onSubmit={handleBlogSubmission}>
+      <BlogForm
+      handleBlogSubmission={handleBlogSubmission}
+      blogTitle={blogTitle}
+      setBlogTitle={setBlogTitle}
+      blogAuthor={blogAuthor}
+      setBlogAuthor={setBlogAuthor}
+      blogUrl={blogUrl}
+      setBlogUrl={setBlogUrl}
+      />
+      {/* <form onSubmit={handleBlogSubmission}>
         <div>
           title <input name='blogTitle'
             value={blogTitle}
@@ -158,7 +173,7 @@ const App = () => {
         </div>
         <button type='submit' name='submitBlog'>submit
         </button>
-      </form>
+      </form> */}
     </div>
   )
 }
