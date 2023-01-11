@@ -15,9 +15,9 @@ const App = () => {
   const [message, setMessage] = useState(null);
   // const [formVisible, setFormVisible] = useState(false);
 
-  const [blogTitle, setBlogTitle] = useState('');
-  const [blogAuthor, setBlogAuthor] = useState('');
-  const [blogUrl, setBlogUrl] = useState('');
+  // const [blogTitle, setBlogTitle] = useState('');
+  // const [blogAuthor, setBlogAuthor] = useState('');
+  // const [blogUrl, setBlogUrl] = useState('');
 
   const blogFormRef = useRef();
 
@@ -39,7 +39,7 @@ const App = () => {
   }, [])
 
   const handleLogin = async (event) => {
-    event.preventDefault();
+    // event.preventDefault();
     try {
       const credentials = {
         username: username,
@@ -63,32 +63,34 @@ const App = () => {
     }
   }
 
-  const handleBlogSubmission = async (event) => {
-    event.preventDefault();
+  const handleBlogSubmission = async (blog) => {
+    // event.preventDefault();
     try {
       blogFormRef.current.toggleVisible();
-      const blog = {
-        name: blogTitle,
-        author: blogAuthor,
-        url: blogUrl
-      }
+      // const blog = {
+      //   name: blogTitle,
+      //   author: blogAuthor,
+      //   url: blogUrl
+      // }
       blogService.setToken(JSON.parse(window.localStorage.getItem('currentUser')));
       const response = await blogService.submitBlog(blog);
+      console.log('setting message');
       setMessage(`Successfully added new blog "${blog.name}" by ${blog.author}.`);
       setTimeout(() => {
         setMessage('');
-      }, 7000);
-      setBlogAuthor('');
-      setBlogTitle('');
-      setBlogUrl('');
+      }, 5000);
+      // setBlogAuthor('');
+      // setBlogTitle('');
+      // setBlogUrl('');
       const newBlogs = blogs.concat(response);
+      console.log('SETTING BLOGS')
       setBlogs(newBlogs);
     } catch (exception) {
       // CHANGE ERROR MESSAGE BANNER
       setMessage('Error submitting blog.');
       setTimeout(() => {
         setMessage('');
-      }, 7000);
+      }, 5000);
     }
   }
 
@@ -124,12 +126,12 @@ const App = () => {
       <div>
         <BlogForm
           handleBlogSubmission={handleBlogSubmission}
-          blogTitle={blogTitle}
-          setBlogTitle={setBlogTitle}
-          blogAuthor={blogAuthor}
-          setBlogAuthor={setBlogAuthor}
-          blogUrl={blogUrl}
-          setBlogUrl={setBlogUrl}
+          // blogTitle={blogTitle}
+          // setBlogTitle={setBlogTitle}
+          // blogAuthor={blogAuthor}
+          // setBlogAuthor={setBlogAuthor}
+          // blogUrl={blogUrl}
+          // setBlogUrl={setBlogUrl}
         />
       </div>
     )
