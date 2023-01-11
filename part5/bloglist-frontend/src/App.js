@@ -112,6 +112,25 @@ const App = () => {
           handleLogin={handleLogin}
           setUsername={setUsername}
           setPassword={setPassword} />
+        {/* <h2>log in to application</h2>
+        <form onSubmit={handleLogin}>
+          <div>
+            username
+            <input placeholder='username'
+              name='Username'
+              value={username}
+              onChange={({ target }) => { setUsername(target.value) }}></input>
+          </div>
+          <div>
+            password
+            <input placeholder='password'
+              type='password'
+              name='Password'
+              value={password}
+              onChange={({ target }) => { setPassword(target.value) }}></input>
+          </div>
+          <button name='sendLogin' type='submit'>log in</button>
+        </form> */}
       </>
     )
   }
