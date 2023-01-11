@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import Message from './components/Message'
 import LoginForm from './components/loginform';
@@ -18,6 +18,8 @@ const App = () => {
   const [blogTitle, setBlogTitle] = useState('');
   const [blogAuthor, setBlogAuthor] = useState('');
   const [blogUrl, setBlogUrl] = useState('');
+
+  const blogFormRef = useRef();
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -64,6 +66,7 @@ const App = () => {
   const handleBlogSubmission = async (event) => {
     event.preventDefault();
     try {
+      blogFormRef.current.toggleVisible();
       const blog = {
         name: blogTitle,
         author: blogAuthor,
@@ -112,32 +115,11 @@ const App = () => {
           handleLogin={handleLogin}
           setUsername={setUsername}
           setPassword={setPassword} />
-        {/* <h2>log in to application</h2>
-        <form onSubmit={handleLogin}>
-          <div>
-            username
-            <input placeholder='username'
-              name='Username'
-              value={username}
-              onChange={({ target }) => { setUsername(target.value) }}></input>
-          </div>
-          <div>
-            password
-            <input placeholder='password'
-              type='password'
-              name='Password'
-              value={password}
-              onChange={({ target }) => { setPassword(target.value) }}></input>
-          </div>
-          <button name='sendLogin' type='submit'>log in</button>
-        </form> */}
       </>
     )
   }
 
   const blogForm = () => {
-    // const showWhenFormVis = { display: formVisible ? '' : 'none' };
-    // const showWhenFormInvis = { display: formVisible ? 'none' : '' };
     return (
       <div>
         <BlogForm
@@ -150,25 +132,6 @@ const App = () => {
           setBlogUrl={setBlogUrl}
         />
       </div>
-
-      // <div>
-      //   {/* <div style={showWhenFormInvis}>
-      //     <button onClick={() => { setFormVisible(true) }}>add blog</button>
-      //   </div> */}
-      //   <div style={showWhenFormVis}>
-      //     <BlogForm
-      //       // style={}
-      //       handleBlogSubmission={handleBlogSubmission}
-      //       blogTitle={blogTitle}
-      //       setBlogTitle={setBlogTitle}
-      //       blogAuthor={blogAuthor}
-      //       setBlogAuthor={setBlogAuthor}
-      //       blogUrl={blogUrl}
-      //       setBlogUrl={setBlogUrl}
-      //     />
-      //     <button onClick={() => setFormVisible(false)}>cancel</button>
-      //   </div>
-      // </div>
     )
   }
 
@@ -181,49 +144,9 @@ const App = () => {
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
-      <Togglable buttonLabel='add blog'>
+      <Togglable buttonLabel='add blog' ref={blogFormRef}>
         {blogForm()}
       </Togglable>
-      {/* <div>
-        <button onClick={() => { setFormVisible(true) }}>add blog</button>
-      </div>
-      <div>
-        <BlogForm
-          // style={}
-          handleBlogSubmission={handleBlogSubmission}
-          blogTitle={blogTitle}
-          setBlogTitle={setBlogTitle}
-          blogAuthor={blogAuthor}
-          setBlogAuthor={setBlogAuthor}
-          blogUrl={blogUrl}
-          setBlogUrl={setBlogUrl}
-        />
-      </div> */}
-
-
-      {/* <form onSubmit={handleBlogSubmission}>
-        <div>
-          title <input name='blogTitle'
-            value={blogTitle}
-            onChange={({ target }) => { setBlogTitle(target.value) }} />
-        </div>
-        <div>
-          author
-          <input name='blogAuthor'
-            value={blogAuthor}
-            onChange={({ target }) => { setBlogAuthor(target.value) }}
-          />
-        </div>
-        <div>
-          url
-          <input name='blogUrl'
-            value={blogUrl}
-            onChange={({ target }) => { setBlogUrl(target.value) }}
-          />
-        </div>
-        <button type='submit' name='submitBlog'>submit
-        </button>
-      </form> */}
     </div>
   )
 }
