@@ -1,10 +1,33 @@
-const Message = ({ text }) => {
-    if (text === null || text === '') {
+import { useState, useImperativeHandle, forwardRef } from 'react'
+
+const Message = forwardRef((props, refs) => {
+    // if (text === null || text === '') {
+    //     return (
+    //         <div>
+    //         </div>
+    //     )
+    // }
+    const [message, setMessage] = useState('');
+
+    const setMessageText = (text) => {
+        // console.log('setting message to ', text)
+        setMessage(text);
+    }
+
+    useImperativeHandle(refs, () => {
+        return {
+            setMessageText
+        }
+    })
+
+    if (message === null || message === '') {
         return (
             <div>
             </div>
         )
     }
+
+
     var styleError = {
         color: 'red',
         fontWeight: 700,
@@ -21,18 +44,18 @@ const Message = ({ text }) => {
         borderColor: 'green'
     }
 
-    if (text.toLowerCase().includes('success')) {
+    if (message.toLowerCase().includes('success')) {
         return (
             <div style={styleNotification}>
-                {text}
+                {message}
             </div>
         )
     }
     return (
         <div style={styleError}>
-            {text}
+            {message}
         </div>
     )
-}
+})
 
 export default Message;
