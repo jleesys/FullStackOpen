@@ -39,7 +39,7 @@ const App = () => {
   }, [])
 
   const handleLogin = async (event) => {
-    // event.preventDefault();
+    event.preventDefault();
     try {
       const credentials = {
         username: username,
