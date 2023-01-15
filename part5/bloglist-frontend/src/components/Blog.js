@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const Blog = ({ blog, handleLikeSubmit, handleDelete }) => {
+const Blog = ({ blog, handleLikeSubmit, handleDelete, user }) => {
   const [blogVis, setBlogVis] = useState(false);
 
   const style = {
@@ -11,7 +11,7 @@ const Blog = ({ blog, handleLikeSubmit, handleDelete }) => {
     borderWidth: 1,
     marginBottom: 5
   }
-    const showVisible = { display: blogVis ? '' : 'none' };
+  const showVisible = { display: blogVis ? '' : 'none' };
 
   const createBlog = (e) => {
     e.preventDefault();
@@ -28,17 +28,22 @@ const Blog = ({ blog, handleLikeSubmit, handleDelete }) => {
     handleDelete(blog.id);
   }
 
+  console.log(user, blog);
+
   return (
     <div style={style}>
-      {blog.name} || {blog.author} <button onClick={() => setBlogVis(!blogVis)}>{blogVis ? 'hide' : 'view'}</button>
+      {blog.name} <button onClick={() => setBlogVis(!blogVis)}>{blogVis ? 'hide' : 'view'}</button>
 
-        <div style={showVisible}>
-          {blog.url} <br />
-          {blog.likes} <button onClick={createBlog}>like</button> <br />
-          {blog.author} <br />
-          <button style={{backgroundColor: 'cyan'}} onClick={deleteBlog} >remove</button>
-        </div>
-        
+      <div style={showVisible}>
+        {blog.url} <br />
+        {blog.likes} <button onClick={createBlog}>like</button> <br />
+        {blog.author} <br />
+        { user.username === blog.user.username ?
+          <button style={{ backgroundColor: 'cyan' }} onClick={deleteBlog} >remove</button>
+          : null
+        }
+      </div>
+
       {/* {blogVis ?
         <div>
           {blog.url} <br />

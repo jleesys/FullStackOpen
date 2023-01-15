@@ -89,7 +89,6 @@ const App = () => {
       // setBlogTitle('');
       // setBlogUrl('');
       const newBlogs = blogs.concat(response);
-      // console.log('SETTING BLOGS')
       setBlogs(newBlogs);
     } catch (exception) {
       // CHANGE ERROR MESSAGE BANNER
@@ -168,7 +167,7 @@ const App = () => {
       <p style={{ color: 'green', fontWeight: 'bold' }}>{user.name} is logged in.  <button onClick={logOut}>log out</button>
       </p>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} handleLikeSubmit={handleLikeSubmit} handleDelete={handleDelete} />
+        <Blog key={blog.id} blog={blog} handleLikeSubmit={handleLikeSubmit} handleDelete={handleDelete} user={user}/>
       )}
       <Togglable buttonLabel='add blog' ref={blogFormRef}>
         {blogForm()}
