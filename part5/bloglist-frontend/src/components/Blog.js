@@ -3,6 +3,15 @@ import { useState } from 'react';
 const Blog = ({ blog, handleLikeSubmit }) => {
   const [blogVis, setBlogVis] = useState(false);
 
+  const style = {
+    paddingTop: 5,
+    paddingBottom: 5,
+    paddingLeft: 2,
+    border: 'solid',
+    borderWidth: 1,
+    marginBottom: 5
+  }
+
   const createBlog = (e) => {
     e.preventDefault();
     const updatedBlog = {
@@ -13,7 +22,7 @@ const Blog = ({ blog, handleLikeSubmit }) => {
     handleLikeSubmit(updatedBlog);
   }
   return (
-    <div>
+    <div style={style}>
       {blog.name} || {blog.author} <button onClick={() => setBlogVis(!blogVis)}>{blogVis ? 'hide' : 'view'}</button>
       {blogVis ?
         <div>
