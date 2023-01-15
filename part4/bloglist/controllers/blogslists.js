@@ -91,16 +91,16 @@ blogsRouter.delete('/:id', async (request, response, next) => {
         const user = request.user;
         const userFetch = await User.findById(user.id);
         const blogFetch = await Blog.findById(idToDel);
-        if (!blogFetch) return response.status(400).json({error: 'invalid request'});
+        if (!blogFetch) return response.status(400).json({ error: 'invalid request' });
         if (blogFetch ? userFetch.id.toString() === blogFetch.user.toString() : false) {
             const deletedBlog = await Blog.findByIdAndDelete(idToDel);
-            deletedBlog ? response.status(204).end() : response.status(400).json({error: 'failed to perform delete'});
+            deletedBlog ? response.status(204).end() : response.status(400).json({ error: 'failed to perform delete' });
         } else {
-            return response.status(401).json({error: 'bad request. insufficient credentials for specified action'});
+            return response.status(401).json({ error: 'bad request. insufficient credentials for specified action' });
         }
 
         response.status(400).end();
-    } catch(exception) {
+    } catch (exception) {
         next(exception);
     }
 
@@ -120,15 +120,16 @@ blogsRouter.delete('/:id', async (request, response, next) => {
 
 // updates blog doc -- specifically likes
 blogsRouter.put('/:id', async (request, response, next) => {
-    const updatedBlog = {
-        ...request.body, likes: request.body.likes
-    }
 
     // console.log('logging ', updatedBlog)
 
     try {
+        const updatedBlog = {
+            ...request.body, likes: request.body.likes
+        }
         const blogToPut = new Blog(updatedBlog);
         // const queryResponse = await Blog.findByIdAndUpdate(updatedBlog.id, updatedBlog, { new: true });
+        console.log('Trying to find blog', blogToPut);
         const queryResponse = await Blog.findByIdAndUpdate(updatedBlog.id, { likes: updatedBlog.likes }, { new: true });
 
         // console.log(queryResponse);
