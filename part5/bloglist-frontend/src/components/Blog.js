@@ -11,6 +11,7 @@ const Blog = ({ blog, handleLikeSubmit, handleDelete }) => {
     borderWidth: 1,
     marginBottom: 5
   }
+    const showVisible = { display: blogVis ? '' : 'none' };
 
   const createBlog = (e) => {
     e.preventDefault();
@@ -30,14 +31,22 @@ const Blog = ({ blog, handleLikeSubmit, handleDelete }) => {
   return (
     <div style={style}>
       {blog.name} || {blog.author} <button onClick={() => setBlogVis(!blogVis)}>{blogVis ? 'hide' : 'view'}</button>
-      {blogVis ?
+
+        <div style={showVisible}>
+          {blog.url} <br />
+          {blog.likes} <button onClick={createBlog}>like</button> <br />
+          {blog.author} <br />
+          <button style={{backgroundColor: 'cyan'}} onClick={deleteBlog} >remove</button>
+        </div>
+        
+      {/* {blogVis ?
         <div>
           {blog.url} <br />
           {blog.likes} <button onClick={createBlog}>like</button> <br />
           {blog.author} <br />
           <button style={{backgroundColor: 'cyan'}} onClick={deleteBlog} >remove</button>
         </div>
-        : <></>}
+        : <></>} */}
     </div>
   )
 }
