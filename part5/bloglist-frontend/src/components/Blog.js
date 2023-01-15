@@ -25,7 +25,7 @@ const Blog = ({ blog, handleLikeSubmit, handleDelete, user }) => {
 
   const deleteBlog = (e) => {
     e.preventDefault();
-    handleDelete(blog.id);
+    handleDelete(blog.id, blog);
   }
 
   console.log(user, blog);

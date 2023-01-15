@@ -110,14 +110,23 @@ const App = () => {
       console.log('Failed to update blog/likes');
     }
   }
-  const handleDelete = async (id) => {
+  const handleDelete = async (id, blog) => {
     try {
-      console.log('Attempting deletion');
-      blogService.setToken(JSON.parse(window.localStorage.getItem('currentUser')));
-      const response = blogService.remove(id, user);
-      // const newBlogs = blogs.map(blog => (blog.id === id ? null : blog));
-      const newBlogs = blogs.filter(blog => blog.id !== id);
-      setBlogs(newBlogs);
+      if (window.confirm(`Delete blog "${blog.name}" by ${blog.author}?`)) {
+        blogService.setToken(JSON.parse(window.localStorage.getItem('currentUser')));
+        const response = blogService.remove(id, user);
+        // const newBlogs = blogs.map(blog => (blog.id === id ? null : blog));
+        const newBlogs = blogs.filter(blog => blog.id !== id);
+        setMessage('Successfully deleted blog.');
+        setTimeout(() => {
+          setMessage('');
+        },5000);
+        return setBlogs(newBlogs);
+      }
+      setMessage(`Aborting deletion.`)
+      setTimeout(() => {
+        setMessage(``);
+      }, 5000);
     } catch (exception) {
       console.log('Error while deleting blog.')
     }
@@ -167,12 +176,12 @@ const App = () => {
       <p style={{ color: 'green', fontWeight: 'bold' }}>{user.name} is logged in.  <button onClick={logOut}>log out</button>
       </p>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} handleLikeSubmit={handleLikeSubmit} handleDelete={handleDelete} user={user}/>
+        <Blog key={blog.id} blog={blog} handleLikeSubmit={handleLikeSubmit} handleDelete={handleDelete} user={user} />
       )}
       <Togglable buttonLabel='add blog' ref={blogFormRef}>
         {blogForm()}
       </Togglable>
-      <br/>
+      <br />
       <button>View All</button>
     </div>
   )
