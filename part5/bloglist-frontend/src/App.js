@@ -64,8 +64,8 @@ const App = () => {
   }
 
   const handleBlogSubmission = async (blog) => {
-    // event.preventDefault();
     try {
+      // event.preventDefault();
       blogFormRef.current.toggleVisible();
       // const blog = {
       //   name: blogTitle,
@@ -83,7 +83,7 @@ const App = () => {
       // setBlogTitle('');
       // setBlogUrl('');
       const newBlogs = blogs.concat(response);
-      console.log('SETTING BLOGS')
+      // console.log('SETTING BLOGS')
       setBlogs(newBlogs);
     } catch (exception) {
       // CHANGE ERROR MESSAGE BANNER
@@ -91,6 +91,17 @@ const App = () => {
       setTimeout(() => {
         setMessage('');
       }, 5000);
+    }
+  }
+
+  const handleLikeSubmit = async (blog) => {
+    try {
+      const id = blog.id;
+      const response = await blogService.update({ blog, id });
+      const newBlogs = blogs.map(blog => (blog.id === id ? response : blog));
+      setBlogs(newBlogs);
+    } catch (exception) {
+      console.log('Failed to update blog/likes');
     }
   }
 
@@ -126,12 +137,6 @@ const App = () => {
       <div>
         <BlogForm
           handleBlogSubmission={handleBlogSubmission}
-          // blogTitle={blogTitle}
-          // setBlogTitle={setBlogTitle}
-          // blogAuthor={blogAuthor}
-          // setBlogAuthor={setBlogAuthor}
-          // blogUrl={blogUrl}
-          // setBlogUrl={setBlogUrl}
         />
       </div>
     )
@@ -144,7 +149,7 @@ const App = () => {
       <p style={{ color: 'green', fontWeight: 'bold' }}>{user.name} is logged in.  <button onClick={logOut}>log out</button>
       </p>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} handleLikeSubmit={handleLikeSubmit} />
       )}
       <Togglable buttonLabel='add blog' ref={blogFormRef}>
         {blogForm()}

@@ -5,7 +5,7 @@ let token = null;
 
 const setToken = (userSubmitToken) => {
   token = `bearer ${userSubmitToken.token}`;
-  console.log(token);
+  // console.log(token);
 }
 
 const getAll = () => {
@@ -21,5 +21,13 @@ const submitBlog = async (blog) => {
   return response.data;
 }
 
+const update = async ({id, blog}) => {
+  const config = {
+    headers: { Authorization: token }
+  }
+  const response = await axios.put(`${baseUrl}/${id}`, blog, config);
+  return response.data;
+}
 
-export default { getAll, setToken, submitBlog }
+
+export default { getAll, setToken, submitBlog, update }
