@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const Blog = ({ blog, handleLikeSubmit }) => {
+const Blog = ({ blog, handleLikeSubmit, handleDelete }) => {
   const [blogVis, setBlogVis] = useState(false);
 
   const style = {
@@ -21,6 +21,12 @@ const Blog = ({ blog, handleLikeSubmit }) => {
     // console.log(updatedBlog);
     handleLikeSubmit(updatedBlog);
   }
+
+  const deleteBlog = (e) => {
+    e.preventDefault();
+    handleDelete(blog.id);
+  }
+
   return (
     <div style={style}>
       {blog.name} || {blog.author} <button onClick={() => setBlogVis(!blogVis)}>{blogVis ? 'hide' : 'view'}</button>
@@ -29,7 +35,7 @@ const Blog = ({ blog, handleLikeSubmit }) => {
           {blog.url} <br />
           {blog.likes} <button onClick={createBlog}>like</button> <br />
           {blog.author} <br />
-
+          <button style={{backgroundColor: 'cyan'}} onClick={deleteBlog} >remove</button>
         </div>
         : <></>}
     </div>

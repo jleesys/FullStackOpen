@@ -52,6 +52,7 @@ const App = () => {
       }
       const userResponse = await loginService.submitLogin(credentials);
       window.localStorage.setItem('currentUser', JSON.stringify(userResponse));
+      blogService.setToken(JSON.parse(window.localStorage.getItem('currentUser')));
       setUser(userResponse);
       setUsername('');
       setPassword('');
@@ -102,11 +103,24 @@ const App = () => {
   const handleLikeSubmit = async (blog) => {
     try {
       const id = blog.id;
+      blogService.setToken(JSON.parse(window.localStorage.getItem('currentUser')));
       const response = await blogService.update({ blog, id });
       const newBlogs = blogs.map(blog => (blog.id === id ? response : blog));
       setBlogs(newBlogs);
     } catch (exception) {
       console.log('Failed to update blog/likes');
+    }
+  }
+  const handleDelete = async (id) => {
+    try {
+      console.log('Attempting deletion');
+      blogService.setToken(JSON.parse(window.localStorage.getItem('currentUser')));
+      const response = blogService.remove(id, user);
+      // const newBlogs = blogs.map(blog => (blog.id === id ? null : blog));
+      const newBlogs = blogs.filter(blog => blog.id !== id);
+      setBlogs(newBlogs);
+    } catch (exception) {
+      console.log('Error while deleting blog.')
     }
   }
 
@@ -154,11 +168,13 @@ const App = () => {
       <p style={{ color: 'green', fontWeight: 'bold' }}>{user.name} is logged in.  <button onClick={logOut}>log out</button>
       </p>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} handleLikeSubmit={handleLikeSubmit} />
+        <Blog key={blog.id} blog={blog} handleLikeSubmit={handleLikeSubmit} handleDelete={handleDelete} />
       )}
       <Togglable buttonLabel='add blog' ref={blogFormRef}>
         {blogForm()}
       </Togglable>
+      <br/>
+      <button>View All</button>
     </div>
   )
 }
