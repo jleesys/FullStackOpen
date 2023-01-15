@@ -13,6 +13,7 @@ const App = () => {
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null)
   const [message, setMessage] = useState(null);
+  const [showAll, setShowAll] = useState(false);
   // const [formVisible, setFormVisible] = useState(false);
 
   // const [blogTitle, setBlogTitle] = useState('');
@@ -120,7 +121,7 @@ const App = () => {
         setMessage('Successfully deleted blog.');
         setTimeout(() => {
           setMessage('');
-        },5000);
+        }, 5000);
         return setBlogs(newBlogs);
       }
       setMessage(`Aborting deletion.`)
@@ -175,14 +176,17 @@ const App = () => {
       <h2>blogs</h2>
       <p style={{ color: 'green', fontWeight: 'bold' }}>{user.name} is logged in.  <button onClick={logOut}>log out</button>
       </p>
-      {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} handleLikeSubmit={handleLikeSubmit} handleDelete={handleDelete} user={user} />
+      {blogs.map(blog => {
+        return <Blog key={blog.id} blog={blog} handleLikeSubmit={handleLikeSubmit} handleDelete={handleDelete} user={user} showAll={showAll} />
+      }
       )}
       <Togglable buttonLabel='add blog' ref={blogFormRef}>
         {blogForm()}
       </Togglable>
       <br />
-      <button>View All</button>
+      <button onClick={() => setShowAll(!showAll)}>
+        {showAll ? 'Collapse All' : 'View All'}
+      </button>
     </div>
   )
 }

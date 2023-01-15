@@ -1,7 +1,17 @@
-import { useState } from 'react';
+import { useState, useEffect  } from 'react';
 
-const Blog = ({ blog, handleLikeSubmit, handleDelete, user }) => {
-  const [blogVis, setBlogVis] = useState(false);
+const Blog = ({ blog, handleLikeSubmit, handleDelete, user, showAll }) => {
+  const [blogVis, setBlogVis] = useState(showAll);
+  // const blogUser = await blog.userame;
+
+  useEffect(() => {
+    console.log('does ', user.username, ' equal ', blog.user.username)
+    setBlogVis(showAll);
+  }, [showAll]);
+
+  // useEffect(() => {
+  //   console.log(blog.user.username);
+  // }, [blog])
 
   const style = {
     paddingTop: 5,
@@ -11,6 +21,11 @@ const Blog = ({ blog, handleLikeSubmit, handleDelete, user }) => {
     borderWidth: 1,
     marginBottom: 5
   }
+
+  const toggleBlogVis = () => {
+    setBlogVis(!blogVis);
+  }
+
   const showVisible = { display: blogVis ? '' : 'none' };
 
   const createBlog = (e) => {
@@ -28,7 +43,7 @@ const Blog = ({ blog, handleLikeSubmit, handleDelete, user }) => {
     handleDelete(blog.id, blog);
   }
 
-  console.log(user, blog);
+  // console.log(user, blog);
 
   return (
     <div style={style}>
