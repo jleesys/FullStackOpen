@@ -70,10 +70,13 @@ blogsRouter.post('/', async (request, response, next) => {
             user: user.id
         });
 
-        const savedBlog = await blogToAdd.save();
+        const savedBlog = await blogToAdd.save().then(blog => blog.populate('user', {username: 1, name: 1}));
+        // const savedBlog = await blogToAdd.save().then(blog => blog.populate('user', 'username name'));
+        // const savedBlog = await blogToAdd.save();
         userFetch.blogs = userFetch.blogs.concat(savedBlog._id);
         await userFetch.save();
 
+        console.log(savedBlog);
         response.status(201).json(savedBlog);
     } catch (exception) {
         next(exception);
@@ -82,13 +85,21 @@ blogsRouter.post('/', async (request, response, next) => {
 
 blogsRouter.delete('/:id', async (request, response, next) => {
     try {
+        const token = request.token !== undefined ? request.token : null;
+        console.log('token? ', token)
+
+        // const decodedToken = token === null ? false : jwt.verify(token, process.env.SECRET);
+        const user = request.user;
+        if (!(token && user.id)) {
+            return response.status(401).json({ error: 'invalid or expired token' });
+        }
         const idToDel = request.params.id;
-        const token = request.token;
         // const decodedToken = token === null || token === undefined ? false : jwt.verify(token, process.env.SECRET);
         // if (!(decodedToken)) return response.status(401).json({error: 'invalid or missing webtoken'});
         // const userIdFromToken = decodedToken.id;
 
-        const user = request.user;
+        // const user = request.user;
+        console.log(token);
         const userFetch = await User.findById(user.id);
         const blogFetch = await Blog.findById(idToDel);
         if (!blogFetch) return response.status(400).json({ error: 'invalid request' });
@@ -99,6 +110,7 @@ blogsRouter.delete('/:id', async (request, response, next) => {
             return response.status(401).json({ error: 'bad request. insufficient credentials for specified action' });
         }
 
+        console.log()
         response.status(400).end();
     } catch (exception) {
         next(exception);
