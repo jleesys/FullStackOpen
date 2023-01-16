@@ -81,7 +81,7 @@ const App = () => {
       // }
       blogService.setToken(JSON.parse(window.localStorage.getItem('currentUser')));
       const response = await blogService.submitBlog(blog);
-      console.log('setting message');
+      // console.log(response);
       setMessage(`Successfully added new blog "${blog.name}" by ${blog.author}.`);
       setTimeout(() => {
         setMessage('');

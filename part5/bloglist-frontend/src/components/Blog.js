@@ -5,7 +5,7 @@ const Blog = ({ blog, handleLikeSubmit, handleDelete, user, showAll }) => {
   // const blogUser = await blog.userame;
 
   useEffect(() => {
-    console.log('does ', user.username, ' equal ', blog.user.username)
+    // console.log('does ', user.username, ' equal ', blog.user.username)
     setBlogVis(showAll);
   }, [showAll]);
 
