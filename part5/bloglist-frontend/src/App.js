@@ -181,6 +181,7 @@ const App = () => {
       }
       )}
       <Togglable buttonLabel='add blog' ref={blogFormRef}>
+      {/* <Togglable ref={blogFormRef}> */}
         {blogForm()}
       </Togglable>
       <br />
