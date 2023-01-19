@@ -97,13 +97,18 @@ describe('blog component functionality', () => {
     const blogField = screen.getByPlaceholderText('Blog Title');
     const authorField = screen.getByPlaceholderText('Author');
     const urlField = screen.getByPlaceholderText('URL');
+    // screen.debug(blogField);
+    // screen.debug(authorField);
+    // screen.debug(urlField);
 
-    user.type(blogField, 'Test Title');
-    user.type(authorField, 'Test Author');
-    user.type(urlField, 'url.com');
+    await user.type(blogField, 'Test Title');
+    await user.type(authorField, 'Test Author');
+    await user.type(urlField, 'url.com');
     await user.click(submitButton);
 
-    screen.debug();
+    // screen.debug();
     expect(handleBlogSubmission.mock.calls).toHaveLength(1);
+    // console.log(handleBlogSubmission.mock.calls[0][0]);
+    expect(handleBlogSubmission.mock.calls[0][0].name).toBe('Test Title');
   });
 });
