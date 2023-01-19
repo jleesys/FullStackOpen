@@ -1,17 +1,17 @@
-import { useState, useEffect, useRef } from 'react'
-import Blog from './components/Blog'
-import Message from './components/Message'
+import { useState, useEffect, useRef } from 'react';
+import Blog from './components/Blog';
+import Message from './components/Message';
 import LoginForm from './components/loginform';
 import BlogForm from './components/blogform';
 import Togglable from './components/Togglable';
-import blogService from './services/blogs'
-import loginService from './services/login'
+import blogService from './services/blogs';
+import loginService from './services/login';
 
 const App = () => {
-  const [blogs, setBlogs] = useState([])
+  const [blogs, setBlogs] = useState([]);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState(null);
   const [message, setMessage] = useState(null);
   const [showAll, setShowAll] = useState(false);
   // const [formVisible, setFormVisible] = useState(false);
@@ -29,8 +29,8 @@ const App = () => {
           return b.likes - a.likes;
         });
         setBlogs(blogs);
-      })
-  }, [])
+      });
+  }, []);
 
   useEffect(() => {
     try {
@@ -42,7 +42,7 @@ const App = () => {
     } catch (exception) {
       console.log('no logged user found');
     }
-  }, [])
+  }, []);
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -50,7 +50,7 @@ const App = () => {
       const credentials = {
         username: username,
         password: password
-      }
+      };
       const userResponse = await loginService.submitLogin(credentials);
       window.localStorage.setItem('currentUser', JSON.stringify(userResponse));
       blogService.setToken(JSON.parse(window.localStorage.getItem('currentUser')));
@@ -63,12 +63,12 @@ const App = () => {
       }, 5000);
       // console.log('successful login ', userResponse);
     } catch (exception) {
-      setMessage(`Login failed.\nIncorrect username or password.`);
+      setMessage('Login failed.\nIncorrect username or password.');
       setTimeout(() => {
         setMessage('');
       }, 5000);
     }
-  }
+  };
 
   const handleBlogSubmission = async (blog) => {
     try {
@@ -98,7 +98,7 @@ const App = () => {
         setMessage('');
       }, 5000);
     }
-  }
+  };
 
   const handleLikeSubmit = async (blog) => {
     try {
@@ -110,7 +110,7 @@ const App = () => {
     } catch (exception) {
       console.log('Failed to update blog/likes');
     }
-  }
+  };
   const handleDelete = async (id, blog) => {
     try {
       if (window.confirm(`Delete blog "${blog.name}" by ${blog.author}?`)) {
@@ -124,14 +124,14 @@ const App = () => {
         }, 5000);
         return setBlogs(newBlogs);
       }
-      setMessage(`Aborting deletion.`)
+      setMessage('Aborting deletion.');
       setTimeout(() => {
-        setMessage(``);
+        setMessage('');
       }, 5000);
     } catch (exception) {
-      console.log('Error while deleting blog.')
+      console.log('Error while deleting blog.');
     }
-  }
+  };
 
   const logOut = (event) => {
     event.preventDefault();
@@ -141,11 +141,14 @@ const App = () => {
       setMessage('Logged out successfully.');
       setTimeout(() => {
         setMessage('');
-      }, 7000)
+      }, 7000);
     } catch (exception) {
-
+      setMessage('Log out error.');
+      setTimeout(() => {
+        setMessage('');
+      }, 7000);
     }
-  }
+  };
 
   if (user === null) {
     return (
@@ -157,7 +160,7 @@ const App = () => {
           setUsername={setUsername}
           setPassword={setPassword} />
       </>
-    )
+    );
   }
 
   const blogForm = () => {
@@ -167,8 +170,8 @@ const App = () => {
           handleBlogSubmission={handleBlogSubmission}
         />
       </div>
-    )
-  }
+    );
+  };
 
   return (
     <div>
@@ -177,11 +180,11 @@ const App = () => {
       <p style={{ color: 'green', fontWeight: 'bold' }}>{user.name} is logged in.  <button onClick={logOut}>log out</button>
       </p>
       {blogs.map(blog => {
-        return <Blog key={blog.id} blog={blog} handleLikeSubmit={handleLikeSubmit} handleDelete={handleDelete} user={user} showAll={showAll} />
+        return <Blog key={blog.id} blog={blog} handleLikeSubmit={handleLikeSubmit} handleDelete={handleDelete} user={user} showAll={showAll} />;
       }
       )}
       <Togglable buttonLabel='add blog' ref={blogFormRef}>
-      {/* <Togglable ref={blogFormRef}> */}
+        {/* <Togglable ref={blogFormRef}> */}
         {blogForm()}
       </Togglable>
       <br />
@@ -189,7 +192,7 @@ const App = () => {
         {showAll ? 'Collapse All' : 'View All'}
       </button>
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;

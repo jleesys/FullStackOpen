@@ -20,11 +20,12 @@ const Blog = ({ blog, handleLikeSubmit, handleDelete, user, showAll }) => {
     border: 'solid',
     borderWidth: 1,
     marginBottom: 5
-  }
+  };
 
+  // eslint-disable-next-line no-unused-vars
   const toggleBlogVis = () => {
     setBlogVis(!blogVis);
-  }
+  };
 
   const showVisible = { display: blogVis ? '' : 'none' };
 
@@ -33,15 +34,15 @@ const Blog = ({ blog, handleLikeSubmit, handleDelete, user, showAll }) => {
     const updatedBlog = {
       ...blog,
       likes: blog.likes + 1
-    }
+    };
     // console.log(updatedBlog);
     handleLikeSubmit(updatedBlog);
-  }
+  };
 
   const deleteBlog = (e) => {
     e.preventDefault();
     handleDelete(blog.id, blog);
-  }
+  };
 
   // console.log(user, blog);
 
@@ -68,7 +69,7 @@ const Blog = ({ blog, handleLikeSubmit, handleDelete, user, showAll }) => {
         </div>
         : <></>} */}
     </div>
-  )
-}
+  );
+};
 
-export default Blog
+export default Blog;
