@@ -47,10 +47,10 @@ const Blog = ({ blog, handleLikeSubmit, handleDelete, user, showAll }) => {
   // console.log(user, blog);
 
   return (
-    <div style={style}>
+    <div className='blog' style={style}>
       {blog.name} <button onClick={() => setBlogVis(!blogVis)}>{blogVis ? 'hide' : 'view'}</button>
 
-      <div style={showVisible}>
+      <div className='hiddenDiv' style={showVisible}>
         {blog.url} <br />
         {blog.likes} <button onClick={createBlog}>like</button> <br />
         {blog.author} <br />
