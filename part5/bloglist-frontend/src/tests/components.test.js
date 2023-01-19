@@ -3,6 +3,7 @@ import '@testing-library/jest-dom/extend-expect';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Blog from '../components/Blog';
+import BlogForm from '../components/blogform';
 
 describe('blog component functionality', () => {
   let container;
@@ -65,6 +66,44 @@ describe('blog component functionality', () => {
     await user.click(toggleVisButt);
     expect(hiddenDiv).not.toHaveStyle({ display: 'none' });
     expect(hiddenDiv).toHaveStyle({ display: 'block' });
-    screen.debug(div);
+  });
+
+  test('blog url and num likes are visible after button is clicked', async () => {
+    const toggleVisButt = screen.getByText('view');
+    await user.click(toggleVisButt);
+    const hiddenDiv = container.querySelector('.hiddenDiv');
+
+    expect(hiddenDiv).not.toHaveStyle('display: none');
+  });
+
+  test('if like button is clicked twice, handler is called twice', async () => {
+    const div = container.querySelector('.hiddenDiv');
+    const toggleVisButt = screen.getByText('view');
+    const likeButton = screen.getByText('like');
+
+    await user.click(toggleVisButt);
+    for (let i = 0; i <= 1; i++) {
+      await user.click(likeButton);
+    }
+    // expect(div).toHaveTextContent('3');
+    expect(handleLike.mock.calls).toHaveLength(2);
+  });
+
+  test('blog creator func receives correct props', async () => {
+    const handleBlogSubmission = jest.fn();
+    render(<BlogForm handleBlogSubmission={handleBlogSubmission} />).container;
+
+    const submitButton = screen.getByText('submit');
+    const blogField = screen.getByPlaceholderText('Blog Title');
+    const authorField = screen.getByPlaceholderText('Author');
+    const urlField = screen.getByPlaceholderText('URL');
+
+    user.type(blogField, 'Test Title');
+    user.type(authorField, 'Test Author');
+    user.type(urlField, 'url.com');
+    await user.click(submitButton);
+
+    screen.debug();
+    expect(handleBlogSubmission.mock.calls).toHaveLength(1);
   });
 });

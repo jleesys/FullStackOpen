@@ -38,18 +38,21 @@ const BlogForm = ({
         <div>
                     title <input name='blogTitle'
             value={blogTitle}
+            placeholder='Blog Title'
             onChange={({ target }) => { setBlogTitle(target.value) }} />
         </div>
         <div>
                     author
           <input name='blogAuthor'
             value={blogAuthor}
+            placeholder='Author'
             onChange={({ target }) => { setBlogAuthor(target.value) }}
           />
         </div>
         <div>
                     url
           <input name='blogUrl'
+            placeholder='URL'
             value={blogUrl}
             onChange={({ target }) => { setBlogUrl(target.value) }}
           />
