@@ -23,6 +23,7 @@ loginRouter.post('/', async (request, response, next) => {
         response
             .status(200)
             .send({ token, username: userFetch.username, name: userFetch.name })
+            console.log(userFetch.username, userFetch.name);
     } catch(exception) {
         next(exception);
     }

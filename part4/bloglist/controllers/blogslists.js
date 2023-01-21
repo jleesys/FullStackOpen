@@ -76,7 +76,7 @@ blogsRouter.post('/', async (request, response, next) => {
         userFetch.blogs = userFetch.blogs.concat(savedBlog._id);
         await userFetch.save();
 
-        console.log(savedBlog);
+        // console.log(savedBlog);
         response.status(201).json(savedBlog);
     } catch (exception) {
         next(exception);
