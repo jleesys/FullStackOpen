@@ -29,6 +29,7 @@ const update = async ({ id, blog }) => {
   return response.data;
 };
 
+// eslint-disable-next-line no-unused-vars
 const remove = async (id, user) => {
   const config = {
     headers: { Authorization: token }

@@ -35,7 +35,7 @@ const BlogForm = ({
   return (
     <div>
       <h2>add blog</h2>
-      <form onSubmit={createBlog}>
+      <form className='blogForm' onSubmit={createBlog}>
         <div>
                     title <input className='titleField'
             name='blogTitle'

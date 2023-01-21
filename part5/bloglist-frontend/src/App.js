@@ -182,7 +182,7 @@ const App = () => {
       </p>
       <div className='blogsView'>
         {blogs.map(blog => {
-          return <Blog key={blog.id} blog={blog} handleLikeSubmit={handleLikeSubmit} handleDelete={handleDelete} user={user} showAll={showAll} />;
+          return <Blog class='blog' key={blog.id} blog={blog} handleLikeSubmit={handleLikeSubmit} handleDelete={handleDelete} user={user} showAll={showAll} />;
         }
         )}
       </div>

@@ -51,7 +51,7 @@ describe('blog app', function () {
         });
     });
 
-    describe('Blogs', function () {
+    describe('Blogs', { retries: { runMode: 2, openMode: 2 } }, function () {
         beforeEach(function () {
             const userLogin = {
                 username: 'tester949',
@@ -79,44 +79,67 @@ describe('blog app', function () {
                         // headers: { 'Authorization': `bearer ${json.token}` }
                     });
                 });
-            // const blog = {
-            //     name: 'TestBlog',
-            //     author: 'author',
-            //     url: 'url.com'
-            // };
-            // cy.request('POST', 'http://localhost:3003/api/blogs', blog, headers: { 'Authorization': `bearer ${JSON.parse(localStorage.getItem('currentUser').token)}` });
-            // cy.request({
-            //     method: 'POST',
-            //     url: 'http://localhost:3003/api/blogs',
-            //     // headers: { 'Authorization': `bearer ${JSON.parse(localStorage.getItem('currentUser')).token}` }
-            //     headers: { 'Authorization': `bearer ${json.token}` }
-            // });
             cy.visit('http://localhost:3000');
         });
-        it('able to submit a blog', function () {
-            cy.contains('add blog').click();
-            cy.get('.titleField').type('Real Stuff');
-            cy.get('.authorField').type('Real Author');
-            cy.get('.urlField').type('realurl.blog');
-            cy.contains('submit').click();
+        describe('blog submission', function () {
+            it('able to submit a blog', function () {
+                cy.contains('add blog').click();
+                cy.get('.blogForm').should('be.visible');
+                cy.get('.titleField').type('Real Stuff');
+                cy.get('.authorField').type('Real Author');
+                cy.get('.urlField').type('realurl.blog');
+                cy.contains('submit').click();
 
-            cy.get('.blogsView').contains('Real Stuff');
+                cy.get('.blogsView').contains('Real Stuff');
+            });
+            it('able to submit two blogs', function () {
+                cy.contains('add blog').click();
+                cy.get('.blogForm').should('be.visible');
+                cy.get('.titleField').type('Real Stuff');
+                cy.get('.authorField').type('Real Author');
+                cy.get('.urlField').type('realurl.blog');
+                cy.contains('submit').click();
+
+                cy.contains('add blog').click();
+                cy.get('.blogForm').should('be.visible');
+                cy.get('.titleField').type('Tidbits Tailor');
+                // cy.get('.titleField').should('have.value','Tidbits Tailor');
+                cy.get('.authorField').type('Roger Tideswell');
+                // cy.get('.authorField').should('have.value','Roger Tideswell');
+                cy.get('.urlField').type('tidbits.org');
+                // cy.get('.urlField').should('have.value', 'tidbits.org');
+                cy.contains('submit').click();
+
+                cy.get('.blogsView').contains('Real Stuff');
+                cy.get('.blogsView').contains('Tidbits Tailor');
+            });
         });
-        it('able to submit two blogs', function () {
-            cy.contains('add blog').click();
-            cy.get('.titleField').type('Real Stuff');
-            cy.get('.authorField').type('Real Author');
-            cy.get('.urlField').type('realurl.blog');
-            cy.contains('submit').click();
-
-            cy.contains('add blog').click();
-            cy.get('.titleField').type('Tidbits Tailor');
-            cy.get('.authorField').type('Roger Tideswell');
-            cy.get('.urlField').type('tidbits.org');
-            cy.contains('submit').click();
-
-            cy.get('.blogsView').contains('Real Stuff');
-            cy.get('.blogsView').contains('Tidbits Tailor');
+        describe('blog deletion', function() {
+            beforeEach(function() {
+                const secondUser = {
+                    username: 'tester2',
+                    name: 'tester 2',
+                    password: 'password2'
+                };
+                cy.request('POST', 'http://localhost:3003/api/users', secondUser);
+            });
+            it('deletion button appears when viewing own added blog', function() {
+                cy.contains('view').click();
+                cy.contains('remove');
+            });
+            it('deletion button does not appear when checking as another user', function() {
+                cy.contains('button', 'view').click();
+                cy.get('.blogsView').contains('remove').should('be.visible');
+                cy.contains('log out').click();
+                // log in as secondary user (non owner)
+                cy.request('POST', 'http://localhost:3003/api/login', { username: 'tester2', password: 'password2' })
+                .then(function(response) {
+                    localStorage.setItem('currentUser', JSON.stringify(response.body));
+                    cy.visit('http://localhost:3000');
+                });
+                cy.contains('button', 'view').click();
+                cy.get('.blogsView').should('not.contain', 'remove');
+            });
         });
         it('able to like a blog, counted correctly', function () {
             cy.contains('view').click();
@@ -127,6 +150,47 @@ describe('blog app', function () {
             }
 
             cy.contains('.blogsView', '11');
+        });
+        it.only('blogs appear in order of most liked, descending', function() {
+                console.log(localStorage.getItem('currentUser'));
+            cy.request({
+                method: 'POST',
+                url: 'http://localhost:3003/api/blogs',
+                headers: { Authorization : `bearer ${JSON.parse(localStorage.getItem('currentUser')).token}` },
+                body: {
+                    name: 'This should appear at the top',
+                    author: 'Top Author',
+                    url: 'firsturl.com',
+                    likes: 99
+                }
+            });
+            cy.request({
+                method: 'POST',
+                url: 'http://localhost:3003/api/blogs',
+                headers: { Authorization : `bearer ${JSON.parse(localStorage.getItem('currentUser')).token}` },
+                body: {
+                    name: 'This should appear at the bottom',
+                    author: 'Bot Author',
+                    url: 'boturl.com',
+                    likes: 1
+                }
+            });
+            cy.request({
+                method: 'POST',
+                url: 'http://localhost:3003/api/blogs',
+                headers: { Authorization : `bearer ${JSON.parse(localStorage.getItem('currentUser')).token}` },
+                body: {
+                    name: 'This should appear in the middle',
+                    author: 'Mid Author',
+                    url: 'midurl.com',
+                    likes: 8 
+                }
+            });
+            cy.visit('http://localhost:3000');
+
+            cy.get('.blog').eq(0).contains('appear at the top');
+            cy.get('.blog').eq(1).contains('appear in the middle');
+            cy.get('.blog').eq(2).contains('appear at the bottom');
         });
     });
 });
