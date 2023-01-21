@@ -23,13 +23,13 @@ const Message = ({ text }) => {
 
   if (text.toLowerCase().includes('success')) {
     return (
-      <div style={styleNotification}>
+      <div className='successBanner' style={styleNotification}>
         {text}
       </div>
     );
   }
   return (
-    <div style={styleError}>
+    <div className='errorBanner' style={styleError}>
       {text}
     </div>
   );

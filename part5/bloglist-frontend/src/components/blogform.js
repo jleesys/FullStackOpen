@@ -22,7 +22,8 @@ const BlogForm = ({
         author: blogAuthor,
         url: blogUrl
       };
-      const response = await handleBlogSubmission(blog);
+      await handleBlogSubmission(blog);
+      // const response = await handleBlogSubmission(blog);
       setBlogAuthor('');
       setBlogTitle('');
       setBlogUrl('');
@@ -36,14 +37,16 @@ const BlogForm = ({
       <h2>add blog</h2>
       <form onSubmit={createBlog}>
         <div>
-                    title <input name='blogTitle'
+                    title <input className='titleField'
+            name='blogTitle'
             value={blogTitle}
             placeholder='Blog Title'
             onChange={({ target }) => { setBlogTitle(target.value) }} />
         </div>
         <div>
                     author
-          <input name='blogAuthor'
+          <input className='authorField'
+            name='blogAuthor'
             value={blogAuthor}
             placeholder='Author'
             onChange={({ target }) => { setBlogAuthor(target.value) }}
@@ -51,7 +54,8 @@ const BlogForm = ({
         </div>
         <div>
                     url
-          <input name='blogUrl'
+          <input className='urlField'
+            name='blogUrl'
             placeholder='URL'
             value={blogUrl}
             onChange={({ target }) => { setBlogUrl(target.value) }}

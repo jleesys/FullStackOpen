@@ -115,7 +115,8 @@ const App = () => {
     try {
       if (window.confirm(`Delete blog "${blog.name}" by ${blog.author}?`)) {
         blogService.setToken(JSON.parse(window.localStorage.getItem('currentUser')));
-        const response = blogService.remove(id, user);
+        await blogService.remove(id, user);
+        // const response = blogService.remove(id, user);
         // const newBlogs = blogs.map(blog => (blog.id === id ? null : blog));
         const newBlogs = blogs.filter(blog => blog.id !== id);
         setMessage('Successfully deleted blog.');
@@ -179,10 +180,12 @@ const App = () => {
       <h2>blogs</h2>
       <p style={{ color: 'green', fontWeight: 'bold' }}>{user.name} is logged in.  <button onClick={logOut}>log out</button>
       </p>
-      {blogs.map(blog => {
-        return <Blog key={blog.id} blog={blog} handleLikeSubmit={handleLikeSubmit} handleDelete={handleDelete} user={user} showAll={showAll} />;
-      }
-      )}
+      <div className='blogsView'>
+        {blogs.map(blog => {
+          return <Blog key={blog.id} blog={blog} handleLikeSubmit={handleLikeSubmit} handleDelete={handleDelete} user={user} showAll={showAll} />;
+        }
+        )}
+      </div>
       <Togglable buttonLabel='add blog' ref={blogFormRef}>
         {/* <Togglable ref={blogFormRef}> */}
         {blogForm()}
