@@ -145,13 +145,13 @@ describe('blog app', function () {
             cy.contains('view').click();
             cy.contains('like').should('be.visible');
             for (let i = 0; i < 11; i++) {
+                cy.get('.blog').contains(i);
                 cy.contains('like').click();
-                cy.wait(100);
             }
 
             cy.contains('.blogsView', '11');
         });
-        it.only('blogs appear in order of most liked, descending', function() {
+        it('blogs appear in order of most liked, descending', function() {
                 console.log(localStorage.getItem('currentUser'));
             cy.request({
                 method: 'POST',
