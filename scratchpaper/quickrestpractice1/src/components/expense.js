@@ -1,7 +1,7 @@
-const Expense = () => {
+const Expense = ({expense}) => {
     return (
         <div>
-            Expense
+            {expense.name} || {expense.amount}
         </div>
     )
 }
