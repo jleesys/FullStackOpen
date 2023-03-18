@@ -1,7 +1,7 @@
 const Expense = ({expense}) => {
     return (
         <div>
-            {expense.name} || {expense.amount}
+            {expense.name} || {'$' + expense.amount}
         </div>
     )
 }
