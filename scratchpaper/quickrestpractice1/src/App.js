@@ -1,11 +1,20 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import EntryForm from './components/entryform';
 import Expense from './components/expense';
 import ExpensesView from './components/expensesview';
 import Togglable from './components/togglable';
+import expenseServices from './services/expenseapi';
 
 function App() {
   const [expenses, setExpenses] = useState([]);
+
+  useEffect(() => {
+    const initialGet = expenseServices.getAll()
+      .then(response => {
+        console.log('response', response);
+        setExpenses(response);
+      });
+  }, [])
 
   const handleSubmission = async (entry) => {
     // console.log('Handling submission ', entry);
