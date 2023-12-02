@@ -1,14 +1,26 @@
 import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
-import './App.css'
+
+const Hello = (props) => {
+  console.log('logging');
+  console.log(props);
+  return (
+    <div>
+      <p>Hello {props.name}.</p>
+    </div>
+  )
+}
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
     <div>
-        <p>Helo worl</p>
+      <Hello name={'joe'} />
+      <Hello name='Marly' />
+      <Hello name="Charles" />
+      <p>Helo worle..</p>
     </div>
   )
 }
