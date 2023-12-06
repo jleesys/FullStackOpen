@@ -11,10 +11,10 @@ function App() {
   //  }
 
 
-  const Button = function ({ text, onClick }) {
+  const Button = function ({ text, onClick, counter }) {
     return (
       <div>
-        <button onClick={onClick}>{text}</button>
+        <button onClick={() => onClick(counter + 1)}>{text}</button>
       </div>
     )
   }
@@ -22,11 +22,14 @@ function App() {
   return (
     <>
       <h1>give feedback</h1>
-      <Button text='test button' />
-      <button>good</button>
-      <button>neutral</button>
-      <button>bad</button>
+      <Button text='good' onClick={setGood} counter={good} />
+      <Button text='neutral' onClick={setNeutral} counter={neutral} />
+      <Button text='bad' onClick={setBad} counter={bad} />
       <h1>Statistics</h1>
+      <div>{good}</div>
+      <div>{neutral}</div>
+      <div>{bad}</div>
+      
     </>
   )
 }
