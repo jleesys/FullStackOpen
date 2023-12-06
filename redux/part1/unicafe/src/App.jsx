@@ -5,16 +5,16 @@ function App() {
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
 
-  //  const onClick = (event) => {
+  //  const updateVal = (event) => {
   //    setGood(good + 1);
   //    console.log(`good is at ${good}`)
   //  }
 
 
-  const Button = function ({ text, onClick, counter }) {
+  const Button = function ({ text, updateVal, counter }) {
     return (
       <div>
-        <button onClick={() => onClick(counter + 1)}>{text}</button>
+        <button onClick={() => updateVal(counter + 1)}>{text}</button>
       </div>
     )
   }
@@ -22,13 +22,13 @@ function App() {
   return (
     <>
       <h1>give feedback</h1>
-      <Button text='good' onClick={setGood} counter={good} />
-      <Button text='neutral' onClick={setNeutral} counter={neutral} />
-      <Button text='bad' onClick={setBad} counter={bad} />
+      <Button text='good' updateVal={setGood} counter={good} />
+      <Button text='neutral' updateVal={setNeutral} counter={neutral} />
+      <Button text='bad' updateVal={setBad} counter={bad} />
       <h1>Statistics</h1>
-      <div>{good}</div>
-      <div>{neutral}</div>
-      <div>{bad}</div>
+      <div>good : {good}</div>
+      <div>neutral : {neutral}</div>
+      <div>bad : {bad}</div>
       
     </>
   )
