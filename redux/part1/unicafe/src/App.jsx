@@ -1,5 +1,13 @@
 import { useState } from 'react'
 
+  const Button = function ({ text, updateVal, counter }) {
+    return (
+      <div>
+        <button onClick={() => updateVal(counter + 1)}>{text}</button>
+      </div>
+    )
+  }
+
 function App() {
   const [good, setGood] = useState(0)
   const [neutral, setNeutral] = useState(0)
@@ -10,14 +18,6 @@ function App() {
   //    console.log(`good is at ${good}`)
   //  }
 
-
-  const Button = function ({ text, updateVal, counter }) {
-    return (
-      <div>
-        <button onClick={() => updateVal(counter + 1)}>{text}</button>
-      </div>
-    )
-  }
 
   return (
     <>
