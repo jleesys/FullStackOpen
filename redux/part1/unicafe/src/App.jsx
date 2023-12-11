@@ -8,7 +8,7 @@ const Button = function ({ text, updateVal, counter }) {
   )
 }
 
-const Statistics = ({good,neutral,bad}) => {
+const Statistics = ({ good, neutral, bad }) => {
   return (
     <>
       <div>good : {good}</div>
@@ -32,7 +32,12 @@ function App() {
       <Button text='good' updateVal={setGood} counter={good} />
       <Button text='neutral' updateVal={setNeutral} counter={neutral} />
       <Button text='bad' updateVal={setBad} counter={bad} />
-      <Statistics good={good} neutral={neutral} bad={bad} />
+      <br/>
+      {
+        (good+neutral+bad === 0) ?
+        'No feedback.' :
+        <Statistics good={good} neutral={neutral} bad={bad} />
+      }
     </>
   )
 }
