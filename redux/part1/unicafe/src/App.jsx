@@ -8,15 +8,35 @@ const Button = function ({ text, updateVal, counter }) {
   )
 }
 
+//<div><tr><td>good:</td> <td>{good}</td></tr></div>
+//<div>bad: {bad}</div>
+//<div>total: {good + neutral + bad}</div>
+//<div>average: {((1 * good) + (-1 * bad)) / (good + bad + neutral)}</div>
+//<div>positive: {(good) / (good + neutral + bad) * 100}%</div>
+//<div>neutral: {neutral}</div>
 const Statistics = ({ good, neutral, bad }) => {
   return (
     <>
-      <div>good : {good}</div>
-      <div>neutral : {neutral}</div>
-      <div>bad : {bad}</div>
-      <div>total: {good + neutral + bad}</div>
-      <div>average: {((1 * good) + (-1 * bad)) / (good + bad + neutral)}</div>
-      <div>positive: {(good) / (good + neutral + bad) * 100}%</div>
+      <table>
+        <tbody>
+          <Part text={'good'} value={good} />
+          <Part text={'neutral'} value={neutral} />
+          <Part text={'bad'} value={bad} />
+          <Part text={'total'} value={good + neutral + bad} />
+          <Part text={'average'} value={((1 * good) + (-1 * bad)) / (good + bad + neutral)}/>
+          <Part text={'positive'} value={`${(good) / (good + neutral + bad) * 100}%`}/>
+        </tbody>
+      </table>
+    </>
+  )
+}
+
+const Part = ({ text, value }) => {
+  return (
+    <>
+      <>
+        <tr><td>{text}</td><td>{value}</td></tr>
+      </>
     </>
   )
 }
@@ -32,11 +52,10 @@ function App() {
       <Button text='good' updateVal={setGood} counter={good} />
       <Button text='neutral' updateVal={setNeutral} counter={neutral} />
       <Button text='bad' updateVal={setBad} counter={bad} />
-      <br/>
       {
-        (good+neutral+bad === 0) ?
-        'No feedback.' :
-        <Statistics good={good} neutral={neutral} bad={bad} />
+        (good + neutral + bad === 0) ?
+          'No feedback.' :
+          <Statistics good={good} neutral={neutral} bad={bad} />
       }
     </>
   )
