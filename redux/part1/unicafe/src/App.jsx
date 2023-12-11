@@ -1,12 +1,25 @@
 import { useState } from 'react'
 
-  const Button = function ({ text, updateVal, counter }) {
-    return (
-      <div>
-        <button onClick={() => updateVal(counter + 1)}>{text}</button>
-      </div>
-    )
-  }
+const Button = function ({ text, updateVal, counter }) {
+  return (
+    <div>
+      <button onClick={() => updateVal(counter + 1)}>{text}</button>
+    </div>
+  )
+}
+
+const Statistics = ({good,neutral,bad}) => {
+  return (
+    <>
+      <div>good : {good}</div>
+      <div>neutral : {neutral}</div>
+      <div>bad : {bad}</div>
+      <div>total: {good + neutral + bad}</div>
+      <div>average: {((1 * good) + (-1 * bad)) / (good + bad + neutral)}</div>
+      <div>positive: {(good) / (good + neutral + bad) * 100}%</div>
+    </>
+  )
+}
 
 function App() {
   const [good, setGood] = useState(0)
@@ -19,16 +32,16 @@ function App() {
       <Button text='good' updateVal={setGood} counter={good} />
       <Button text='neutral' updateVal={setNeutral} counter={neutral} />
       <Button text='bad' updateVal={setBad} counter={bad} />
-      <h1>Statistics</h1>
-      <div>good : {good}</div>
-      <div>neutral : {neutral}</div>
-      <div>bad : {bad}</div>
-      <div>total: {good + neutral + bad}</div>
-      <div>average: {( (1 * good) + (-1 * bad) ) / (good+bad+neutral)}</div>
-      <div>positive: {(good) / (good+neutral+bad) * 100}%</div>
-      
+      <Statistics good={good} neutral={neutral} bad={bad} />
     </>
   )
 }
 
+//<h1>Statistics</h1>
+//<div>good : {good}</div>
+//<div>neutral : {neutral}</div>
+//<div>bad : {bad}</div>
+//<div>total: {good + neutral + bad}</div>
+//<div>average: {((1 * good) + (-1 * bad)) / (good + bad + neutral)}</div>
+//<div>positive: {(good) / (good + neutral + bad) * 100}%</div>
 export default App
