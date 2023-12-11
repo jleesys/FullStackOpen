@@ -13,12 +13,6 @@ function App() {
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
 
-  //  const updateVal = (event) => {
-  //    setGood(good + 1);
-  //    console.log(`good is at ${good}`)
-  //  }
-
-
   return (
     <>
       <h1>give feedback</h1>
@@ -29,6 +23,9 @@ function App() {
       <div>good : {good}</div>
       <div>neutral : {neutral}</div>
       <div>bad : {bad}</div>
+      <div>total: {good + neutral + bad}</div>
+      <div>average: {( (1 * good) + (-1 * bad) ) / (good+bad+neutral)}</div>
+      <div>positive: {(good) / (good+neutral+bad) * 100}%</div>
       
     </>
   )
