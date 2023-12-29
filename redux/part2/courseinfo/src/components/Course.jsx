@@ -8,19 +8,19 @@ const Header = (props) => {
 
 const Content = ({ parts }) => {
     return (
-        <ul>
+        <>
             {parts.map((part) => {
                 return <Part part={part} key={part.id} />
             })}
-        </ul>
+        </>
     )
 }
 
 const Part = ({ part }) => {
     return (
-        <li>
+        <p>
             {part.name} {part.exercises}
-        </li>
+        </p>
     )
 }
 
