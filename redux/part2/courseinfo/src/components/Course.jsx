@@ -26,19 +26,14 @@ const Part = ({ part }) => {
 
 const Total = ({parts}) => {
     const exercises = parts.map((part) => part.exercises)
-    console.log('exercises array ,', exercises);
     return (
         <p>
-            total of {exercises.reduce((sum,part) => sum + part)}
-            <br />
-            total of {parts.reduce((acc,currentVal) => acc + currentVal.exercises,
-            0)}
+            <b>total of {exercises.reduce((sum,part) => sum + part)}</b>
         </p>
     )
 }
 
 const Course = ({ course }) => {
-    console.log(course.parts);
     return (
         <>
             <Header text={course.name} />
