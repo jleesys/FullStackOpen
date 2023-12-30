@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-const EntryForm = ({setName, setNumber, handleSubmission}) => {
+const EntryForm = ({ setName, setNumber, handleSubmission }) => {
   const handleNameEntry = (e) => {
     e.preventDefault();
     setName(e.target.value);
@@ -10,23 +10,39 @@ const EntryForm = ({setName, setNumber, handleSubmission}) => {
     setNumber(e.target.value);
   }
   return (
-      <form onSubmit={handleSubmission}>
+    <form onSubmit={handleSubmission}>
+      <h2>Add new number</h2>
+      <div>
         <div>
           name: <input onChange={handleNameEntry} />
-          number: <input onChange={handleNumberEntry} />
         </div>
         <div>
-          <button type="submit">add</button>
+          number: <input onChange={handleNumberEntry} />
         </div>
-      </form>
+      </div>
+      <div>
+        <button type="submit">add</button>
+      </div>
+    </form>
   )
 }
 
-const DisplayPanel = ({persons}) => {
+function Search({ handleSearchChange }) {
   return (
-      <>
-      {persons.map((person) => <div key={person.name}>{person.name} {person.number}</div>)}
-      </>
+    <div>
+      <h2>Search</h2>
+      Enter name: <input onChange={handleSearchChange} />
+    </div>
+  )
+}
+
+const DisplayPanel = ({ persons, searchTerm }) => {
+  const filteredPersons = persons.filter((person) => person.name.includes(searchTerm));
+  console.log(filteredPersons)
+  return (
+    <>
+      {filteredPersons.map((person) => <div key={person.name}>{person.name} {person.number}</div>)}
+    </>
   )
 }
 
@@ -36,11 +52,12 @@ function App() {
   ]);
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
 
   const handleSubmission = (e) => {
     e.preventDefault();
     const names = persons.map(person => person.name);
-    if (names.filter((name) => newName == name).length !=0) {
+    if (names.filter((name) => newName == name).length != 0) {
       console.log("person already exists");
       alert(`Person ${newName} already exists. Please try again with a new person.`);
       return;
@@ -50,15 +67,19 @@ function App() {
       name: newName,
       number: newNumber
     }
-    console.log('new person ', newSubmission)
     setPersons(persons.concat(newSubmission));
+  }
+
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
   }
   return (
     <div>
       <h2>Phonebook</h2>
+      <Search handleSearchChange={handleSearchChange} />
       <EntryForm setName={setNewName} setNumber={setNewNumber} handleSubmission={handleSubmission} />
       <h2>Numbers</h2>
-      <DisplayPanel persons={persons} />
+      <DisplayPanel persons={persons} searchTerm={searchTerm} />
     </div>
   )
 }
