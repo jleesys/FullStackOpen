@@ -5,10 +5,15 @@ const EntryForm = ({setName, setNumber, handleSubmission}) => {
     e.preventDefault();
     setName(e.target.value);
   }
+  const handleNumberEntry = (e) => {
+    e.preventDefault();
+    setNumber(e.target.value);
+  }
   return (
       <form onSubmit={handleSubmission}>
         <div>
           name: <input onChange={handleNameEntry} />
+          number: <input onChange={handleNumberEntry} />
         </div>
         <div>
           <button type="submit">add</button>
@@ -37,6 +42,7 @@ function App() {
     const names = persons.map(person => person.name);
     if (names.filter((name) => newName == name).length !=0) {
       console.log("person already exists");
+      alert(`Person ${newName} already exists. Please try again with a new person.`);
       return;
     }
 
