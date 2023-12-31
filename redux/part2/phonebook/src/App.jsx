@@ -54,7 +54,7 @@ const DisplayPanel = ({ persons, searchTerm, handleDeletion }) => {
   return (
     <>
       {filteredPersons.map((person) => <Person key={person.id} id={person.id}
-        name={person.name} number={person.number} handleDeletion={handleDeletion}/>)}
+        name={person.name} number={person.number} handleDeletion={handleDeletion} />)}
     </>
   )
 }
@@ -81,10 +81,16 @@ function App() {
   )
 
   const handleDeletion = (personID, personName) => {
-    if (window.confirm(`Remove ${personName}?`)) {
-      setPersons(persons.filter((person) => person.id !== personID));
-      console.log('Delete request to server');
+    if (!window.confirm(`Remove ${personName}?`)) {
+      return;
     }
+    setPersons(persons.filter((person) => person.id !== personID));
+    console.log('Delete request to server');
+    axios
+      .delete(`http://localhost:3001/persons/${personID}`)
+      .then((response) => {
+        console.log('Deleted ', response);
+      })
   }
 
   const handleSubmission = (e) => {
