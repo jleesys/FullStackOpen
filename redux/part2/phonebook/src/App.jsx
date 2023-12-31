@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 
-const EntryForm = ({ setName, setNumber, handleSubmission }) => {
+const EntryForm = ({ newName, newNumber, setName, setNumber, handleSubmission }) => {
   const handleNameEntry = (e) => {
     e.preventDefault();
     setName(e.target.value);
@@ -15,10 +15,10 @@ const EntryForm = ({ setName, setNumber, handleSubmission }) => {
       <h2>Add new number</h2>
       <div>
         <div>
-          name: <input onChange={handleNameEntry} />
+          name: <input value={newName} onChange={handleNameEntry} />
         </div>
         <div>
-          number: <input onChange={handleNumberEntry} />
+          number: <input value={newNumber} onChange={handleNumberEntry} />
         </div>
       </div>
       <div>
@@ -91,6 +91,8 @@ function App() {
         return;
       });
     setPersons(persons.concat(newSubmission));
+    setNewName('');
+    setNewNumber('');
   }
 
   const handleSearchChange = (e) => {
@@ -100,7 +102,7 @@ function App() {
     <div>
       <h2>Phonebook</h2>
       <Search handleSearchChange={handleSearchChange} />
-      <EntryForm setName={setNewName} setNumber={setNewNumber} handleSubmission={handleSubmission} />
+      <EntryForm newNumber={newNumber} newName={newName} setName={setNewName} setNumber={setNewNumber} handleSubmission={handleSubmission} />
       <h2>Numbers</h2>
       <DisplayPanel persons={persons} searchTerm={searchTerm} />
     </div>
