@@ -46,7 +46,7 @@ const Person = ({ name, number }) => {
 }
 
 //{filteredPersons.map((person) => <div key={person.name}>{person.name} {person.number}</div>)}
-const DisplayPanel = ({ persons, searchTerm }) => {
+const DisplayPanel = ({ persons, searchTerm, setPersons, handleDeletion }) => {
   const filteredPersons = persons.filter((person) => person.name.includes(searchTerm));
   return (
     <>
@@ -78,7 +78,8 @@ function App() {
 
   const handleDeletion = (e) => {
     e.preventDefault();
-    
+    console.log('Delete request to server');
+
   }
 
   const handleSubmission = (e) => {
@@ -92,7 +93,8 @@ function App() {
 
     const newSubmission = {
       name: newName,
-      number: newNumber
+      number: newNumber,
+      id: persons.length + 1
     }
 
     axios
@@ -116,9 +118,11 @@ function App() {
     <div>
       <h2>Phonebook</h2>
       <Search handleSearchChange={handleSearchChange} />
-      <EntryForm newNumber={newNumber} newName={newName} setName={setNewName} setNumber={setNewNumber} handleSubmission={handleSubmission} />
+      <EntryForm newNumber={newNumber} newName={newName} setName={setNewName}
+        setNumber={setNewNumber} handleSubmission={handleSubmission} />
       <h2>Numbers</h2>
-      <DisplayPanel persons={persons} searchTerm={searchTerm} />
+      <DisplayPanel persons={persons} searchTerm={searchTerm}
+        setPersons={setPersons} handleDeletion={handleDeletion} />
     </div>
   )
 }
