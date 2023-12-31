@@ -84,12 +84,13 @@ function App() {
     if (!window.confirm(`Remove ${personName}?`)) {
       return;
     }
-    setPersons(persons.filter((person) => person.id !== personID));
-    console.log('Delete request to server');
-    axios
-      .delete(`http://localhost:3001/persons/${personID}`)
-      .then((response) => {
-        console.log('Deleted ', response);
+    personsService
+      .remove(personID)
+      .then(response => {
+        setPersons(persons.filter((person) => person.id !== personID));
+      })
+      .catch((err) => {
+        console.log(err);
       })
   }
 

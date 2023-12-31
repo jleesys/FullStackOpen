@@ -7,6 +7,12 @@ const create = (person) => {
     return requestCreate.then(response => response.data);
 }
 
+const remove = (id) => {
+    const requestDelete = axios
+        .delete(`${baseUrl}/${id}`);
+    return requestDelete.then(response => response.data);
+}
 export default {
-    create: create
+    create: create,
+    remove: remove 
 }
