@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import personsService from '../src/services/persons';
 
 const EntryForm = ({ newName, newNumber, setName, setNumber, handleSubmission }) => {
   const handleNameEntry = (e) => {
@@ -74,7 +75,6 @@ function App() {
     axios
       .get('http://localhost:3001/persons')
       .then(response => {
-        console.log('response received ', response.data);
         setPersons(response.data);
       })
   }, []
@@ -101,25 +101,18 @@ function App() {
       alert(`Person ${newName} already exists. Please try again with a new person.`);
       return;
     }
-
     const newSubmission = {
       name: newName,
       number: newNumber,
       id: persons.length + 1
     }
-
-    axios
-      .post('http://localhost:3001/persons', newSubmission)
-      .then((response) => {
-        console.log(response)
+    personsService
+      .create(newSubmission)
+      .then(response => {
+        setPersons(persons.concat(response));
+        setNewName('');
+        setNewNumber('');
       })
-      .catch((err) => {
-        console.log(err);
-        return;
-      });
-    setPersons(persons.concat(newSubmission));
-    setNewName('');
-    setNewNumber('');
   }
 
   const handleSearchChange = (e) => {
