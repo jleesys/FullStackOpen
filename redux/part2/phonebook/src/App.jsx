@@ -39,7 +39,9 @@ function Search({ handleSearchChange }) {
 
 const Person = ({ name, number }) => {
   return (
-    <div>{name} {number}</div>
+    <div>
+      {name} {number} <button>Delete</button>
+    </div>
   )
 }
 
@@ -48,7 +50,7 @@ const DisplayPanel = ({ persons, searchTerm }) => {
   const filteredPersons = persons.filter((person) => person.name.includes(searchTerm));
   return (
     <>
-      {filteredPersons.map((person) => <Person name={person.name} number={person.number}/>)}
+      {filteredPersons.map((person) => <Person key={person.id} name={person.name} number={person.number} />)}
     </>
   )
 }
@@ -73,6 +75,11 @@ function App() {
       })
   }, []
   )
+
+  const handleDeletion = (e) => {
+    e.preventDefault();
+    
+  }
 
   const handleSubmission = (e) => {
     e.preventDefault();
