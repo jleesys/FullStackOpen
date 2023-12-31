@@ -37,20 +37,24 @@ function Search({ handleSearchChange }) {
   )
 }
 
-const Person = ({ name, number }) => {
+const Person = ({ id, name, number, handleDeletion }) => {
   return (
     <div>
-      {name} {number} <button>Delete</button>
+      {name} {number} <button onClick={(e) => {
+        e.preventDefault();
+        handleDeletion(id, name);
+      }} >Delete</button>
     </div>
   )
 }
 
 //{filteredPersons.map((person) => <div key={person.name}>{person.name} {person.number}</div>)}
-const DisplayPanel = ({ persons, searchTerm, setPersons, handleDeletion }) => {
+const DisplayPanel = ({ persons, searchTerm, handleDeletion }) => {
   const filteredPersons = persons.filter((person) => person.name.includes(searchTerm));
   return (
     <>
-      {filteredPersons.map((person) => <Person key={person.id} name={person.name} number={person.number} />)}
+      {filteredPersons.map((person) => <Person key={person.id} id={person.id}
+        name={person.name} number={person.number} handleDeletion={handleDeletion}/>)}
     </>
   )
 }
@@ -76,10 +80,11 @@ function App() {
   }, []
   )
 
-  const handleDeletion = (e) => {
-    e.preventDefault();
-    console.log('Delete request to server');
-
+  const handleDeletion = (personID, personName) => {
+    if (window.confirm(`Remove ${personName}?`)) {
+      setPersons(persons.filter((person) => person.id !== personID));
+      console.log('Delete request to server');
+    }
   }
 
   const handleSubmission = (e) => {
