@@ -38,24 +38,25 @@ function Search({ handleSearchChange }) {
   )
 }
 
-const Person = ({ id, name, number, handleDeletion }) => {
+const Person = ({ person, handleDeletion }) => {
   return (
     <div>
-      {name} {number} <button onClick={(e) => {
+      {person.name} {person.number} <button onClick={(e) => {
         e.preventDefault();
-        handleDeletion(id, name);
+        handleDeletion(person);
       }} >Delete</button>
     </div>
   )
 }
 
-//{filteredPersons.map((person) => <div key={person.name}>{person.name} {person.number}</div>)}
+      //{filteredPersons.map((person) => <Person key={person.id} id={person.id}
+      //  name={person.name} number={person.number} handleDeletion={handleDeletion} />)}
 const DisplayPanel = ({ persons, searchTerm, handleDeletion }) => {
   const filteredPersons = persons.filter((person) => person.name.includes(searchTerm));
   return (
     <>
-      {filteredPersons.map((person) => <Person key={person.id} id={person.id}
-        name={person.name} number={person.number} handleDeletion={handleDeletion} />)}
+      {filteredPersons.map((person) => <Person key={person.id} person={person} 
+      handleDeletion={handleDeletion} />)}
     </>
   )
 }
@@ -80,14 +81,14 @@ function App() {
   }, []
   )
 
-  const handleDeletion = (personID, personName) => {
-    if (!window.confirm(`Remove ${personName}?`)) {
+  const handleDeletion = (personToDelete) => {
+    if (!window.confirm(`Remove ${personToDelete.name}?`)) {
       return;
     }
     personsService
-      .remove(personID)
+      .remove(personToDelete)
       .then(response => {
-        setPersons(persons.filter((person) => person.id !== personID));
+        setPersons(persons.filter((person) => person.id !== personToDelete.id));
       })
       .catch((err) => {
         console.log(err);
@@ -96,24 +97,38 @@ function App() {
 
   const handleSubmission = (e) => {
     e.preventDefault();
+    let newSubmission = {};
     const names = persons.map(person => person.name);
     if (names.filter((name) => newName == name).length != 0) {
-      console.log("person already exists");
-      alert(`Person ${newName} already exists. Please try again with a new person.`);
-      return;
+      console.log('user update ', newSubmission)
+      alert(`Person ${newName} already exists. Replace number with new one?`);
+      const matchedPerson = persons.filter((person) => person.name == newName);
+      newSubmission = matchedPerson[0];
+      newSubmission.number = newNumber;
+      console.log('updating ', newSubmission)
+      personsService
+        .update(newSubmission)
+        .then(response => {
+          setPersons(persons.concat(response));
+          setNewName('');
+          setNewNumber('');
+        })
+    } else {
+      console.log('new user creation')
+      newSubmission = {
+        name: newName,
+        number: newNumber
+//        id: persons.length + 1
+      }
+      console.log('creating ', newSubmission)
+      personsService
+        .create(newSubmission)
+        .then(response => {
+          setPersons(persons.concat(response));
+          setNewName('');
+          setNewNumber('');
+        })
     }
-    const newSubmission = {
-      name: newName,
-      number: newNumber,
-      id: persons.length + 1
-    }
-    personsService
-      .create(newSubmission)
-      .then(response => {
-        setPersons(persons.concat(response));
-        setNewName('');
-        setNewNumber('');
-      })
   }
 
   const handleSearchChange = (e) => {

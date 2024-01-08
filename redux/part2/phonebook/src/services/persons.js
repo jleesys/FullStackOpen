@@ -10,15 +10,25 @@ const create = (person) => {
     return requestCreate.then(response => response.data);
 }
 
-const remove = (id) => {
+const remove = (person) => {
     const requestDelete = axios
-        .delete(`${baseUrl}/${id}`)
+        .delete(`${baseUrl}/${person.id}`)
         .catch(err => {
             console.log(err);
         });
     return requestDelete.then(response => response.data);
 }
+
+const update = (submission) => {
+    const updateRequest = axios
+        .put(`${baseUrl}/${submission.id}`, submission)
+        .catch(err => {
+            console.log(err);
+        });
+    return updateRequest.then(response => response.data);
+}
 export default {
     create: create,
-    remove: remove
+    remove: remove,
+    update: update
 }
