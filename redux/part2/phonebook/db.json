@@ -16,9 +16,14 @@
       "id": 4
     },
     {
+      "name": "Arto3",
+      "number": "3000",
+      "id": 7
+    },
+    {
       "name": "Arto Hellas",
-      "number": "696969",
-      "id": 5
+      "number": "040-69122-9999",
+      "id": 8
     }
   ]
 }

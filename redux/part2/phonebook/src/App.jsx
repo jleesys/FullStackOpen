@@ -49,14 +49,14 @@ const Person = ({ person, handleDeletion }) => {
   )
 }
 
-      //{filteredPersons.map((person) => <Person key={person.id} id={person.id}
-      //  name={person.name} number={person.number} handleDeletion={handleDeletion} />)}
+//{filteredPersons.map((person) => <Person key={person.id} id={person.id}
+//  name={person.name} number={person.number} handleDeletion={handleDeletion} />)}
 const DisplayPanel = ({ persons, searchTerm, handleDeletion }) => {
   const filteredPersons = persons.filter((person) => person.name.includes(searchTerm));
   return (
     <>
-      {filteredPersons.map((person) => <Person key={person.id} person={person} 
-      handleDeletion={handleDeletion} />)}
+      {filteredPersons.map((person) => <Person key={person.id} person={person}
+        handleDeletion={handleDeletion} />)}
     </>
   )
 }
@@ -109,16 +109,23 @@ function App() {
       personsService
         .update(newSubmission)
         .then(response => {
-          setPersons(persons.concat(response));
+          const newPersonsList = persons.map((person) => {
+            if (person.name == newSubmission.name) {
+              return newSubmission;
+            } else {
+              return person;
+            }
+          })
+          setPersons(newPersonsList);
           setNewName('');
           setNewNumber('');
-        })
+        });
     } else {
       console.log('new user creation')
       newSubmission = {
         name: newName,
         number: newNumber
-//        id: persons.length + 1
+        //        id: persons.length + 1
       }
       console.log('creating ', newSubmission)
       personsService
